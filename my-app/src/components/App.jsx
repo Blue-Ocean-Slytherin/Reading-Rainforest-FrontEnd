@@ -1,8 +1,5 @@
-import React, { useState } from 'react';
-import {
-  Routes,
-  Route
-} from "react-router-dom";
+import React, { useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import Layout from "./Layout/Layout";
 import Home from "./Home/Home";
 import Search from "./Search/Search";
@@ -15,15 +12,13 @@ import LogIn from "./LogIn.jsx";
 import '../styles/styles.css';
 
 function App() {
-
-  const [ user, setUser ] = useState({});
+  const [user, setUser] = useState({});
 
   console.log("User Data:", user);
 
-  return (
-    !Object.keys(user).length ?
+  return !Object.keys(user).length ? (
     <LogIn setUser={setUser} />
-    :
+  ) : (
     <Routes>
       <Route path="/" element={<Layout setUser={setUser} />}>
         <Route index element={<Home />} />
@@ -34,7 +29,7 @@ function App() {
         <Route path="*" element={<NoPage />} />
       </Route>
     </Routes>
-  )
+  );
 
   // :
   // return (
@@ -53,7 +48,6 @@ function App() {
 
 export default App;
 
-
 // return (
 //   <div className="App">
 //     <div>Home Page</div>
@@ -63,6 +57,23 @@ export default App;
 //     <div>Messages</div>
 //   </div>
 // );
+// eslint-disable-next-line
+{
+  /* <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header> */
+}
 
 // import logo from './logo.svg';
 // import './App.css';
