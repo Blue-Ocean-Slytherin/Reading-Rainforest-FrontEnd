@@ -1,8 +1,5 @@
-import React from 'react';
-import {
-  Routes,
-  Route
-} from "react-router-dom";
+import React from "react";
+import { Routes, Route } from "react-router-dom";
 import Layout from "./Layout/Layout";
 import Home from "./Home/Home";
 import Search from "./Search/Search";
@@ -28,7 +25,6 @@ function App() {
 
 export default App;
 
-
 // return (
 //   <div className="App">
 //     <div>Home Page</div>
@@ -38,7 +34,9 @@ export default App;
 //     <div>Messages</div>
 //   </div>
 // );
-{/* <header className="App-header">
+// eslint-disable-next-line
+{
+  /* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
@@ -51,7 +49,8 @@ export default App;
         >
           Learn React
         </a>
-      </header> */}
+      </header> */
+}
 
 // import logo from './logo.svg';
 // import './App.css';
