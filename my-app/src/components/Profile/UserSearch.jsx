@@ -2,12 +2,27 @@ import React, { useState } from 'react';
 
 const UserSearch = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [booksList, setBooksList] = useState('My Listings') // will toggle to My Listing / Saved
 
+  const updateQuery = (query) => {
+    setSearchQuery(query);
+  }
 
   return (
-    <div className='user-profile'>
-      Hi
+    <div>
+      <form>
+        <input
+          className='search-bar'
+          type='search'
+          placeholder='Search Users'
+          onChange={(event) => updateQuery(event.target.value)}
+        />
+        <button
+          className='search-button'
+          type='submit'
+        >
+          Search
+        </button>
+      </form>
     </div>
   )
 }
