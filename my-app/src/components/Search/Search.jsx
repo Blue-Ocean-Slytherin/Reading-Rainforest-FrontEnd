@@ -3,10 +3,12 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import BookCard from "./Card";
+import AddBookToProfileModal from "../modals/listingToProfile";
 
 const Search = () => {
   return (
     <React.Fragment>
+      <AddBookToProfileModal />
       <CssBaseline />
       <Container maxWidth="lg">
         <Grid
