@@ -16,7 +16,7 @@ function App() {
 
   const [ user, setUser ] = useState({});
 
-  console.log(user);
+  console.log("User Data:", user);
 
   return (
     !Object.keys(user).length ?

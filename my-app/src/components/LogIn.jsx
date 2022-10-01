@@ -5,7 +5,6 @@ import jwt_decode from 'jwt-decode';
 const LogIn = ({ setUser }) => {
 
   let handleLogIn = (response) => {
-    console.log("Encoded JWT ID token: " + response.credential);
     let userObject = jwt_decode(response.credential);
     setUser(userObject);
     // document.getElementById('signInDiv').hidden = true;
