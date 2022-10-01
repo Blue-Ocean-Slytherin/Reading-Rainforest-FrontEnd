@@ -1,4 +1,4 @@
-import React, { useState, createContext, useEffect} from 'react';
+import React, { useState } from 'react';
 import {
   Routes,
   Route
@@ -11,6 +11,8 @@ import Trades from "./Trades/Trades";
 import Profile from "./Profile/Profile";
 import NoPage from "./NoPage/NoPage";
 import LogIn from "./LogIn.jsx";
+
+import '../styles/styles.css';
 
 function App() {
 
@@ -61,20 +63,6 @@ export default App;
 //     <div>Messages</div>
 //   </div>
 // );
-{/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
 
 // import logo from './logo.svg';
 // import './App.css';

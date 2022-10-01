@@ -1,6 +1,59 @@
-import React, { useEffect, useState, createContext } from 'react';
+import styled from 'styled-components';
+import React, { useEffect } from 'react';
 import jwt_decode from 'jwt-decode';
 
+import img from "../images/LogInImage.webp";
+import logo from "../images/ReadingRainforestLogo.png"
+
+import "../styles/LogIn.css";
+
+const LogInContainer = styled.div`
+display: flex;
+align-items: center;
+justify-content: center;
+width:100vw;
+height:100vh;
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;
+background-image: url('${img}');
+`;
+
+const DisplayBox = styled.div`
+  height: 250px;
+  width: 400px;
+  border: solid black 3px;
+  background-color: #FFCF9C;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0 10px 0;
+`;
+
+const Welcome = styled.div`
+  font-size: 30px;
+  text-align: center;
+`;
+
+const Logo = styled.div`
+height: 200px;
+width: 300px;
+background-image: url('${logo}');
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: contain no-repeat;
+background-position: center;
+`;
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+`;
 
 const LogIn = ({ setUser }) => {
 
@@ -19,19 +72,27 @@ const LogIn = ({ setUser }) => {
 
     google.accounts.id.renderButton(
       document.getElementById('signInDiv'),
-      { theme: "outline", size: "large" }
+      { theme: "outline", size: "large", shape: "pill"}
     )
   },[]);
 
-  let handleSignOut = (e) => {
-    setUser({});
-    // document.getElementById('signInDiv').hidden = false;
-  };
+  // let handleSignOut = (e) => {
+  //   setUser({});
+  //   // document.getElementById('signInDiv').hidden = false;
+  // };
 
   return (
-    <div className="Login">
-      <div id="signInDiv"></div>
-    </div>
+    <LogInContainer>
+      <DisplayBox>
+        <div></div>
+        <Container>
+          <Welcome>Welcome To</Welcome>
+        </Container>
+        <Logo></Logo>
+        <div id="signInDiv"></div>
+        <div></div>
+      </DisplayBox>
+    </LogInContainer>
   )
 
 };
