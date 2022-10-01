@@ -1,8 +1,5 @@
-import React from 'react';
-import {
-  Routes,
-  Route
-} from "react-router-dom";
+import React, { useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import Layout from "./Layout/Layout";
 import Home from "./Home/Home";
 import Search from "./Search/Search";
@@ -10,11 +7,20 @@ import Messages from "./Messages/Messages";
 import Trades from "./Trades/Trades";
 import Profile from "./Profile/Profile";
 import NoPage from "./NoPage/NoPage";
+import LogIn from "./LogIn.jsx";
+
+import '../styles/styles.css';
 
 function App() {
-  return (
+  const [user, setUser] = useState({});
+
+  console.log("User Data:", user);
+
+  return !Object.keys(user).length ? (
+    <LogIn setUser={setUser} />
+  ) : (
     <Routes>
-      <Route path="/" element={<Layout />}>
+      <Route path="/" element={<Layout setUser={setUser} />}>
         <Route index element={<Home />} />
         <Route path="search" element={<Search />} />
         <Route path="messages" element={<Messages />} />
@@ -24,10 +30,23 @@ function App() {
       </Route>
     </Routes>
   );
+
+  // :
+  // return (
+  //   <Routes>
+  //     <Route path="/" element={<Layout />}>
+  //       <Route index element={<Home />} />
+  //       <Route path="search" element={<Search />} />
+  //       <Route path="messages" element={<Messages />} />
+  //       <Route path="trades" element={<Trades />} />
+  //       <Route path="profile" element={<Profile />} />
+  //       <Route path="*" element={<NoPage />} />
+  //     </Route>
+  //   </Routes>
+  // );
 }
 
 export default App;
-
 
 // return (
 //   <div className="App">
@@ -38,7 +57,9 @@ export default App;
 //     <div>Messages</div>
 //   </div>
 // );
-{/* <header className="App-header">
+// eslint-disable-next-line
+{
+  /* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
@@ -51,7 +72,8 @@ export default App;
         >
           Learn React
         </a>
-      </header> */}
+      </header> */
+}
 
 // import logo from './logo.svg';
 // import './App.css';
