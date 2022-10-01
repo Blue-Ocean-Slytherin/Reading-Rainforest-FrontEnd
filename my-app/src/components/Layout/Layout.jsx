@@ -1,6 +1,12 @@
 import { Outlet, Link } from "react-router-dom";
 
-const Layout = () => {
+const Layout = ({ setUser }) => {
+
+  let handleSignOut = (e) => {
+    setUser({});
+    // document.getElementById('signInDiv').hidden = false;
+  };
+
   return (
     <>
       <nav>
@@ -21,8 +27,8 @@ const Layout = () => {
             <Link to="/profile">Profile</Link>
           </li>
         </ul>
+        <button className='signOutBtn' onClick={handleSignOut} > Sign Out </button>
       </nav>
-
       <Outlet />
     </>
   )

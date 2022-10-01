@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, createContext, useEffect} from 'react';
 import {
   Routes,
   Route
@@ -10,11 +10,20 @@ import Messages from "./Messages/Messages";
 import Trades from "./Trades/Trades";
 import Profile from "./Profile/Profile";
 import NoPage from "./NoPage/NoPage";
+import LogIn from "./LogIn.jsx";
 
 function App() {
+
+  const [ user, setUser ] = useState({});
+
+  console.log("User Data:", user);
+
   return (
+    !Object.keys(user).length ?
+    <LogIn setUser={setUser} />
+    :
     <Routes>
-      <Route path="/" element={<Layout />}>
+      <Route path="/" element={<Layout setUser={setUser} />}>
         <Route index element={<Home />} />
         <Route path="search" element={<Search />} />
         <Route path="messages" element={<Messages />} />
@@ -23,7 +32,21 @@ function App() {
         <Route path="*" element={<NoPage />} />
       </Route>
     </Routes>
-  );
+  )
+
+  // :
+  // return (
+  //   <Routes>
+  //     <Route path="/" element={<Layout />}>
+  //       <Route index element={<Home />} />
+  //       <Route path="search" element={<Search />} />
+  //       <Route path="messages" element={<Messages />} />
+  //       <Route path="trades" element={<Trades />} />
+  //       <Route path="profile" element={<Profile />} />
+  //       <Route path="*" element={<NoPage />} />
+  //     </Route>
+  //   </Routes>
+  // );
 }
 
 export default App;
