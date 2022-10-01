@@ -9,6 +9,8 @@ import Profile from "./Profile/Profile";
 import NoPage from "./NoPage/NoPage";
 import LogIn from "./LogIn.jsx";
 
+import '../styles/styles.css';
+
 function App() {
   const [user, setUser] = useState({});
 
