@@ -1,8 +1,5 @@
-import React, { useState, createContext, useEffect} from 'react';
-import {
-  Routes,
-  Route
-} from "react-router-dom";
+import React, { useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import Layout from "./Layout/Layout";
 import Home from "./Home/Home";
 import Search from "./Search/Search";
@@ -12,16 +9,16 @@ import Profile from "./Profile/Profile";
 import NoPage from "./NoPage/NoPage";
 import LogIn from "./LogIn.jsx";
 
-function App() {
+import '../styles/styles.css';
 
-  const [ user, setUser ] = useState({});
+function App() {
+  const [user, setUser] = useState({});
 
   console.log("User Data:", user);
 
-  return (
-    !Object.keys(user).length ?
+  return !Object.keys(user).length ? (
     <LogIn setUser={setUser} />
-    :
+  ) : (
     <Routes>
       <Route path="/" element={<Layout setUser={setUser} />}>
         <Route index element={<Home />} />
@@ -32,7 +29,7 @@ function App() {
         <Route path="*" element={<NoPage />} />
       </Route>
     </Routes>
-  )
+  );
 
   // :
   // return (
@@ -51,7 +48,6 @@ function App() {
 
 export default App;
 
-
 // return (
 //   <div className="App">
 //     <div>Home Page</div>
@@ -61,7 +57,9 @@ export default App;
 //     <div>Messages</div>
 //   </div>
 // );
-{/* <header className="App-header">
+// eslint-disable-next-line
+{
+  /* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
@@ -74,7 +72,8 @@ export default App;
         >
           Learn React
         </a>
-      </header> */}
+      </header> */
+}
 
 // import logo from './logo.svg';
 // import './App.css';
