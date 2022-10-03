@@ -10,6 +10,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CloseIcon from '@mui/icons-material/Close';
 import Avatar from "@mui/material/Avatar";
 import Divider from '@mui/material/Divider';
+import { UserContext } from '../App.jsx';
 
 const theme = createTheme({
   palette: {
@@ -87,6 +88,8 @@ const columns = [
 export default function ConfirmTradeModal({ userName, bookName, userPic, bookPic }) {
   const [open, setOpen] = React.useState(false);
   const [selection, setSelection] = React.useState({});
+  const { user } = React.useContext(UserContext);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -97,6 +100,8 @@ export default function ConfirmTradeModal({ userName, bookName, userPic, bookPic
 
   let submitTrade = () => {
     // write function to send request to BackEnd
+    console.log(user.name)
+    console.log(user.sub)
     console.log(selection);
     if (selection.isbn) {
       alert(`Trade Request 'Sent' for ISBN: ${selection.isbn} 😬`);
