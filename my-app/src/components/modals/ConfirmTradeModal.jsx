@@ -98,8 +98,8 @@ export default function ConfirmTradeModal({ userName, bookName, userPic, bookPic
   let submitTrade = () => {
     // write function to send request to BackEnd
     console.log(selection);
-    if (selection.id) {
-      alert(`Trade Request 'Sent' for ${selection} 😬`);
+    if (selection.isbn) {
+      alert(`Trade Request 'Sent' for ISBN: ${selection.isbn} 😬`);
     } else {
       alert('Trade Request Failed, no book selected');
     }

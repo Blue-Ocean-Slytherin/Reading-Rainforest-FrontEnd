@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, createContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import Layout from "./Layout/Layout";
 import Home from "./Home/Home";
@@ -11,10 +11,13 @@ import LogIn from "./LogIn.jsx";
 
 import '../styles/styles.css';
 
+
+
 function App() {
   const [user, setUser] = useState({});
-
   console.log("User Data:", user);
+
+
 
   return !Object.keys(user).length ? (
     <LogIn setUser={setUser} />
