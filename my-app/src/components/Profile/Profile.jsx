@@ -9,8 +9,6 @@ const Profile = () => {
   const [userProfile, setUserProfile] = useState(''); // will change once a user clicks on Profile or clicks on different user profile
   const [loggedInProfile, setLoggedInProfile] = useState('Signed In User ID Name'); // this will be changed once user signs in
 
-
-
   return (
     <div className='user-profile'>
       Profile
