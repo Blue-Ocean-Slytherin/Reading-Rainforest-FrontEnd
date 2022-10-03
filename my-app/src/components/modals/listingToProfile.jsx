@@ -2,7 +2,6 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
@@ -22,6 +21,7 @@ const theme = createTheme({
 export default function ScrollDialog() {
   const [open, setOpen] = React.useState(false);
   const [scroll, setScroll] = React.useState("paper");
+  const [books, setBooks] = React.useState([]);
 
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
@@ -40,7 +40,15 @@ export default function ScrollDialog() {
         descriptionElement.focus();
       }
     }
-  }, [open]);
+    // eslint-disable-next-line
+  }, []);
+
+  React.useEffect(() => {
+    if (books) {
+      setBooks([...books]);
+    }
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div>
@@ -71,16 +79,23 @@ export default function ScrollDialog() {
         </DialogTitle>
         <DialogContent dividers={scroll === "paper"}>
           <Box>
-            <SearchBar />
+            <SearchBar Books={setBooks} />
             <br></br>{" "}
             <Container maxWidth="md" spacing={2}>
               <Stack spacing={2}>
-                <BookCard onClose={handleClose} />
-                <BookCard onClose={handleClose} />
-                <BookCard onClose={handleClose} />
-                <BookCard onClose={handleClose} />
-                <BookCard onClose={handleClose} />
-                <BookCard onClose={handleClose} />
+                {books.map((book, index) => {
+                  if (book.volumeInfo.imageLinks !== undefined) {
+                    return (
+                      <BookCard
+                        key={book.id}
+                        data={book}
+                        onClose={handleClose}
+                      />
+                    );
+                  } else {
+                    return <div key={index} style={{ display: "none" }}></div>;
+                  }
+                })}
               </Stack>
             </Container>
           </Box>
