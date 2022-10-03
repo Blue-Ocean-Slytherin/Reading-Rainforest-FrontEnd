@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-// import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
@@ -174,96 +173,10 @@ const Layout = ({ setUser }) => {
 
   )
 };
-    // <Box>
-    //   <AppBar position="sticky" style={{ background: '#058C42' }} >
-    //     <Toolbar>
-    //       <nav>
-    //         <Grid justify="space-between" alignItems="center" container spacing={10}>
-    //           <Grid item>
-    //             <Button>
-    //               <Link style={{color: 'white', textDecoration: 'none', fontSize: '1.5em'}} to="/">
-    //                 Reading RainForest
-    //               </Link>
-    //             </Button>
-    //           </Grid>
-    //           <Grid item>
-    //             <Search>
-    //               <SearchIconWrapper>
-    //                 <SearchIcon />
-    //               </SearchIconWrapper>
-    //               <StyledInputBase
-    //                 placeholder="Search…"
-    //                 inputProps={{ 'aria-label': 'search' }}
-    //                 value={searchInput}
-    //                 onChange={(e) => setSearchInput(e.target.value)}
-    //               />
-
-    //               <Button color="inherit" sx={{ flexGrow: 1 }}>
-    //                 <Link style={{color: 'white', textDecoration: 'none'}} to="/search">Search</Link>
-    //               </Button>
-    //             </Search>
-    //           </Grid>
-    //           <Grid item>
-    //             <Button color="inherit" float="right">
-    //               <Badge badgeContent={29} color="error">
-    //                 <Link style={{color: 'white', textDecoration: 'none'}} to="/messages">Messages</Link>
-    //               </Badge>
-    //             </Button>
-    //           </Grid>
-    //           <Grid item>
-    //             <Button color="inherit">
-    //               <Badge badgeContent={12} color="error">
-    //                 <Link style={{color: 'white', textDecoration: 'none'}} to="/trades">Trades</Link>
-    //               </Badge>
-    //             </Button>
-    //           </Grid>
-    //           <Grid item>
-    //             <div>
-    //               <IconButton
-    //                 size="large"
-    //                 aria-label="account of current user"
-    //                 aria-controls="menu-appbar"
-    //                 aria-haspopup="true"
-    //                 onClick={handleMenu}
-    //                 color="inherit"
-    //               >
-    //                 <AccountCircle />
-    //               </IconButton>
-    //               <Menu
-    //                 id="menu-appbar"
-    //                 anchorEl={anchorEl}
-    //                 anchorOrigin={{
-    //                   vertical: 'top',
-    //                   horizontal: 'right',
-    //                 }}
-    //                 keepMounted
-    //                 transformOrigin={{
-    //                   vertical: 'top',
-    //                   horizontal: 'right',
-    //                 }}
-    //                 open={Boolean(anchorEl)}
-    //                 onClose={handleClose}
-    //               >
-    //                 <MenuItem onClick={handleClose}><Link style={{color: 'black', textDecoration: 'none'}} to="/profile">Profile</Link></MenuItem>
-    //                 <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
-    //               </Menu>
-    //             </div>
-    //           </Grid>
-    //         </Grid>
-    //       </nav>
-    //     </Toolbar>
-    //   </AppBar>
-    //   <Outlet />
-    // </Box>
-
-
-
-/*---------------------------------------------------------------------------------------------*/
-
-
-
 
 export default Layout;
+
+/*---------------------------------------------------------------------------------------------*/
 
 // <>
 //   <nav>
