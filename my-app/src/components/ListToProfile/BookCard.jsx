@@ -28,24 +28,23 @@ const theme = createTheme({
   },
 });
 
-export default function BookCard({ onClose }) {
+export default function BookCard({ onClose, data }) {
   return (
     <Card sx={{ display: "flex" }}>
       <CardMedia
         component="img"
         sx={{ width: 151 }}
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoTvwrFLjH9PTv4-d4WMsBEWKo4k4mE0MqKg&usqp=CAU"
-        alt="Live from space album cover"
+        src={data.volumeInfo.imageLinks.thumbnail}
+        alt={data.volumeInfo.title}
       />
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <CardContent sx={{ flex: "1 0 auto" }}>
           <Typography component="div" variant="h5">
-            The Four Agreements
+            {data.volumeInfo.title}
             <ThemeProvider theme={theme}>
               <IconButton
                 color="spanishGreen"
                 sx={{ p: "10px" }}
-                aria-label="directions"
                 onClick={onClose}
               >
                 <PostAddIcon />
@@ -57,14 +56,12 @@ export default function BookCard({ onClose }) {
             color="text.secondary"
             component="div"
           >
-            Book by Don Miguel Ruiz
+            Book by {data.volumeInfo.authors}
           </Typography>
           <Typography variant="body2" color="text.main">
-            The Four Agreements: A Practical Guide to Personal Freedom is a
-            self-help book by bestselling author Don Miguel Ruiz. The book
-            offers a code of conduct claiming to be based on ancient Toltec
-            wisdom that advocates freedom from self-limiting beliefs that may
-            cause suffering and limitation in a person's life.
+            {data.volumeInfo.description.length > 400
+              ? data.volumeInfo.description.substring(0, 400) + "..."
+              : data.volumeInfo.description}
           </Typography>
         </CardContent>
       </Box>
