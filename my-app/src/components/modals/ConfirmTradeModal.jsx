@@ -94,6 +94,7 @@ export default function ConfirmTradeModal({ userName, bookName, userPic, bookPic
   const handleClose = () => setOpen(false);
 
   let handleRowSelection = (params) => {
+    console.log(params.row);
     const newSelect = { "isbn": params.row.isbn };
     setSelection(newSelect);
   };
