@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, createContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import Layout from "./Layout/Layout";
 import Home from "./Home/Home";
@@ -11,24 +11,31 @@ import LogIn from "./LogIn.jsx";
 
 import '../styles/styles.css';
 
+export const UserContext = createContext({
+  user: {},
+});
+
 function App() {
   const [user, setUser] = useState({});
-
   console.log("User Data:", user);
+
+  let values = {user};
 
   return !Object.keys(user).length ? (
     <LogIn setUser={setUser} />
   ) : (
-    <Routes>
-      <Route path="/" element={<Layout setUser={setUser} />}>
-        <Route index element={<Home />} />
-        <Route path="search" element={<Search />} />
-        <Route path="messages" element={<Messages />} />
-        <Route path="trades" element={<Trades />} />
-        <Route path="profile" element={<Profile />} />
-        <Route path="*" element={<NoPage />} />
-       </Route>
-    </Routes>
+    <UserContext.Provider value={values}>
+      <Routes>
+        <Route path="/" element={<Layout setUser={setUser} />}>
+          <Route index element={<Home />} />
+          <Route path="search" element={<Search />} />
+          <Route path="messages" element={<Messages />} />
+          <Route path="trades" element={<Trades />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="*" element={<NoPage />} />
+        </Route>
+      </Routes>
+    </UserContext.Provider>
   );
 
   // :
