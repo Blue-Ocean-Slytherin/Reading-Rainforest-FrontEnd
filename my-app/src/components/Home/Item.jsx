@@ -8,8 +8,8 @@ import ParkOutlinedIcon from '@mui/icons-material/ParkOutlined';
 
 const StyledRating = styled(Rating)({
   '& .MuiRating-iconFilled': {
-    color: '#ffcf9c',
-    // color: '#058c42',
+    // color: '#ffcf9c',
+    color: '#058c42',
   }
 });
 
