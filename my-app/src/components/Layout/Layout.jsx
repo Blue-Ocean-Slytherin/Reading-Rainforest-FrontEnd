@@ -109,8 +109,6 @@ const Layout = ({ setUser }) => {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'inline', md: 'flex'} }}>
             <Grid justify="space-between" alignItems="center" container spacing={5}>
-
-
             <Grid item>
             <Button color="inherit" >
               <Badge badgeContent={29} color="error">
