@@ -33,16 +33,22 @@ const Profile = () => {
   const [loggedInProfile, setLoggedInProfile] = useState('Signed In User ID Name'); // this will be changed once user signs in
 
   return (
-    <div className='user-profile'>
-      <ThemeProvider theme={theme}>
-        Profile
-        <Grid container spacing={2}>
-          <Grid item xs={3}>
+    <ThemeProvider theme={theme}>
+      <Grid container spacing={2}>
+          <Grid
+            item xs={3}
+            container
+            direction='column'
+          >
             <Paper>
               <UserInfo />
             </Paper>
           </Grid>
-          <Grid item xs={9}>
+          <Grid
+            item xs={9}
+            container
+            direction='column'
+          >
             <Paper>
               <UserSearch />
               <Listings
@@ -51,9 +57,8 @@ const Profile = () => {
               />
             </Paper>
           </Grid>
-        </Grid>
-      </ThemeProvider>
-    </div>
+      </Grid>
+    </ThemeProvider>
   )
 }
 

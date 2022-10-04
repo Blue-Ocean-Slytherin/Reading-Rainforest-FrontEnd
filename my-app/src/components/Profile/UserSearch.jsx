@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Grid from '@mui/material/Grid';
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import Divider from "@mui/material/Divider";
@@ -34,32 +35,36 @@ const UserSearch = () => {
   }
 
   return (
-    <Paper
-      component="form"
-      sx={{
-        p: "2px 4px",
-        display: "flex",
-      }}
-      onSubmit={(e) => e.preventDefault()}
-    >
-      <InputBase
-        sx={{ ml: 1, flex: 1 }}
-        placeholder="Search Users"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-      <ThemeProvider theme={theme}>
-        <IconButton
-          color="spanishGreen"
-          sx={{ p: "10px" }}
-          aria-label="directions"
-          onClick={handleClick}
+    <>
+      <Grid item xs={12}>
+        <Paper
+          component="form"
+          sx={{
+            p: "2px 4px",
+            display: "flex",
+          }}
+          onSubmit={(e) => e.preventDefault()}
         >
-          <SearchIcon />
-        </IconButton>
-      </ThemeProvider>
-    </Paper>
+          <InputBase
+            sx={{ ml: 1, flex: 1 }}
+            placeholder="Search Users"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+          <ThemeProvider theme={theme}>
+            <IconButton
+              color="spanishGreen"
+              sx={{ p: "10px" }}
+              aria-label="directions"
+              onClick={handleClick}
+            >
+              <SearchIcon />
+            </IconButton>
+          </ThemeProvider>
+        </Paper>
+      </Grid>
+    </>
   )
 }
 

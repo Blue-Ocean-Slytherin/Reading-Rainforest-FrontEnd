@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import Paper from "@mui/material/Paper";
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import ListingsButtons from './ProfileListingButtons.jsx';
@@ -36,24 +37,33 @@ const Listings = (props) => {
   }
 
   return(
-    <div>
-      <ThemeProvider theme={theme}>
-        <ListingsButtons
-          userProfile={props.userProfile}
-          loggedInProfile={props.loggedInProfile}
-        />
-        <div className='listings'>
-          {isListings
-          ? listings.map(listing =>
-            <Listing listing={listing} />
-          )
-          : savedListings.map(listing =>
-            <Listing listing={listing} />
-          )}
-          <AddBookToProfileModal />
-        </div>
-      </ThemeProvider>
-    </div>
+    <>
+    <Grid
+      item xs={9}
+      container
+    >
+      <Grid
+        item xs={9}>
+        <ThemeProvider theme={theme}>
+          <ListingsButtons
+            userProfile={props.userProfile}
+            loggedInProfile={props.loggedInProfile}
+          />
+          <Box className='listings'>
+            {isListings
+            ? listings.map(listing =>
+              <Listing listing={listing} />
+            )
+            : savedListings.map(listing =>
+              <Listing listing={listing} />
+            )}
+            <AddBookToProfileModal />
+          </Box>
+        </ThemeProvider>
+
+      </Grid>
+    </Grid>
+    </>
   )
 }
 
