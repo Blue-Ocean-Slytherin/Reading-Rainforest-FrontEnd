@@ -27,7 +27,7 @@ function App() {
         <Route path="trades" element={<Trades />} />
         <Route path="profile" element={<Profile />} />
         <Route path="*" element={<NoPage />} />
-      </Route>
+       </Route>
     </Routes>
   );
 

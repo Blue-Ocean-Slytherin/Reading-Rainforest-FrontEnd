@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import React, { useEffect } from 'react';
 import jwt_decode from 'jwt-decode';
-
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth, firestore, firebase } from '../firebase'
 import img from "../images/LogInImage.webp";
 import logo from "../images/ReadingRainforestLogo.png"
 
@@ -56,7 +57,15 @@ const Container = styled.div`
 `;
 
 const LogIn = ({ setUser }) => {
+
+  // const signInWithGoogle = () => {
+  //   const provider = new firebase.auth.GoogleAuthProvider();
+  //   auth.signInWithPopup(provider);
+  // }
+
   let handleLogIn = (response) => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider);
     let userObject = jwt_decode(response.credential);
     setUser(userObject);
     // document.getElementById('signInDiv').hidden = true;
