@@ -1,45 +1,52 @@
-import React, {useCallback, useState, useEffect} from 'react';
-import {GoogleMap, useJsApiLoader} from '@react-google-maps/api';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
+import {GoogleMap, Marker,useJsApiLoader} from '@react-google-maps/api';
 
 const containerStyle = {
-  width: '400px',
-  height: '400px',
+  width: '800px',
+  height: '650px',
 }
 
-const center = {
-  lat: -3.745,
-  lng: -38.523
-}
 
-function Map() {
+function Map(props) {
+  const [address, setAddress] = useState('');
+
+  const center = {
+    lat: props.userLat,
+    lng: props.userLng
+  }
+
   const {isLoaded} = useJsApiLoader ({
-    // id: 'google-map-script',
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-    // googleMapsApiKey: 'AIzaSyAbHuFfZ4U3bBhSiLul00sQHX6MR9gP9Uk',
   })
 
-  // const [gmap, setMap] = useState(null);
+  useEffect(() => {
+    axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${props.userLat},${props.userLng}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`)
+      .then ((results) => setAddress(results.data.results[0].formatted_address))
+      .catch((err) => console.log('Error getting address'))
+  }, [props.userLat, props.userLng])
 
-  // const onLoad = useCallback(function callback(map) {
-  //   const bounds = new window.google.maps.LatLngBounds(center);
-  //   map.fitBounds(bounds);
-  //   setMap(map)
-  // }, [])
-
-  return isLoaded ? (
-    <GoogleMap
-      mapContainerStyle={containerStyle}
-      center={center}
-      zoom={10}
-      options={{
-        zoomControl: false,
-        streetViewControl: false,
-        mapTypeControl: false,
-        fullscreenControl: false,
-      }}
-    >
-    </GoogleMap>
-  ) : null;
+  return (
+    <div>
+      {isLoaded ? (<GoogleMap
+        mapContainerStyle={containerStyle}
+        center={center}
+        zoom={13}
+        options={{
+          zoomControl: false,
+          streetViewControl: false,
+          mapTypeControl: false,
+          fullscreenControl: false,
+        }}
+      >
+        <Marker position={center}/>
+      </GoogleMap>
+    ) : null}
+      <div id="address">
+        <h3>{address}</h3>
+      </div>
+    </div>
+  );
 }
 
 export default Map;

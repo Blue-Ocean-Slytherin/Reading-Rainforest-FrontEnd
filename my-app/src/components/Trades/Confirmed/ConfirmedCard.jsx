@@ -7,6 +7,19 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 800,
+  height: 700,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+};
 
 const greenStyle = {
   backgroundColor: '#9CFC97',
@@ -18,6 +31,10 @@ const redStyle = {
 
 const ConfirmedCard = () => {
   const [open, setOpen] = useState(false);
+  const [userLat, setUserLat] = useState(40.714224);
+  const [userLng, setUserLng] = useState(-73.961452);
+  const [tradeLat, setTradeLat] = useState(null);
+  const [tradeLng, setTradeLng] = useState(null);
 
   const handleOpen = function () {
     setOpen(true);
@@ -131,11 +148,21 @@ const ConfirmedCard = () => {
           <Button style={redStyle} variant="contained" onClick={handleOpen}>Map</Button>
         </Stack>
       </Box>
-      {open && (
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Map userLat={userLat} userLng={userLng} tradeLat={tradeLat} tradeLng={tradeLng}/>
+        </Box>
+      </Modal>
+      {/* {open && (
         <div>
           <Map/>
         </div>
-      )}
+      )} */}
     </div>
   )
 }

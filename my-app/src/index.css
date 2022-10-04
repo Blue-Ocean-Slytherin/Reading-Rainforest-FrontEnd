@@ -17,3 +17,7 @@ code {
   top: 95px;
   left: 500px;
 }
+
+#address {
+  text-align: center;
+}
