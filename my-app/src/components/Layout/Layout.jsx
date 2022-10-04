@@ -1,5 +1,6 @@
 import { Outlet, Link } from "react-router-dom";
 import React, { useState } from "react";
+import { firebase_auth } from "../LogIn";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -70,8 +71,8 @@ const Layout = ({ setUser }) => {
     setAnchorEl(null);
   };
 
-  let handleSignOut = (e) => {
-    setUser({});
+  let handleSignOut = async (e) => {
+    await firebase_auth.signOut().then(()=>{setUser({})});
     // document.getElementById('signInDiv').hidden = false;
   };
 
