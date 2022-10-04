@@ -6,7 +6,8 @@ import { auth, firestore, firebase } from '../firebase'
 import img from "../images/LogInImage.webp";
 import logo from "../images/ReadingRainforestLogo.png"
 
-import "../styles/LogIn.css";
+import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
+import Button from "@mui/material/Button";
 
 const LogInContainer = styled.div`
 display: flex;
@@ -56,38 +57,36 @@ const Container = styled.div`
   width: 70%;
 `;
 
+export let firebase_auth = firebase.auth();
+
 const LogIn = ({ setUser }) => {
 
-  // const signInWithGoogle = () => {
-  //   const provider = new firebase.auth.GoogleAuthProvider();
-  //   auth.signInWithPopup(provider);
-  // }
+  let handleAuthStateChanged = (user) => {
+    if (user) {
+      // temporary
+      let temp = {
+        name: user._delegate.displayName,
+        email: user._delegate.email,
+        profilePhoto: user._delegate.photoURL,
+        phoneNumber: user._delegate.phoneNumber,
+        uid: user._delegate.uid,
+      }
+      setUser(temp);
 
-  let handleLogIn = (response) => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider);
-    let userObject = jwt_decode(response.credential);
-    setUser(userObject);
-    // document.getElementById('signInDiv').hidden = true;
+      // use the user._delegate.uid to query our DB for user data
+      // old user
+      // set returned data in setUser function
+
+      // new user
+      // ask user to input location
+      // query DB to make new user
+    }
   };
+  firebase_auth.onAuthStateChanged(handleAuthStateChanged);
 
-  useEffect(() => {
-    /* global google */
-    google.accounts.id.initialize({
-      client_id: `661201758889-99rdafi8i9t3o1unsdf3e1lorbcvl0ic.apps.googleusercontent.com`,
-      callback: handleLogIn,
-    });
-
-    google.accounts.id.renderButton(
-      document.getElementById('signInDiv'),
-      { theme: "outline", size: "large", shape: "pill"}
-    )
-  },[]);
-
-  // let handleSignOut = (e) => {
-  //   setUser({});
-  //   // document.getElementById('signInDiv').hidden = false;
-  // };
+  let handleLogIn = () => {
+    firebase_auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+  };
 
   return (
     <LogInContainer>
@@ -97,7 +96,7 @@ const LogIn = ({ setUser }) => {
           <Welcome>Welcome To</Welcome>
         </Container>
         <Logo></Logo>
-        <div id="signInDiv"></div>
+        <Button variant="contained" color="mintGreen" onClick={handleLogIn} endIcon={<SwapHorizIcon />} > >Sign In With Google</Button>
         <div></div>
       </DisplayBox>
     </LogInContainer>

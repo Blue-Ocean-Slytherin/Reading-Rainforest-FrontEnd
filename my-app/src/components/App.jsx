@@ -9,6 +9,7 @@ import Profile from "./Profile/Profile";
 import NoPage from "./NoPage/NoPage";
 import LogIn from "./LogIn.jsx";
 
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import '../styles/styles.css';
 
 export const UserContext = createContext({
@@ -21,21 +22,48 @@ function App() {
 
   let values = {user};
 
-  return !Object.keys(user).length ? (
-    <LogIn setUser={setUser} />
-  ) : (
-    <UserContext.Provider value={values}>
-      <Routes>
-        <Route path="/" element={<Layout setUser={setUser} />}>
-          <Route index element={<Home />} />
-          <Route path="search" element={<Search />} />
-          <Route path="messages" element={<Messages />} />
-          <Route path="trades" element={<Trades />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="*" element={<NoPage />} />
-        </Route>
-      </Routes>
-    </UserContext.Provider>
+  const theme = createTheme({
+  palette: {
+    spanishGreen: {
+      main: "#058c42",
+    },
+    deepChampagne: {
+      main: "#ffcf9c",
+    },
+    mintGreen: {
+      main: "#9cfc97",
+    },
+    columbiaBlue: {
+      main: "#bbdef0",
+    },
+    raisinBlack: {
+      main: "231f20",
+    },
+  },
+});
+
+
+  return (
+    <div>
+    <ThemeProvider theme={theme}>
+      {!Object.keys(user).length ? (
+        <LogIn setUser={setUser} />
+      ) : (
+        <UserContext.Provider value={values}>
+          <Routes>
+            <Route path="/" element={<Layout setUser={setUser} />}>
+              <Route index element={<Home />} />
+              <Route path="search" element={<Search />} />
+              <Route path="messages" element={<Messages />} />
+              <Route path="trades" element={<Trades />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="*" element={<NoPage />} />
+            </Route>
+          </Routes>
+        </UserContext.Provider>
+      )}
+    </ThemeProvider>
+    </div>
   );
 
   // :
