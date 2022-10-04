@@ -6,17 +6,25 @@
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@fontsource/roboto": "^4.5.8",
+    "@googlemaps/js-api-loader": "^1.14.3",
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.7",
     "@mui/styled-engine-sc": "^5.10.6",
+    "@mui/x-data-grid": "^5.17.5",
+    "@react-google-maps/api": "^2.13.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.27.2",
+    "dotenv": "^16.0.3",
+    "dotenv-webpack": "^8.0.1",
+    "firebase": "^9.10.0",
     "jwt-decode": "^3.1.2",
     "mongoose": "^6.6.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-firebase-hooks": "^5.0.3",
+    "react-material-ui-carousel": "^3.4.2",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.6",
     "web-vitals": "^2.1.4"
@@ -46,6 +54,7 @@
     ]
   },
   "devDependencies": {
+    "dotenv": "^16.0.3",
     "react-router-dom": "^6.4.1"
   }
 }
