@@ -11,7 +11,6 @@ import Button from "@mui/material/Button";
 import GoogleIcon from '@mui/icons-material/Google';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
 
 const LogInContainer = styled.div`
 display: flex;
@@ -39,7 +38,7 @@ const DisplayBox = styled.div`
 `;
 
 const RegisterBox = styled(DisplayBox)`
-  height: 650px;
+  height: 643px;
 `;
 
 const Welcome = styled.div`
@@ -79,8 +78,8 @@ const inputStyle = {
 }
 
 const RegButtonStyle = {
-  marginTop: '17px',
-  marginBottom: '17px',
+  marginTop: '13px',
+  marginBottom: '16px',
 };
 
 const SignInBtnStyle = {
