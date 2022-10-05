@@ -158,20 +158,6 @@ const LogIn = ({ setUser }) => {
       } else {
         setIsAllFilled(false);
       }
-
-
-      // actually create user
-      //
-      // let newUser = axios.post(`${URI}/user/new`,{
-      //   uid: uid.current,
-      //   fullName: fullName.current,
-      //   email: email.current,
-      //   phoneNumber: phoneNumber.current,
-      //   profilePhoto: photo.current,
-      //   lat: "0",
-      //   long: "0"
-      // });
-      // console.log('newUser', newUser);
     } catch (err) {
       alert('Whoops, some issue connecting to the Server');
     }
