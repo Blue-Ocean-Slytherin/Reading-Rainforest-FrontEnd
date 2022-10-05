@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import axios from 'axios';
 import { firebase } from '../firebase'
 import img from "../images/LogInImage.webp";
 import logo from "../images/ReadingRainforestLogo.png"
@@ -35,7 +36,7 @@ const DisplayBox = styled.div`
 `;
 
 const RegisterBox = styled(DisplayBox)`
-  height: 550px;
+  height: 500px;
 `;
 
 const Welcome = styled.div`
@@ -75,43 +76,75 @@ const RegButtonStyle = {
   marginBottom: '17px',
 };
 
+const SignInBtnStyle = {
+  borderRadius: '15px',
+  height: '60px',
+  fontSize: '15px',
+}
+
 export let firebase_auth = firebase.auth();
 
 const LogIn = ({ setUser }) => {
-
+  let URI = process.env.REACT_APP_BE_URI;
   const [ isNewUser, setIsNewUser ] = useState(false);
+  const uid = useRef('');
+  const fullName = useRef('');
+  const email = useRef('');
+  const photo = useRef('');
+  const phoneNumber = useRef('');
+  const location = useRef('');
 
   let handleAuthStateChanged = async (user) => {
-    if (user) {
-      // temporary
-      let temp = {
-        name: user._delegate.displayName,
-        email: user._delegate.email,
-        profilePhoto: user._delegate.photoURL,
-        phoneNumber: user._delegate.phoneNumber,
-        uid: user._delegate.uid,
-        lat: "0",
-        long: "0",
+    try {
+      if (user) {
+        console.log('user', user)
+        // use the user._delegate.uid to query our DB for user data
+        let response = await axios.get(`${URI}/user/info/${user._delegate.uid}`);
+        console.log('test', response);
+        if (!response.data) { // new user
+          uid.current = user._delegate.uid;
+          photo.current = user._delegate.photoURL;
+          setIsNewUser(true);
+        } else { // old user
+          // set returned data in setUser function
+          setUser(response.data);
+        }
       }
-      setUser(temp);
-
-      // use the user._delegate.uid to query our DB for user data
-      // let userData = await axios.get("BE URI")
-
-      // temporary for dev, set state manually here
-      // setIsNewUser(true); // is new user
-
-      // old user
-      // set returned data in setUser function
-
-      // new user
-      // ask user to input location
-      // query DB to make new user
+    } catch (err) {
+      alert('Whoops, some issue connecting to the Server');
     }
   };
   firebase_auth.onAuthStateChanged(handleAuthStateChanged);
 
-  let handleLogIn = () => {
+  let handleChange = (value, string) => {
+    let temp = 0;
+    string === 'name' ? fullName.current = value :
+    string === 'email' ? email.current = value :
+    string === 'phone' ? phoneNumber.current = value :
+    string === 'location' ? location.current = value :
+    temp = null;
+  };
+
+  let handleRegistering = async (e) => {
+    try {
+      console.log(fullName.current, email.current, photo.current, phoneNumber.current, location.current);
+      // function to convert location input into Lat & Long (Ask Map Guy)
+      let newUser = axios.post(`${URI}/user/new`,{
+        uid: uid.current,
+        fullName: fullName.current,
+        email: email.current,
+        phoneNumber: phoneNumber.current,
+        profilePhoto: photo.current,
+        lat: "0",
+        long: "0"
+      });
+      console.log(newUser);
+    } catch (err) {
+      alert('Whoops, some issue connecting to the Server');
+    }
+  };
+
+  let handleLogIn = (e) => {
     firebase_auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
   };
 
@@ -124,11 +157,11 @@ const LogIn = ({ setUser }) => {
             <Welcome>Registeration</Welcome>
           </Container>
           <RegiLogo></RegiLogo>
-          <TextField variant='filled' label='Full Name' sx={inputStyle}></TextField>
-          <TextField variant='filled' label='Email' sx={inputStyle}></TextField>
-          <TextField variant='filled' label='Phone Number' sx={inputStyle}></TextField>
-          <TextField variant='filled' label='Location' sx={inputStyle}></TextField>
-          <Button variant="contained" color="mintGreen" endIcon={<ArrowForwardIosIcon/>} sx={RegButtonStyle}>Finish Registeration</Button>
+          <TextField onChange={(e)=>{handleChange(e.target.value, 'name')}} variant='filled' label='Full Name' sx={inputStyle} required={true} ></TextField>
+          <TextField onChange={(e)=>{handleChange(e.target.value, 'email')}} variant='filled' label='Email' sx={inputStyle} required={true} ></TextField>
+          <TextField onChange={(e)=>{handleChange(e.target.value, 'phone')}} variant='filled' label='Phone Number' sx={inputStyle} required={true} ></TextField>
+          <TextField onChange={(e)=>{handleChange(e.target.value, 'location')}} variant='filled' label='Location' sx={inputStyle} required={true} ></TextField>
+          <Button onClick={handleRegistering} variant="contained" color="mintGreen" endIcon={<ArrowForwardIosIcon/>} sx={RegButtonStyle} >Complete Registeration</Button>
         </RegisterBox>
         :
         <DisplayBox>
@@ -137,7 +170,7 @@ const LogIn = ({ setUser }) => {
             <Welcome>Welcome To</Welcome>
           </Container>
           <Logo></Logo>
-          <Button variant="contained" color="mintGreen" onClick={handleLogIn} endIcon={<GoogleIcon />} > >Sign In With Google</Button>
+          <Button variant="contained" color="mintGreen" onClick={handleLogIn} endIcon={<GoogleIcon />} sx={SignInBtnStyle}> Sign In With Google</Button>
           <div></div>
         </DisplayBox>
       }
