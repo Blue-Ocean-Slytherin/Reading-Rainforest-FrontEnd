@@ -6,19 +6,12 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { DataGrid } from '@mui/x-data-grid';
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import CloseIcon from '@mui/icons-material/Close';
 import Avatar from "@mui/material/Avatar";
 import Divider from '@mui/material/Divider';
 import { UserContext } from '../App.jsx';
 
-const theme = createTheme({
-  palette: {
-    mintGreen: {
-      main: "#9cfc97",
-    },
-  },
-});
 const styleBigBox = {
   position: "absolute",
   top: "50%",
@@ -94,6 +87,7 @@ export default function ConfirmTradeModal({ userName, bookName, userPic, bookPic
   const handleClose = () => setOpen(false);
 
   let handleRowSelection = (params) => {
+    console.log(params.row);
     const newSelect = { "isbn": params.row.isbn };
     setSelection(newSelect);
   };
@@ -234,7 +228,6 @@ export default function ConfirmTradeModal({ userName, bookName, userPic, bookPic
 
   return (
     <div>
-      <ThemeProvider theme={theme}>
       <Button variant="contained" color="mintGreen" onClick={handleOpen} endIcon={<SwapHorizIcon />} >
         Trade
       </Button>
@@ -271,14 +264,12 @@ export default function ConfirmTradeModal({ userName, bookName, userPic, bookPic
             />
           </Box>
           <Box sx={ConfirmButtonContainer} className="ConfirmButtonContainer">
-            <Button variant="contained" color="mintGreen" endIcon={<SwapHorizIcon sx={{boxShadow: "0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)",}}/>}
-            onClick={submitTrade} >
+            <Button variant="contained" color="mintGreen" onClick={submitTrade} sx={{boxShadow: "0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)"}} endIcon={<SwapHorizIcon />} >
               Trade
             </Button>
           </Box>
         </Box>
       </Modal>
-      </ThemeProvider>
     </div>
   );
 }
