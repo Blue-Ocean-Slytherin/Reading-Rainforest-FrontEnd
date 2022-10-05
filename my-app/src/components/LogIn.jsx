@@ -7,6 +7,7 @@ import logo from "../images/ReadingRainforestLogo.png"
 
 import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import GoogleIcon from '@mui/icons-material/Google';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
@@ -36,7 +37,7 @@ const DisplayBox = styled.div`
 `;
 
 const RegisterBox = styled(DisplayBox)`
-  height: 600px;
+  height: 650px;
 `;
 
 const Welcome = styled.div`
@@ -66,6 +67,10 @@ const Container = styled.div`
   width: 70%;
 `;
 
+const Spacer = styled(Container)`
+  height: 24px;
+`;
+
 const inputStyle = {
   padding: '3px',
   width: '350px',
@@ -86,7 +91,8 @@ export let firebase_auth = firebase.auth();
 
 const LogIn = ({ setUser }) => {
   let URI = process.env.REACT_APP_BE_URI;
-  const [ isNewUser, setIsNewUser ] = useState(false);
+  const [ isAllFilled, setIsAllFilled ]= useState(true);
+  const isNewUser = useRef(false);
   const uid = useRef('');
   const fullName = useRef('');
   const email = useRef('');
@@ -104,7 +110,7 @@ const LogIn = ({ setUser }) => {
         if (!response.data) { // new user
           uid.current = user._delegate.uid;
           photo.current = user._delegate.photoURL;
-          setIsNewUser(true);
+          isNewUser.current = true;
         } else { // old user
           // set returned data in setUser function
           setUser(response.data);
@@ -134,6 +140,7 @@ const LogIn = ({ setUser }) => {
       city.current = city.current.split(' ').join('+');
       state.current = state.current.split(' ').join('+');
       if (uid.current && fullName.current && email.current && photo.current && phoneNumber.current && street.current && city.current && state.current) {
+        setIsAllFilled(true);
         let response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${street.current},+${city.current},+${state.current}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`);
         const { lat, lng } = response.data.results[0].geometry.location;
         let newUser = await axios.post(`${URI}/user/new`,{
@@ -145,7 +152,10 @@ const LogIn = ({ setUser }) => {
             lat: lat,
             long: lng
           });
-        setUser(newUser);
+          console.log(newUser.data);
+        setUser(newUser.data);
+      } else {
+        setIsAllFilled(false);
       }
 
 
@@ -179,6 +189,13 @@ const LogIn = ({ setUser }) => {
             <Welcome>Registeration</Welcome>
           </Container>
           <RegiLogo></RegiLogo>
+          {isAllFilled ?
+          <Spacer className='Spacer' ></Spacer>
+          :
+          <Container>
+            <Typography sx={{color: 'red'}}>Please Fill In All Fields</Typography>
+          </Container>
+          }
           <TextField onChange={(e)=>{handleChange(e.target.value, 'name')}} variant='filled' label='Full Name' sx={inputStyle} required={true} ></TextField>
           <TextField onChange={(e)=>{handleChange(e.target.value, 'email')}} variant='filled' label='Email' sx={inputStyle} required={true} ></TextField>
           <TextField onChange={(e)=>{handleChange(e.target.value, 'phone')}} variant='filled' label='Phone Number' sx={inputStyle} required={true} ></TextField>
