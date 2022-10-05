@@ -36,7 +36,7 @@ const DisplayBox = styled.div`
 `;
 
 const RegisterBox = styled(DisplayBox)`
-  height: 500px;
+  height: 600px;
 `;
 
 const Welcome = styled.div`
@@ -92,15 +92,15 @@ const LogIn = ({ setUser }) => {
   const email = useRef('');
   const photo = useRef('');
   const phoneNumber = useRef('');
-  const location = useRef('');
+  const street = useRef('');
+  const city = useRef('');
+  const state = useRef('');
 
   let handleAuthStateChanged = async (user) => {
     try {
       if (user) {
-        console.log('user', user)
         // use the user._delegate.uid to query our DB for user data
-        let response = await axios.get(`${URI}/user/info/${user._delegate.uid}`);
-        console.log('test', response);
+        let response = await axios.get(`${URI}/user/${user._delegate.uid}`);
         if (!response.data) { // new user
           uid.current = user._delegate.uid;
           photo.current = user._delegate.photoURL;
@@ -121,24 +121,46 @@ const LogIn = ({ setUser }) => {
     string === 'name' ? fullName.current = value :
     string === 'email' ? email.current = value :
     string === 'phone' ? phoneNumber.current = value :
-    string === 'location' ? location.current = value :
+    string === 'street' ? street.current = value :
+    string === 'city' ? city.current = value :
+    string === 'state' ? state.current = value :
     temp = null;
   };
 
   let handleRegistering = async (e) => {
     try {
-      console.log(fullName.current, email.current, photo.current, phoneNumber.current, location.current);
-      // function to convert location input into Lat & Long (Ask Map Guy)
-      let newUser = axios.post(`${URI}/user/new`,{
-        uid: uid.current,
-        fullName: fullName.current,
-        email: email.current,
-        phoneNumber: phoneNumber.current,
-        profilePhoto: photo.current,
-        lat: "0",
-        long: "0"
-      });
-      console.log(newUser);
+      // function to replace white space with +
+      street.current = street.current.split(' ').join('+');
+      city.current = city.current.split(' ').join('+');
+      state.current = state.current.split(' ').join('+');
+      if (uid.current && fullName.current && email.current && photo.current && phoneNumber.current && street.current && city.current && state.current) {
+        let response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${street.current},+${city.current},+${state.current}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`);
+        const { lat, lng } = response.data.results[0].geometry.location;
+        let newUser = await axios.post(`${URI}/user/new`,{
+            uid: uid.current,
+            fullName: fullName.current,
+            email: email.current,
+            phoneNumber: phoneNumber.current,
+            profilePhoto: photo.current,
+            lat: lat,
+            long: lng
+          });
+        setUser(newUser);
+      }
+
+
+      // actually create user
+      //
+      // let newUser = axios.post(`${URI}/user/new`,{
+      //   uid: uid.current,
+      //   fullName: fullName.current,
+      //   email: email.current,
+      //   phoneNumber: phoneNumber.current,
+      //   profilePhoto: photo.current,
+      //   lat: "0",
+      //   long: "0"
+      // });
+      // console.log('newUser', newUser);
     } catch (err) {
       alert('Whoops, some issue connecting to the Server');
     }
@@ -160,7 +182,9 @@ const LogIn = ({ setUser }) => {
           <TextField onChange={(e)=>{handleChange(e.target.value, 'name')}} variant='filled' label='Full Name' sx={inputStyle} required={true} ></TextField>
           <TextField onChange={(e)=>{handleChange(e.target.value, 'email')}} variant='filled' label='Email' sx={inputStyle} required={true} ></TextField>
           <TextField onChange={(e)=>{handleChange(e.target.value, 'phone')}} variant='filled' label='Phone Number' sx={inputStyle} required={true} ></TextField>
-          <TextField onChange={(e)=>{handleChange(e.target.value, 'location')}} variant='filled' label='Location' sx={inputStyle} required={true} ></TextField>
+          <TextField onChange={(e)=>{handleChange(e.target.value, 'street')}} variant='filled' label='Street' sx={inputStyle} required={true} ></TextField>
+          <TextField onChange={(e)=>{handleChange(e.target.value, 'city')}} variant='filled' label='City' sx={inputStyle} required={true} ></TextField>
+          <TextField onChange={(e)=>{handleChange(e.target.value, 'state')}} variant='filled' label='State' sx={inputStyle} required={true} ></TextField>
           <Button onClick={handleRegistering} variant="contained" color="mintGreen" endIcon={<ArrowForwardIosIcon/>} sx={RegButtonStyle} >Complete Registeration</Button>
         </RegisterBox>
         :

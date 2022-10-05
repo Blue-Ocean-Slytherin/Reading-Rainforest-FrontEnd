@@ -6,7 +6,6 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { DataGrid } from '@mui/x-data-grid';
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
-import { ThemeProvider } from "@mui/material/styles";
 import CloseIcon from '@mui/icons-material/Close';
 import Avatar from "@mui/material/Avatar";
 import Divider from '@mui/material/Divider';
