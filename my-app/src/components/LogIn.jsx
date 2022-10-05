@@ -7,9 +7,11 @@ import logo from "../images/ReadingRainforestLogo.png"
 
 import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+// import Typography from "@mui/material/Typography";
 import GoogleIcon from '@mui/icons-material/Google';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 
 const LogInContainer = styled.div`
 display: flex;
@@ -68,7 +70,7 @@ const Container = styled.div`
 `;
 
 const Spacer = styled(Container)`
-  height: 24px;
+  height: 59px;
 `;
 
 const inputStyle = {
@@ -92,7 +94,7 @@ export let firebase_auth = firebase.auth();
 const LogIn = ({ setUser }) => {
   let URI = process.env.REACT_APP_BE_URI;
   const [ isAllFilled, setIsAllFilled ]= useState(true);
-  const isNewUser = useRef(false);
+  const [ isNewUser, setIsNewUser ] = useState(false);
   const uid = useRef('');
   const fullName = useRef('');
   const email = useRef('');
@@ -110,7 +112,7 @@ const LogIn = ({ setUser }) => {
         if (!response.data) { // new user
           uid.current = user._delegate.uid;
           photo.current = user._delegate.photoURL;
-          isNewUser.current = true;
+          setIsNewUser(true);
         } else { // old user
           // set returned data in setUser function
           setUser(response.data);
@@ -186,17 +188,17 @@ const LogIn = ({ setUser }) => {
           <RegisterBox>
           <div></div>
           <Container>
-            <Welcome>Registeration</Welcome>
+            <Welcome>REGISTER</Welcome>
           </Container>
           <RegiLogo></RegiLogo>
           {isAllFilled ?
           <Spacer className='Spacer' ></Spacer>
           :
-          <Container>
-            <Typography sx={{color: 'red'}}>Please Fill In All Fields</Typography>
-          </Container>
+          <Alert size='small' severity="error">
+            Fill Out All Fields Please
+          </Alert>
           }
-          <TextField onChange={(e)=>{handleChange(e.target.value, 'name')}} variant='filled' label='Full Name' sx={inputStyle} required={true} ></TextField>
+          <TextField defaultValue={fullName.current} onChange={(e)=>{handleChange(e.target.value, 'name')}} variant='filled' label='Full Name' sx={inputStyle} required={true} ></TextField>
           <TextField onChange={(e)=>{handleChange(e.target.value, 'email')}} variant='filled' label='Email' sx={inputStyle} required={true} ></TextField>
           <TextField onChange={(e)=>{handleChange(e.target.value, 'phone')}} variant='filled' label='Phone Number' sx={inputStyle} required={true} ></TextField>
           <TextField onChange={(e)=>{handleChange(e.target.value, 'street')}} variant='filled' label='Street' sx={inputStyle} required={true} ></TextField>
