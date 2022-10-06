@@ -1,4 +1,4 @@
-import { useState, useContext } from "react"
+import { useState, useContext, useRef } from "react"
 import { UserContext } from '../../components/App';
 import {
   Grid,
@@ -18,6 +18,7 @@ import { v4 as uuid } from "uuid";
 
 const MessageInput = ({value}) => {
   const [text, setText] = useState('')
+  const textInput = useRef(null)
   const { user: currentUser } = useContext(UserContext)
 
   const handleSend = async () => {
@@ -47,7 +48,8 @@ const MessageInput = ({value}) => {
       });
   }
 
-    setText("");
+  setText("")
+  textInput.current.value = "";
 
   }
 
@@ -62,13 +64,16 @@ const MessageInput = ({value}) => {
           id="outlined-basic-email"
           label="Type Something"
           fullWidth
+          required
           onChange={e => {
             const { value } = e.target
             setText(value)}}
-          onKeyDown={handleKey}/>
+          onKeyDown={handleKey}
+          inputRef={textInput}
+          />
       </Grid>
       <Grid xs={1} align="right">
-          <Fab color="primary" aria-label="add" onClick={handleSend}></Fab>
+          <Fab color="primary" aria-label="add" onClick={handleSend}>🕊️</Fab>
       </Grid>
     </>
   )

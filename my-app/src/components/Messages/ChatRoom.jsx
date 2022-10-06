@@ -1,53 +1,36 @@
-import React, { useEffect, useRef, useState, useContext, useReducer } from 'react';
+import React, { useEffect, useState, useContext, useReducer } from 'react';
 
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { auth, firestore, firebase } from '../../firebase';
+import { firestore } from '../../firebase';
 import ChatMessage from './ChatMessage';
 import MessageInput from './MessageInput';
 import ProfileSearch from './ProfileSearch'
 import { UserContext } from '../../components/App';
 import {
-  collection,
-  query,
-  where,
-  getDocs,
-  setDoc,
   doc,
-  updateDoc,
-  serverTimestamp,
-  getDoc,
   onSnapshot,
 } from "firebase/firestore";
 
 import {
-  Card,
-  CardContent,
-  CardMedia,
   Grid,
   Paper,
   Box,
   Divider,
-  TextField,
   Typography,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
   Avatar,
-  Fab,
-  getChipUtilityClass,
 }
 from '@mui/material';
-import { ChatContext } from './Messages'
 
-const chatSection = {
-  width: '95%',
-  height: '80vh'
-};
-const headBG = {
-  backgroundColor: '#e0e0e0',
-};
+// const chatSection = {
+//   width: '95%',
+//   height: '80vh'
+// };
+// const headBG = {
+//   backgroundColor: '#e0e0e0',
+// };
 const borderRight500 = {
   borderRight: '1px solid #e0e0e0'
 };
@@ -57,13 +40,6 @@ const messageArea = {
 };
 
 const ChatRoom = () => {
-
-  const dummy = useRef();
-  const messagesRef = firestore.collection('messages');
-  const query = messagesRef.orderBy('createdAt').limit(25);
-
-  const [messages] = useCollectionData(query, { idField: 'id' });
-  const [formValue, setFormValue] = useState('');
 
   const [chats, setChats] = useState([])
   const { user: currentUser } = useContext(UserContext)
@@ -102,23 +78,6 @@ const ChatRoom = () => {
   }, [currentUser.uid])
 
 
-  //for group chat maybe
-  // const sendMessage = async (e) => {
-  //   e.preventDefault();
-
-  //   const { uid, photoURL } = auth.currentUser;
-
-  //   await messagesRef.add({
-  //     text: formValue,
-  //     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-  //     uid,
-  //     photoURL
-  //   })
-
-  //   setFormValue('');
-  //   dummy.current.scrollIntoView({ behavior: 'smooth' });
-  // }
-
   const handleSelect = (user) => {
     dispatch({type:'CHANGE_USER', payload: user})
   }
@@ -143,7 +102,7 @@ const ChatRoom = () => {
                     </ListItem>
                 </List>
                 <Divider />
-                  <ProfileSearch />
+                  <ProfileSearch value={{data: state, dispatch}}/>
                 <Divider />
                 {chats && Object.entries(chats)?.sort((a,b)=>b[1].date - a[1].date).map((chat) => (
                   <List key={chat[0]} onClick={()=>handleSelect(chat[1].userInfo)}>
@@ -157,33 +116,13 @@ const ChatRoom = () => {
                 ))}
             </Grid>
             <Grid item xs={9}>
-                <List className='messageArea' sx={messageArea}>
-                    <ChatMessage value={{data: state, dispatch}}/>
-                    <ListItem key="2">
-                        <Grid container>
-                            <Grid item xs={12}>
-                                <ListItemText align="left" primary="Hey, Iam Good! What about you ?"></ListItemText>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <ListItemText align="left" secondary="09:31"></ListItemText>
-                            </Grid>
-                        </Grid>
-                    </ListItem>
-                    <ListItem key="3">
-                        <Grid container>
-                            <Grid item xs={12}>
-                                <ListItemText align="right" primary="Cool. i am good, let's catch up!"></ListItemText>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <ListItemText align="right" secondary="10:30"></ListItemText>
-                            </Grid>
-                        </Grid>
-                    </ListItem>
-                </List>
-                <Divider />
-                <Grid container style={{padding: '20px'}}>
-                    <MessageInput value={{data: state, dispatch}}/>
-                </Grid>
+              <List className='messageArea' sx={messageArea}>
+                <ChatMessage value={{data: state, dispatch}}/>
+              </List>
+              <Divider />
+              <Grid container style={{padding: '20px'}}>
+                  <MessageInput value={{data: state, dispatch}}/>
+              </Grid>
             </Grid>
         </Grid>
     </div>

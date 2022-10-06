@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import {
   Grid,
   TextField,
@@ -19,16 +19,16 @@ import {
   serverTimestamp,
   getDoc,
 } from "firebase/firestore";
-import { auth, firestore, firebase } from '../../firebase';
+import { firestore } from '../../firebase';
 import { UserContext } from '../../components/App';
-import { Dns } from '@material-ui/icons';
 
-const ProfileSearch = () => {
+const ProfileSearch = ({value}) => {
   //username being searched for
   const [username, setUsername] = useState("")
   const [user, setUser] = useState(null)
   const [error, setError] = useState(false)
   const { user: currentUser } = useContext(UserContext)
+  const textInput = useRef(null)
 
   const handleSearch = async () => {
     const q = query(
@@ -45,7 +45,8 @@ const ProfileSearch = () => {
       console.log(error)
       setError(true)
     }
-    console.log('search has been pressed')
+    setUsername("")
+    textInput.current.value = "";
   };
 
   const handleKey = (e) => {
@@ -57,14 +58,12 @@ const ProfileSearch = () => {
      currentUser.uid > user.uid
       ? currentUser.uid + user.uid
       : user.uid + currentUser.uid;
-    console.log('combined', combinedID)
 
       try {
         const res = await getDoc(doc(firestore, "chats", combinedID));
 
-        console.log('res', res)
-        if (Object.keys(res)) {
-          console.log('inside', user.displayName)
+        if (!res.exists()) {
+
           await setDoc(doc(firestore, "chats", combinedID), { messages: []});
 
           await updateDoc(doc(firestore, "userChats", currentUser.uid), {
@@ -96,6 +95,7 @@ const ProfileSearch = () => {
         id="outlined-basic-email"
         label="Search" variant="outlined"
         fullWidth
+        inputRef={textInput}
         onChange={e => {
           const { value } = e.target
           setUsername(value)}}
