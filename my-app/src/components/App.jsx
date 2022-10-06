@@ -26,8 +26,8 @@ function App() {
       if (user?.books) {
         let listOfISBNs = user.books;
         let listOfPromises = [];
-        listOfISBNs.forEach((ISBN)=>{
-          listOfPromises.push(axios.get(`https://www.googleapis.com/books/v1/volumes?q=${ISBN}`));
+        listOfISBNs.forEach((book)=>{
+          listOfPromises.push(axios.get(`https://www.googleapis.com/books/v1/volumes?q=${book.isbn}`));
         });
         let results = await Promise.all(listOfPromises);
         let bookListData = [];
