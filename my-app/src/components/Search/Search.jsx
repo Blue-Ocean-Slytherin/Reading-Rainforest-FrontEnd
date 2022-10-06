@@ -6,6 +6,7 @@ import Container from "@mui/material/Container";
 import BookCard from "./Card";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import CircularIndeterminate from "../Loading/circularLoading";
 
 const Search = () => {
   const [booksData, setBooksData] = React.useState({});
@@ -45,7 +46,7 @@ const Search = () => {
               );
             })
           ) : (
-            <p>No Books Found</p>
+            <></>
           )}
         </Grid>
       </Container>
