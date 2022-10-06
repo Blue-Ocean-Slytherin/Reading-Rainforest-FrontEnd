@@ -98,19 +98,20 @@ const ChatRoom = () => {
                         <ListItemIcon>
                         <Avatar alt={`${currentUser.email}`} src={`${currentUser.profilePhoto}`} />
                         </ListItemIcon>
-                        <ListItemText primary={`${currentUser.email}`}></ListItemText>
+                        <ListItemText primary={`${currentUser.name}`}></ListItemText>
                     </ListItem>
                 </List>
                 <Divider />
                   <ProfileSearch value={{data: state, dispatch}}/>
                 <Divider />
-                {chats && Object.entries(chats)?.sort((a,b)=>b[1].date - a[1].date).map((chat) => (
+                {Object.entries(chats)?.sort((a,b)=>b[1].date - a[1].date).map((chat) => (
                   <List key={chat[0]} onClick={()=>handleSelect(chat[1].userInfo)}>
                   <ListItem button key={`${chat[1].userInfo.displayName}`}>
                       <ListItemIcon>
                           <Avatar alt={`${chat[1].userInfo.displayName}`} src={`${chat[1].userInfo.photoURL}`} />
                       </ListItemIcon>
                       <ListItemText primary={`${chat[1].userInfo.displayName}`}>{`${chat[1].userInfo.displayName}`}</ListItemText>
+                      {/* <ListItemText primary={`${chat[1].lastMessage.text}`}>{`${chat[1].userInfo.displayName}`}</ListItemText> */}
                   </ListItem>
               </List>
                 ))}
