@@ -10,37 +10,33 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import ConfirmTradeModal from "../modals/ConfirmTradeModal";
 
-export default function BookCard() {
+export default function BookCard({ user, book }) {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
         avatar={
-          <Avatar
-            alt="profile-pic"
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsb_V_Ha4XAl47doWf_2lF-actuld60ssYew&usqp=CAU"
-          ></Avatar>
+          <Avatar alt="profile-picture" src={book.profilePhoto || ""}></Avatar>
         }
-        title="The Alchemist"
-        subheader="September 14, 2016" // Could be date added to App or maybe a published date
+        title={book.volumeInfo.title}
+        subheader={book.volumeInfo.authors[0] || "September 14, 2016"} // Could be date added to App or maybe a published date
       />
       <CardMedia
         component="img"
         height="194"
-        src="https://m.media-amazon.com/images/I/51Z0nLAfLmL.jpg"
-        alt="Paella dish"
+        src={
+          book.volumeInfo.imageLinks.thumbnail ||
+          "https://www.nps.gov/common/uploads/cropped_image/primary/9EB2D49C-F3A5-5C25-C01902867F788B2E.jpg?width=1600&quality=90&mode=crop"
+        }
+        alt={book.volumeInfo.title || "book picture"}
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          The Alchemist is a novel by Brazilian author Paulo Coelho which was
-          first published in 1988. Originally written in Portuguese, it became a
-          widely translated international bestseller.
+          {book.volumeInfo.description}
         </Typography>
       </CardContent>
       <CardActions>
-        <ConfirmTradeModal
-        userName={`David Garcia`} userPic={`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsb_V_Ha4XAl47doWf_2lF-actuld60ssYew&usqp=CAU`}
-        bookName={`The Alchemist`} bookPic={`https://m.media-amazon.com/images/I/51Z0nLAfLmL.jpg`} />
-        <Container>David Garcia</Container>
+        <ConfirmTradeModal otherUser={user} book={book.volumeInfo}/>
+        <Container>{user.name}</Container>
       </CardActions>
     </Card>
   );

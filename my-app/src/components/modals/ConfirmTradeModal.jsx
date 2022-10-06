@@ -1,4 +1,5 @@
 import * as React from "react";
+import axios from 'axios';
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -6,19 +7,11 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { DataGrid } from '@mui/x-data-grid';
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CloseIcon from '@mui/icons-material/Close';
 import Avatar from "@mui/material/Avatar";
 import Divider from '@mui/material/Divider';
 import { UserContext } from '../App.jsx';
 
-const theme = createTheme({
-  palette: {
-    mintGreen: {
-      main: "#9cfc97",
-    },
-  },
-});
 const styleBigBox = {
   position: "absolute",
   top: "50%",
@@ -79,32 +72,39 @@ const ConfirmButtonContainer = {
 }
 
 const columns = [
-  { field: 'bookName', headerName: 'Book', width: 200, flex: 1},
-  { field: 'authorName', headerName: 'Author', width: 200, flex: 1 },
-  { field: 'smallDesc', headerName: 'Description', width: 400, flex: 3},
+  { field: 'title', headerName: 'Book', width: 200, flex: 1},
+  { field: 'authors', headerName: 'Author', width: 200, flex: 1 },
+  { field: 'description', headerName: 'Description', width: 400, flex: 3},
   // { field: 'coverPhoto', headerName: 'Cover', width: 130 },
 ];
 
-export default function ConfirmTradeModal({ userName, bookName, userPic, bookPic }) {
+export default function ConfirmTradeModal({ otherUser, book }) {
   const [open, setOpen] = React.useState(false);
   const [selection, setSelection] = React.useState({});
-  const { user } = React.useContext(UserContext);
+  const { user, listOfBooks } = React.useContext(UserContext);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   let handleRowSelection = (params) => {
-    const newSelect = { "isbn": params.row.isbn };
+    const newSelect = {
+      'uidFrom': user.uid,
+      "isbnFrom": params.row.industryIdentifiers[0].identifier,
+      'uidTo': otherUser.uid,
+      'isbnTo': book.industryIdentifiers[0].identifier
+    };
     setSelection(newSelect);
   };
 
   let submitTrade = () => {
     // write function to send request to BackEnd
-    console.log(user.name)
-    console.log(user.sub)
-    console.log(selection);
-    if (selection.isbn) {
-      alert(`Trade Request 'Sent' for ISBN: ${selection.isbn} 😬`);
+    if (selection.isbnFrom && selection.isbnTo && selection.uidFrom && selection.uidTo) {
+      alert(`Trade Request 'Sent' 😬, Info:
+            isbnFrom ${selection.isbnFrom}
+            isbnTo ${selection.isbnTo}
+            uidFrom ${selection.uidFrom}
+            uidTo ${selection.uidTo}
+            `);
     } else {
       alert('Trade Request Failed, no book selected');
     }
@@ -126,115 +126,13 @@ export default function ConfirmTradeModal({ userName, bookName, userPic, bookPic
   //   coverPhoto: "https://m.media-amazon.com/images/I/51Z0nLAfLmL.jpg",
   // }
 
+  for ( let i = 0; i < listOfBooks.length; i++ ) {
+    listOfBooks[i]['id'] = i;
+  }
 
-  // create dummy data for user's books
-  const rows = [
-    {
-      id: 1,
-      isbn: 1,
-      bookName: "The Alchemist",
-      authorName: "Paulo Coelho",
-      smallDesc: `The Alchemist is a novel by Brazilian author Paulo Coelho which was
-      first published in 1988. Originally written in Portuguese, it became a
-      widely translated international bestseller.`,
-      coverPhoto: "https://m.media-amazon.com/images/I/51Z0nLAfLmL.jpg",
-    },
-    {
-      id: 2,
-      isbn: 2,
-      bookName: "The Alchemist",
-      authorName: "Paulo Coelho",
-      smallDesc: `The Alchemist is a novel by Brazilian author Paulo Coelho which was
-      first published in 1988. Originally written in Portuguese, it became a
-      widely translated international bestseller.`,
-      coverPhoto: "https://m.media-amazon.com/images/I/51Z0nLAfLmL.jpg",
-    },
-    {
-      id: 3,
-      isbn: 3,
-      bookName: "The Alchemist",
-      authorName: "Paulo Coelho",
-      smallDesc: `The Alchemist is a novel by Brazilian author Paulo Coelho which was
-      first published in 1988. Originally written in Portuguese, it became a
-      widely translated international bestseller.`,
-      coverPhoto: "https://m.media-amazon.com/images/I/51Z0nLAfLmL.jpg",
-    },
-    {
-      id: 4,
-      isbn: 4,
-      bookName: "The Alchemist",
-      authorName: "Paulo Coelho",
-      smallDesc: `The Alchemist is a novel by Brazilian author Paulo Coelho which was
-      first published in 1988. Originally written in Portuguese, it became a
-      widely translated international bestseller.`,
-      coverPhoto: "https://m.media-amazon.com/images/I/51Z0nLAfLmL.jpg",
-    },
-    {
-      id: 5,
-      isbn: 5,
-      bookName: "The Alchemist",
-      authorName: "Paulo Coelho",
-      smallDesc: `The Alchemist is a novel by Brazilian author Paulo Coelho which was
-      first published in 1988. Originally written in Portuguese, it became a
-      widely translated international bestseller.`,
-      coverPhoto: "https://m.media-amazon.com/images/I/51Z0nLAfLmL.jpg",
-    },
-    {
-      id: 6,
-      isbn: 6,
-      bookName: "The Alchemist",
-      authorName: "Paulo Coelho",
-      smallDesc: `The Alchemist is a novel by Brazilian author Paulo Coelho which was
-      first published in 1988. Originally written in Portuguese, it became a
-      widely translated international bestseller.`,
-      coverPhoto: "https://m.media-amazon.com/images/I/51Z0nLAfLmL.jpg",
-    },
-    {
-      id: 7,
-      isbn: 7,
-      bookName: "The Alchemist",
-      authorName: "Paulo Coelho",
-      smallDesc: `The Alchemist is a novel by Brazilian author Paulo Coelho which was
-      first published in 1988. Originally written in Portuguese, it became a
-      widely translated international bestseller.`,
-      coverPhoto: "https://m.media-amazon.com/images/I/51Z0nLAfLmL.jpg",
-    },
-    {
-      id: 8,
-      isbn: 8,
-      bookName: "The Alchemist",
-      authorName: "Paulo Coelho",
-      smallDesc: `The Alchemist is a novel by Brazilian author Paulo Coelho which was
-      first published in 1988. Originally written in Portuguese, it became a
-      widely translated international bestseller.`,
-      coverPhoto: "https://m.media-amazon.com/images/I/51Z0nLAfLmL.jpg",
-    },
-    {
-      id: 9,
-      isbn: 9,
-      bookName: "The Alchemist",
-      authorName: "Paulo Coelho",
-      smallDesc: `The Alchemist is a novel by Brazilian author Paulo Coelho which was
-      first published in 1988. Originally written in Portuguese, it became a
-      widely translated international bestseller.`,
-      coverPhoto: "https://m.media-amazon.com/images/I/51Z0nLAfLmL.jpg",
-    },
-    {
-      id: 10,
-      isbn: 10,
-      bookName: "The Alchemist",
-      authorName: "Paulo Coelho",
-      smallDesc: `The Alchemist is a novel by Brazilian author Paulo Coelho which was
-      first published in 1988. Originally written in Portuguese, it became a
-      widely translated international bestseller.`,
-      coverPhoto: "https://m.media-amazon.com/images/I/51Z0nLAfLmL.jpg",
-    },
-  ];
-  // render interactive list below display
 
   return (
     <div>
-      <ThemeProvider theme={theme}>
       <Button variant="contained" color="mintGreen" onClick={handleOpen} endIcon={<SwapHorizIcon />} >
         Trade
       </Button>
@@ -248,22 +146,22 @@ export default function ConfirmTradeModal({ userName, bookName, userPic, bookPic
             <CloseIcon sx={CloseIconStyle} onClick={handleClose} className='CloseIcon' />
           </Box>
           <Box className='UserAndBook' sx={UserAndBook}>
-            <Avatar alt="profile-pic" src={userPic} sx={profilePic} />
+            <Avatar alt="profile-pic" src={otherUser.profilePhoto} sx={profilePic} />
             <Box className='UserBookLabel' sx={UserBookLabel}>
               <Typography id="UserBookNameLabel" variant="h5" component="h2" sx={UserBookNameLabel}>User</Typography>
-              <Typography id="UserBookValueLabel" variant="h5" component="h2" sx={UserBookValueLabel}>{userName}</Typography>
+              <Typography id="UserBookValueLabel" variant="h5" component="h2" sx={UserBookValueLabel}>{otherUser.name}</Typography>
             </Box>
             <Divider orientation="vertical" variant="middle" flexItem />
             <Box className='UserBookLabel' sx={UserBookLabel}>
               <Typography id="UserBookNameLabel" variant="h5" component="h2" sx={UserBookNameLabel}>Book</Typography>
-              <Typography id="UserBookValueLabel" variant="h5" component="h2" sx={UserBookValueLabel}>{bookName}</Typography>
+              <Typography id="UserBookValueLabel" variant="h5" component="h2" sx={UserBookValueLabel}>{book.title}</Typography>
             </Box>
-            <Avatar alt="book-pic" src={bookPic} sx={profilePic} />
+            <Avatar alt="book-pic" src={book.imageLinks.smallThumbnail} sx={profilePic} />
           </Box>
           <Box style={{ height: 423, width: '100%' }}>
             <DataGrid
               sx={{boxShadow: "0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)",}}
-              rows={rows}
+              rows={listOfBooks}
               columns={columns}
               pageSize={6}
               rowsPerPageOptions={[6]}
@@ -271,14 +169,12 @@ export default function ConfirmTradeModal({ userName, bookName, userPic, bookPic
             />
           </Box>
           <Box sx={ConfirmButtonContainer} className="ConfirmButtonContainer">
-            <Button variant="contained" color="mintGreen" endIcon={<SwapHorizIcon sx={{boxShadow: "0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)",}}/>}
-            onClick={submitTrade} >
+            <Button variant="contained" color="mintGreen" onClick={submitTrade} sx={{boxShadow: "0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)"}} endIcon={<SwapHorizIcon />} >
               Trade
             </Button>
           </Box>
         </Box>
       </Modal>
-      </ThemeProvider>
     </div>
   );
 }
