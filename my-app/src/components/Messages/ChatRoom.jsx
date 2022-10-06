@@ -94,11 +94,11 @@ const ChatRoom = () => {
       <Grid container component={Paper} className='chatSection'>
             <Grid item xs={3} sx={borderRight500}>
                 <List>
-                    <ListItem button key="RemySharp">
+                    <ListItem button key={`${currentUser.name}`} onClick={()=>handleSelect(currentUser)}>
                         <ListItemIcon>
-                        <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" />
+                        <Avatar alt={`${currentUser.name}`} src={`${currentUser.profilePhoto}`} />
                         </ListItemIcon>
-                        <ListItemText primary="John Wick"></ListItemText>
+                        <ListItemText primary={`${currentUser.name}`}></ListItemText>
                     </ListItem>
                 </List>
                 <Divider />
