@@ -6,21 +6,24 @@ import Container from "@mui/material/Container";
 import BookCard from "./Card";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import CircularIndeterminate from "../Loading/circularLoading";
 
 const Search = () => {
   const [booksData, setBooksData] = React.useState({});
   const location = useLocation();
   const { searchInput } = location.state;
-  console.log("The search input:", searchInput);
+  // console.log("The search input:", searchInput);
   React.useEffect(() => {
     if (searchInput.length !== "") {
-      console.log("Search Input:", searchInput);
+      console.log("UseEffect Search Input:", searchInput);
       axios
         .get(`http://localhost:3002/search/books/${searchInput}`)
         .then((response) => {
           console.log("response:", response.data);
-          setBooksData(response.data);
+          if (response.data === undefined) {
+            setBooksData({});
+          } else {
+            setBooksData(response.data);
+          }
           console.log("Books data:", booksData);
         })
         .catch((error) => console.log(error));
