@@ -41,9 +41,15 @@ const Message = ({message, value}) => {
 
   const { user: currentUser } = useContext(UserContext)
 
+  const ref = useRef()
+
+  useEffect(() => {
+    ref.current?.scrollIntoView({behavior: "smooth"})
+  }, [message])
+
   if (currentUser.uid === message.sendID) {
     return (<>
-      <ListItem key={message.id}>
+      <ListItem key={message.id} ref={ref}>
         <Grid container>
           <Grid item xs={12}>
             <ListItemText align="right" primary={`${message.text}`}></ListItemText>
@@ -56,7 +62,7 @@ const Message = ({message, value}) => {
     </>)
   } else {
     return (<>
-      <ListItem key={message.id}>
+      <ListItem key={message.id} ref={ref}>
         <Grid container>
           <Grid item xs={12}>
             <ListItemIcon align="left">
