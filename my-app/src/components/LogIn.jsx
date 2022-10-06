@@ -1,10 +1,13 @@
 import styled from 'styled-components';
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
-import { firebase } from '../firebase'
+import { firebase, firestore } from '../firebase'
 import img from "../images/LogInImage.webp";
 import logo from "../images/ReadingRainforestLogo.png"
-
+import {
+  doc,
+  setDoc,
+} from "firebase/firestore";
 import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button";
 // import Typography from "@mui/material/Typography";
@@ -155,6 +158,15 @@ const LogIn = ({ setUser }) => {
           });
           console.log(newUser.data);
         setUser(newUser.data);
+
+        await setDoc(doc(firestore, "users", uid.current), {
+          uid: uid.current,
+          displayName: name.current,
+          photoURL: photo.current,
+        });
+
+        await setDoc(doc(firestore, "userChats", uid.current), {});
+
       } else {
         setIsAllFilled(false);
       }

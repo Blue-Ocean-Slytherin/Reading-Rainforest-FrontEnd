@@ -98,7 +98,7 @@ const ChatRoom = () => {
                         <ListItemIcon>
                         <Avatar alt={`${currentUser.email}`} src={`${currentUser.profilePhoto}`} />
                         </ListItemIcon>
-                        <ListItemText primary={`${currentUser.email}`}></ListItemText>
+                        <ListItemText primary={`${currentUser.name}`}></ListItemText>
                     </ListItem>
                 </List>
                 <Divider />
@@ -111,6 +111,7 @@ const ChatRoom = () => {
                           <Avatar alt={`${chat[1].userInfo.displayName}`} src={`${chat[1].userInfo.photoURL}`} />
                       </ListItemIcon>
                       <ListItemText primary={`${chat[1].userInfo.displayName}`}>{`${chat[1].userInfo.displayName}`}</ListItemText>
+                      {/* <ListItemText primary={`${chat[1].lastMessage.text}`}>{`${chat[1].userInfo.displayName}`}</ListItemText> */}
                   </ListItem>
               </List>
                 ))}
