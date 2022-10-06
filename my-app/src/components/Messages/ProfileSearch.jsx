@@ -78,8 +78,8 @@ const ProfileSearch = ({value}) => {
           await updateDoc(doc(firestore, "userChats", user.uid), {
             [combinedID  + ".userInfo"]: {
               uid: currentUser.uid,
-              displayName: currentUser.displayName,
-              photoURL: currentUser.photoURL,
+              displayName: currentUser.name,
+              photoURL: currentUser.profilePhoto,
             },
             [combinedID + ".date"]: serverTimestamp(),
           });

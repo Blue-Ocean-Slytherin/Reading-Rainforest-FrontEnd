@@ -104,7 +104,7 @@ const ChatRoom = () => {
                 <Divider />
                   <ProfileSearch value={{data: state, dispatch}}/>
                 <Divider />
-                {chats && Object.entries(chats)?.sort((a,b)=>b[1].date - a[1].date).map((chat) => (
+                {Object.entries(chats)?.sort((a,b)=>b[1].date - a[1].date).map((chat) => (
                   <List key={chat[0]} onClick={()=>handleSelect(chat[1].userInfo)}>
                   <ListItem button key={`${chat[1].userInfo.displayName}`}>
                       <ListItemIcon>
