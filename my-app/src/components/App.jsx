@@ -1,4 +1,5 @@
-import React, { useState, createContext } from "react";
+import React, { useState, useEffect, createContext } from "react";
+import axios from 'axios';
 import { Routes, Route } from "react-router-dom";
 import Layout from "./Layout/Layout";
 import Home from "./Home/Home";
@@ -17,30 +18,51 @@ export const UserContext = createContext({
 });
 
 function App() {
-  const [user, setUser] = useState({});
-  console.log("User Data:", user);
+  const [ user, setUser ] = useState({});
+  const [ listOfBooks, setListOfBooks ] = useState([]);
 
-  let values = {user};
+  useEffect(()=>{
+    const getUserBookInfo = async () => {
+      if (user?.books) {
+        let listOfISBNs = user.books;
+        let listOfPromises = [];
+        listOfISBNs.forEach((ISBN)=>{
+          listOfPromises.push(axios.get(`https://www.googleapis.com/books/v1/volumes?q=${ISBN}`));
+        });
+        let results = await Promise.all(listOfPromises);
+        let bookListData = [];
+        results.forEach((result, i)=>{
+          bookListData[i] = result.data.items[0].volumeInfo;
+        });
+        setListOfBooks(bookListData);
+      }
+    };
+    getUserBookInfo();
+  }, [user])
+  console.log("User Data:", user);
+  console.log("User's Books':", listOfBooks);
+
+  let values = {user, setUser, listOfBooks};
 
   const theme = createTheme({
-  palette: {
-    spanishGreen: {
-      main: "#058c42",
+    palette: {
+      spanishGreen: {
+        main: "#058c42",
+      },
+      deepChampagne: {
+        main: "#ffcf9c",
+      },
+      mintGreen: {
+        main: "#9cfc97",
+      },
+      columbiaBlue: {
+        main: "#bbdef0",
+      },
+      raisinBlack: {
+        main: "231f20",
+      },
     },
-    deepChampagne: {
-      main: "#ffcf9c",
-    },
-    mintGreen: {
-      main: "#9cfc97",
-    },
-    columbiaBlue: {
-      main: "#bbdef0",
-    },
-    raisinBlack: {
-      main: "231f20",
-    },
-  },
-});
+  });
 
 
   return (

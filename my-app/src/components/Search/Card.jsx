@@ -24,8 +24,8 @@ export default function BookCard({ user, book }) {
         component="img"
         height="194"
         src={
-          book.volumeInfo.imageLinks.smallThumbnail ||
-          "https://m.media-amazon.com/images/I/51Z0nLAfLmL.jpg"
+          book.volumeInfo.imageLinks.thumbnail ||
+          "https://www.nps.gov/common/uploads/cropped_image/primary/9EB2D49C-F3A5-5C25-C01902867F788B2E.jpg?width=1600&quality=90&mode=crop"
         }
         alt={book.volumeInfo.title || "book picture"}
       />
@@ -35,13 +35,8 @@ export default function BookCard({ user, book }) {
         </Typography>
       </CardContent>
       <CardActions>
-        <ConfirmTradeModal
-          userName={`David Garcia`}
-          userPic={`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsb_V_Ha4XAl47doWf_2lF-actuld60ssYew&usqp=CAU`}
-          bookName={`The Alchemist`}
-          bookPic={`https://m.media-amazon.com/images/I/51Z0nLAfLmL.jpg`}
-        />
-        <Container>David Garcia</Container>
+        <ConfirmTradeModal otherUser={user} book={book.volumeInfo}/>
+        <Container>{user.name}</Container>
       </CardActions>
     </Card>
   );
