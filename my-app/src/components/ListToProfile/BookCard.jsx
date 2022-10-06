@@ -33,11 +33,14 @@ const theme = createTheme({
 export default function BookCard({ onClose, data }) {
   const { user, setUser } = React.useContext(UserContext);
 
+  console.log(data);
+
   let addBookToList = async () => {
     let URI = process.env.REACT_APP_BE_URI;
     const ISBN = data.volumeInfo.industryIdentifiers[0].identifier;
+    const bookName = data.volumeInfo.title;
     const uid = user.uid;
-    let updatedUser = await axios.patch(`${URI}/user/${uid}/book/${ISBN}`);
+    let updatedUser = await axios.patch(`${URI}/user/${uid}/ISBN/${ISBN}/bookName/${bookName}`);
     updatedUser = updatedUser.data;
     setUser(updatedUser);
   };

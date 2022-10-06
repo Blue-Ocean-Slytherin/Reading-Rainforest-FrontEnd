@@ -95,7 +95,7 @@ const LogIn = ({ setUser }) => {
   const [ isAllFilled, setIsAllFilled ]= useState(true);
   const [ isNewUser, setIsNewUser ] = useState(false);
   const uid = useRef('');
-  const fullName = useRef('');
+  const name = useRef('');
   const email = useRef('');
   const photo = useRef('');
   const phoneNumber = useRef('');
@@ -125,7 +125,7 @@ const LogIn = ({ setUser }) => {
 
   let handleChange = (value, string) => {
     let temp = 0;
-    string === 'name' ? fullName.current = value :
+    string === 'name' ? name.current = value :
     string === 'email' ? email.current = value :
     string === 'phone' ? phoneNumber.current = value :
     string === 'street' ? street.current = value :
@@ -140,13 +140,13 @@ const LogIn = ({ setUser }) => {
       street.current = street.current.split(' ').join('+');
       city.current = city.current.split(' ').join('+');
       state.current = state.current.split(' ').join('+');
-      if (uid.current && fullName.current && email.current && photo.current && phoneNumber.current && street.current && city.current && state.current) {
+      if (uid.current && name.current && email.current && photo.current && phoneNumber.current && street.current && city.current && state.current) {
         setIsAllFilled(true);
         let response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${street.current},+${city.current},+${state.current}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`);
         const { lat, lng } = response.data.results[0].geometry.location;
         let newUser = await axios.post(`${URI}/user/new`,{
             uid: uid.current,
-            fullName: fullName.current,
+            name: name.current,
             email: email.current,
             phoneNumber: phoneNumber.current,
             profilePhoto: photo.current,
@@ -183,7 +183,7 @@ const LogIn = ({ setUser }) => {
             Fill Out All Fields Please
           </Alert>
           }
-          <TextField defaultValue={fullName.current} onChange={(e)=>{handleChange(e.target.value, 'name')}} variant='filled' label='Full Name' sx={inputStyle} required={true} ></TextField>
+          <TextField defaultValue={name.current} onChange={(e)=>{handleChange(e.target.value, 'name')}} variant='filled' label='Username' sx={inputStyle} required={true} ></TextField>
           <TextField onChange={(e)=>{handleChange(e.target.value, 'email')}} variant='filled' label='Email' sx={inputStyle} required={true} ></TextField>
           <TextField onChange={(e)=>{handleChange(e.target.value, 'phone')}} variant='filled' label='Phone Number' sx={inputStyle} required={true} ></TextField>
           <TextField onChange={(e)=>{handleChange(e.target.value, 'street')}} variant='filled' label='Street' sx={inputStyle} required={true} ></TextField>
