@@ -83,11 +83,12 @@ const ProfileSearch = ({value}) => {
             },
             [combinedID + ".date"]: serverTimestamp(),
           });
+      } else {
+        value.dispatch({type:'CHANGE_USER', payload: user})
       }
       } catch (err) { console.log(err)}
 
   };
-
 
   return (<>
     <Grid item xs={12} style={{padding: '10px'}}>
