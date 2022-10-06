@@ -1,9 +1,17 @@
-import React, { useRef, useState } from 'react';
-
+import React, {
+  useRef,
+  useState,
+  createContext,
+  useContext,
+  useReducer
+} from 'react';
+import { UserContext } from '../../components/App';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { auth, firestore, firebase } from '../../firebase'
 import ChatRoom from './ChatRoom.jsx'
+
+export const ChatContext = createContext({});
 
 const Messages = () => {
 

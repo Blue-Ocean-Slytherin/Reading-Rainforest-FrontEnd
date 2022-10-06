@@ -8,10 +8,18 @@ import {
   ListItemText,
 }
 from '@mui/material';
-import { getDocs, serverTimestamp, setDoc } from 'firebase/firestore';
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  setDoc,
+  doc,
+  updateDoc,
+  serverTimestamp,
+  getDoc,
+} from "firebase/firestore";
 import { auth, firestore, firebase } from '../../firebase';
-import { collection, query, where } from 'firebase/firestore';
-import { doc, updateDoc, getDoc } from 'firebase/firestore';
 import { UserContext } from '../../components/App';
 import { Dns } from '@material-ui/icons';
 
@@ -55,28 +63,29 @@ const ProfileSearch = () => {
         const res = await getDoc(doc(firestore, "chats", combinedID));
 
         console.log('res', res)
-        if (!res.exists()) {
-          await setDoc(doc, (firestore, "chats", combinedID), { messages: []});
+        if (Object.keys(res)) {
+          console.log('inside', user.displayName)
+          await setDoc(doc(firestore, "chats", combinedID), { messages: []});
 
-          await updateDoc(doc(firestore, 'userChats', currentUser.uid), {
-            [combinedID  + '.userInfo']: {
+          await updateDoc(doc(firestore, "userChats", currentUser.uid), {
+            [combinedID  + ".userInfo"]: {
               uid: user.uid,
               displayName: user.displayName,
-              photoURL: user.photoURL
+              photoURL: user.photoURL,
             },
-            [combinedID + '.date']: serverTimestamp()
+            [combinedID + ".date"]: serverTimestamp(),
           });
 
-          await updateDoc(doc(firestore, 'userChats', user.uid), {
-            [combinedID  + '.userInfo']: {
+          await updateDoc(doc(firestore, "userChats", user.uid), {
+            [combinedID  + ".userInfo"]: {
               uid: currentUser.uid,
               displayName: currentUser.displayName,
-              photoURL: currentUser.photoURL
+              photoURL: currentUser.photoURL,
             },
-            [combinedID + '.date']: serverTimestamp()
+            [combinedID + ".date"]: serverTimestamp(),
           });
       }
-      } catch (err) {}
+      } catch (err) { console.log(err)}
 
   };
 

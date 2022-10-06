@@ -1,10 +1,24 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext, useReducer } from 'react';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { auth, firestore, firebase } from '../../firebase'
+import { auth, firestore, firebase } from '../../firebase';
 import ChatMessage from './ChatMessage';
+import MessageInput from './MessageInput';
 import ProfileSearch from './ProfileSearch'
+import { UserContext } from '../../components/App';
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  setDoc,
+  doc,
+  updateDoc,
+  serverTimestamp,
+  getDoc,
+  onSnapshot,
+} from "firebase/firestore";
 
 import {
   Card,
@@ -22,8 +36,10 @@ import {
   ListItemText,
   Avatar,
   Fab,
+  getChipUtilityClass,
 }
 from '@mui/material';
+import { ChatContext } from './Messages'
 
 const chatSection = {
   width: '95%',
@@ -49,23 +65,64 @@ const ChatRoom = () => {
   const [messages] = useCollectionData(query, { idField: 'id' });
   const [formValue, setFormValue] = useState('');
 
+  const [chats, setChats] = useState([])
+  const { user: currentUser } = useContext(UserContext)
+
+  const INITIAL_STATE = {
+    chatID: "null",
+    user: {},
+  };
+
+  const chatReducer = (state, action) => {
+    switch (action.type) {
+      case "CHANGE_USER":
+        return {
+          user: action.payload,
+          chatID:
+            currentUser.uid > action.payload.uid
+              ? currentUser.uid + action.payload.uid
+              : action.payload.uid + currentUser.uid,
+        };
+
+      default:
+        return state;
+    }
+  };
+
+  const [state, dispatch] = useReducer(chatReducer, INITIAL_STATE);
+
+  useEffect(()=> {
+
+    if (currentUser.uid) {
+      const unsub = onSnapshot(doc(firestore, "userChats", `${currentUser.uid}`), (doc) => {
+        setChats(doc.data());
+        })
+    }
+
+  }, [currentUser.uid])
 
 
-  const sendMessage = async (e) => {
-    e.preventDefault();
+  //for group chat maybe
+  // const sendMessage = async (e) => {
+  //   e.preventDefault();
 
-    const { uid, photoURL } = auth.currentUser;
+  //   const { uid, photoURL } = auth.currentUser;
 
-    await messagesRef.add({
-      text: formValue,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      uid,
-      photoURL
-    })
+  //   await messagesRef.add({
+  //     text: formValue,
+  //     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+  //     uid,
+  //     photoURL
+  //   })
 
-    setFormValue('');
-    dummy.current.scrollIntoView({ behavior: 'smooth' });
+  //   setFormValue('');
+  //   dummy.current.scrollIntoView({ behavior: 'smooth' });
+  // }
+
+  const handleSelect = (user) => {
+    dispatch({type:'CHANGE_USER', payload: user})
   }
+
 
   return (<>
     <div>
@@ -88,40 +145,20 @@ const ChatRoom = () => {
                 <Divider />
                   <ProfileSearch />
                 <Divider />
-                <List>
-                    <ListItem button key="RemySharp">
-                        <ListItemIcon>
-                            <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" />
-                        </ListItemIcon>
-                        <ListItemText primary="Remy Sharp">Remy Sharp</ListItemText>
-                        <ListItemText secondary="online" align="right"></ListItemText>
-                    </ListItem>
-                    <ListItem button key="Alice">
-                        <ListItemIcon>
-                            <Avatar alt="Alice" src="https://material-ui.com/static/images/avatar/3.jpg" />
-                        </ListItemIcon>
-                        <ListItemText primary="Alice">Alice</ListItemText>
-                    </ListItem>
-                    <ListItem button key="CindyBaker">
-                        <ListItemIcon>
-                            <Avatar alt="Cindy Baker" src="https://material-ui.com/static/images/avatar/2.jpg" />
-                        </ListItemIcon>
-                        <ListItemText primary="Cindy Baker">Cindy Baker</ListItemText>
-                    </ListItem>
-                </List>
+                {chats && Object.entries(chats)?.sort((a,b)=>b[1].date - a[1].date).map((chat) => (
+                  <List key={chat[0]} onClick={()=>handleSelect(chat[1].userInfo)}>
+                  <ListItem button key={`${chat[1].userInfo.displayName}`}>
+                      <ListItemIcon>
+                          <Avatar alt={`${chat[1].userInfo.displayName}`} src={`${chat[1].userInfo.photoURL}`} />
+                      </ListItemIcon>
+                      <ListItemText primary={`${chat[1].userInfo.displayName}`}>{`${chat[1].userInfo.displayName}`}</ListItemText>
+                  </ListItem>
+              </List>
+                ))}
             </Grid>
             <Grid item xs={9}>
                 <List className='messageArea' sx={messageArea}>
-                    <ListItem key="1">
-                        <Grid container>
-                            <Grid item xs={12}>
-                                <ListItemText align="right" primary="Hey man, What's up ?"></ListItemText>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <ListItemText align="right" secondary="09:30"></ListItemText>
-                            </Grid>
-                        </Grid>
-                    </ListItem>
+                    <ChatMessage value={{data: state, dispatch}}/>
                     <ListItem key="2">
                         <Grid container>
                             <Grid item xs={12}>
@@ -145,28 +182,10 @@ const ChatRoom = () => {
                 </List>
                 <Divider />
                 <Grid container style={{padding: '20px'}}>
-                    <Grid item xs={11}>
-                        <TextField id="outlined-basic-email" label="Type Something" fullWidth />
-                    </Grid>
-                    <Grid xs={1} align="right">
-                        <Fab color="primary" aria-label="add"></Fab>
-                    </Grid>
+                    <MessageInput value={{data: state, dispatch}}/>
                 </Grid>
             </Grid>
         </Grid>
-      <main>
-        {messages && messages.map((msg, index) => <ChatMessage key={index} message={msg}/>)}
-        <span ref={dummy}></span>
-
-      </main>
-
-      <form onSubmit={sendMessage}>
-
-        <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="say something nice" />
-
-        <button type="submit" disabled={!formValue}>🕊️</button>
-
-      </form>
     </div>
   </>)
 }
