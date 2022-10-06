@@ -15,7 +15,7 @@ const redStyle = {
   backgroundColor: '#058C42',
 }
 
-const CompletedCard = () => {
+const CompletedCard = (props) => {
   return (
     <div>
       <Box sx={{width: '1100px', height: '275px', m:6, backgroundColor:"#BBDEF0"}}>

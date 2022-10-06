@@ -29,7 +29,7 @@ const redStyle = {
   backgroundColor: '#FFCF9C',
 }
 
-const ConfirmedCard = () => {
+const ConfirmedCard = (props) => {
   const [open, setOpen] = useState(false);
   const [userLat, setUserLat] = useState(40.714224);
   const [userLng, setUserLng] = useState(-73.961452);

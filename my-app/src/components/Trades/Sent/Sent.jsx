@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import SentCard from './SentCard';
 
-const Sent = () => {
+const Sent = (props) => {
   return (
     <div>
-      <SentCard/>
+      {props.sentTrades.map((trade, key) =>
+        <SentCard trade={trade} key={trade._id}/>
+      )}
     </div>
   )
 }
