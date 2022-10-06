@@ -15,7 +15,13 @@ export default function BookCard({ user, book }) {
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
         avatar={
-          <Avatar alt="profile-picture" src={book.profilePhoto || ""}></Avatar>
+          <Avatar
+            alt="profile-picture"
+            src={
+              book.profilePhoto ||
+              "https://st4.depositphotos.com/1012074/20946/v/450/depositphotos_209469984-stock-illustration-flat-isolated-vector-illustration-icon.jpg"
+            }
+          ></Avatar>
         }
         title={book.volumeInfo.title}
         subheader={book.volumeInfo.authors[0] || "September 14, 2016"} // Could be date added to App or maybe a published date
@@ -35,7 +41,7 @@ export default function BookCard({ user, book }) {
         </Typography>
       </CardContent>
       <CardActions>
-        <ConfirmTradeModal otherUser={user} book={book.volumeInfo}/>
+        <ConfirmTradeModal otherUser={user} book={book.volumeInfo} />
         <Container>{user.name}</Container>
       </CardActions>
     </Card>
