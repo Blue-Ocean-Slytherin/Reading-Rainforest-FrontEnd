@@ -73,7 +73,7 @@ const Home = () => {
       alignItems="center"
       style={{ minHeight: '50vh' }}
     >
-      <Typography mt={5} mb={2} variant="h4">Recommeded For You</Typography>
+      <Typography mt={5} mb={2} variant="h4">Recommended For You</Typography>
       <Box
         sx={{
           width: 1200,
