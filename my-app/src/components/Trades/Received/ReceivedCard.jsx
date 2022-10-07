@@ -49,7 +49,7 @@ const ReceivedCard = (props) => {
     });
 
     console.log("Document written with ID: ", docRef2.id);
-    }
+  }
 
   const changeConfirmed = function () {
     axios.put(`${process.env.REACT_APP_BE_URI}/trade/status`, {tradeId: props.trade.transactionID, status:'confirmed', uid: props.user.uid})
