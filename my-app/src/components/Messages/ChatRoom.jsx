@@ -24,6 +24,8 @@ import {
 }
 from '@mui/material';
 
+import { ChatContext } from '../../components/App';
+
 // const chatSection = {
 //   width: '95%',
 //   height: '80vh'
@@ -43,29 +45,30 @@ const ChatRoom = () => {
 
   const [chats, setChats] = useState([])
   const { user: currentUser } = useContext(UserContext)
+  const { data, dispatch } = useContext(ChatContext);
 
-  const INITIAL_STATE = {
-    chatID: "null",
-    user: {},
-  };
+  // const INITIAL_STATE = {
+  //   chatID: "null",
+  //   user: {},
+  // };
 
-  const chatReducer = (state, action) => {
-    switch (action.type) {
-      case "CHANGE_USER":
-        return {
-          user: action.payload,
-          chatID:
-            currentUser.uid > action.payload.uid
-              ? currentUser.uid + action.payload.uid
-              : action.payload.uid + currentUser.uid,
-        };
+  // const chatReducer = (state, action) => {
+  //   switch (action.type) {
+  //     case "CHANGE_USER":
+  //       return {
+  //         user: action.payload,
+  //         chatID:
+  //           currentUser.uid > action.payload.uid
+  //             ? currentUser.uid + action.payload.uid
+  //             : action.payload.uid + currentUser.uid,
+  //       };
 
-      default:
-        return state;
-    }
-  };
+  //     default:
+  //       return state;
+  //   }
+  // };
 
-  const [state, dispatch] = useReducer(chatReducer, INITIAL_STATE);
+  // const [state, dispatch] = useReducer(chatReducer, INITIAL_STATE);
 
   useEffect(()=> {
 
@@ -78,8 +81,8 @@ const ChatRoom = () => {
   }, [currentUser.uid])
 
 
-  const handleSelect = (user) => {
-    dispatch({type:'CHANGE_USER', payload: user})
+  const handleSelect = (selectedUser) => {
+    dispatch({type:'CHANGE_USER', payload: selectedUser})
   }
 
 
@@ -102,7 +105,7 @@ const ChatRoom = () => {
                     </ListItem>
                 </List>
                 <Divider />
-                  <ProfileSearch value={{data: state, dispatch}}/>
+                  <ProfileSearch />
                 <Divider />
                 {Object.entries(chats)?.sort((a,b)=>b[1].date - a[1].date).map((chat) => (
                   <List key={chat[0]} onClick={()=>handleSelect(chat[1].userInfo)}>
@@ -118,11 +121,11 @@ const ChatRoom = () => {
             </Grid>
             <Grid item xs={9}>
               <List className='messageArea' sx={messageArea}>
-                <ChatMessage value={{data: state, dispatch}}/>
+                <ChatMessage />
               </List>
               <Divider />
               <Grid container style={{padding: '20px'}}>
-                  <MessageInput value={{data: state, dispatch}}/>
+                  <MessageInput />
               </Grid>
             </Grid>
         </Grid>

@@ -21,14 +21,16 @@ import {
 } from "firebase/firestore";
 import { firestore } from '../../firebase';
 import { UserContext } from '../../components/App';
+import { ChatContext } from '../../components/App';
 
-const ProfileSearch = ({value}) => {
+const ProfileSearch = () => {
   //username being searched for
   const [username, setUsername] = useState("")
   const [user, setUser] = useState(null)
   const [error, setError] = useState(false)
   const { user: currentUser } = useContext(UserContext)
   const textInput = useRef(null)
+  const { dispatch } = useContext(ChatContext);
 
   const handleSearch = async () => {
     const q = query(
@@ -84,7 +86,7 @@ const ProfileSearch = ({value}) => {
             [combinedID + ".date"]: serverTimestamp(),
           });
       } else {
-        value.dispatch({type:'CHANGE_USER', payload: user})
+        dispatch({type:'CHANGE_USER', payload: user})
       }
       } catch (err) { console.log(err)}
 
