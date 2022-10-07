@@ -51,7 +51,7 @@ const SentCard = (props) => {
   const [userBook, setUserBook] = useState(null);
   const [traderBook, setTraderBook] = useState(null);
   const [traderInfo, setTrader] = useState(null);
-  const [rating, setRating] = useState(null);
+  const [rating, setRating] = useState(0);
   const { dispatch } = useContext(ChatContext);
   const { user: currentUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -124,7 +124,7 @@ const SentCard = (props) => {
     navigate("/messages");
   }
 
-  return traderInfo && userBook && traderBook && rating ? (
+  return traderInfo && userBook && traderBook ? (
     <div>
       <Box sx={{borderRadius: '25px', width: '1100px', height: '315px', m:6, backgroundColor:"#BBDEF0"}}>
         <Stack direction="row" spacing={5} justifyContent="center">

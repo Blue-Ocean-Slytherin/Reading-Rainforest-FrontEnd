@@ -157,7 +157,7 @@ const ConfirmedCard = (props) => {
     setOpen(false);
   }
 
-  return traderInfo && tradeLng && userBook && traderBook && rating ? (
+  return traderInfo && tradeLng && userBook && traderBook ? (
     <div>
       <Box sx={{borderRadius: '25px', width: '1100px', height: '315px', m:6, backgroundColor:"#BBDEF0"}}>
         <Stack direction="row" spacing={5} justifyContent="center">
