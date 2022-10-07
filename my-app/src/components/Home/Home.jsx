@@ -1,147 +1,68 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import Item from './Item.jsx';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
+// import { items } from './HomeTempData.jsx'
+import axios from 'axios';
 
 
 const Home = () => {
-  const {booksNear, setBooksNear} = useState([])
-  const {topRated, setTopRated} = useState([])
+  const [users, setUsers] = useState([]);
+  const [books, setBooks] = useState([]);
+  const [renderItem, setRenderItem] = useState(false);
 
-  var items = [
-    {
-      profilePic: "https://images.ctfassets.net/usf1vwtuqyxm/6yl7KHNCnoctW5TGrOyNE1/d81e73479f15d2dfeb37dcf56c47b6b0/HP-F6-half-blood-prince-draco-malfoy-looking-concerned-web-landscape?fm=jpg&q=70&w=2560",
-      bookTitle: "Harry Potter and the Prince of Slytherin by The Sinister Man",
-      date: "December 1, 2019",
-      bookCover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1609896187i/31201472.jpg",
-      bookDescription: "Harry Potter was Sorted into Slytherin after a crappy childhood. His brother Jim is believed to be the BWL. Think you know this story? Think again. Year Four starts on 9/1/20. ",
-      username: "User 1",
-      distance: 1,
-      rating: 4,
-    },
-    {
-      profilePic: "https://images.ctfassets.net/usf1vwtuqyxm/6yl7KHNCnoctW5TGrOyNE1/d81e73479f15d2dfeb37dcf56c47b6b0/HP-F6-half-blood-prince-draco-malfoy-looking-concerned-web-landscape?fm=jpg&q=70&w=2560",
-      bookTitle: "Harry Potter and the Prince of Slytherin by The Sinister Man",
-      date: "December 1, 2019",
-      bookCover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1609896187i/31201472.jpg",
-      bookDescription: "Harry Potter was Sorted into Slytherin after a crappy childhood. His brother Jim is believed to be the BWL. Think you know this story? Think again. Year Four starts on 9/1/20. NO romantic pairings prior to Fourth Year. Basically good Dumbledore and Weasleys. Limited bashing (mainly of James).",
-      username: "User 2",
-      distance: 2,
-      rating: 2,
-    },
-    {
-      profilePic: "https://images.ctfassets.net/usf1vwtuqyxm/6yl7KHNCnoctW5TGrOyNE1/d81e73479f15d2dfeb37dcf56c47b6b0/HP-F6-half-blood-prince-draco-malfoy-looking-concerned-web-landscape?fm=jpg&q=70&w=2560",
-      bookTitle: "Harry Potter and the Prince of Slytherin by The Sinister Man",
-      date: "December 1, 2019",
-      bookCover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1609896187i/31201472.jpg",
-      bookDescription: "Harry Potter was Sorted into Slytherin after a crappy childhood. His brother Jim is believed to be the BWL. Think you know this story? Think again. Year Four starts on 9/1/20. NO romantic pairings prior to Fourth Year. Basically good Dumbledore and Weasleys. Limited bashing (mainly of James).",
-      username: "User 3",
-      distance: 1,
-      rating: 2.5,
-    },
-    {
-      profilePic: "https://images.ctfassets.net/usf1vwtuqyxm/6yl7KHNCnoctW5TGrOyNE1/d81e73479f15d2dfeb37dcf56c47b6b0/HP-F6-half-blood-prince-draco-malfoy-looking-concerned-web-landscape?fm=jpg&q=70&w=2560",
-      bookTitle: "Harry Potter and the Prince of Slytherin by The Sinister Man",
-      date: "December 1, 2019",
-      bookCover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1609896187i/31201472.jpg",
-      bookDescription: "Harry Potter was Sorted into Slytherin after a crappy childhood. His brother Jim is believed to be the BWL. Think you know this story? Think again. Year Four starts on 9/1/20. ",
-      username: "User 4",
-      distance: 4,
-      rating: 1.7,
-    },
-    {
-      profilePic: "https://images.ctfassets.net/usf1vwtuqyxm/6yl7KHNCnoctW5TGrOyNE1/d81e73479f15d2dfeb37dcf56c47b6b0/HP-F6-half-blood-prince-draco-malfoy-looking-concerned-web-landscape?fm=jpg&q=70&w=2560",
-      bookTitle: "Harry Potter and the Prince of Slytherin by The Sinister Man",
-      date: "December 1, 2019",
-      bookCover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1609896187i/31201472.jpg",
-      bookDescription: "Harry Potter was Sorted into Slytherin after a crappy childhood. His brother Jim is believed to be the BWL. Think you know this story? Think again. Year Four starts on 9/1/20. NO romantic pairings prior to Fourth Year. Basically good Dumbledore and Weasleys. Limited bashing (mainly of James).",
-      username: "User 5",
-      distance: 2,
-      rating: 3.6,
-    },
-    {
-      profilePic: "https://images.ctfassets.net/usf1vwtuqyxm/6yl7KHNCnoctW5TGrOyNE1/d81e73479f15d2dfeb37dcf56c47b6b0/HP-F6-half-blood-prince-draco-malfoy-looking-concerned-web-landscape?fm=jpg&q=70&w=2560",
-      bookTitle: "Harry Potter and the Prince of Slytherin by The Sinister Man",
-      date: "December 1, 2019",
-      bookCover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1609896187i/31201472.jpg",
-      bookDescription: "Harry Potter was Sorted into Slytherin after a crappy childhood. His brother Jim is believed to be the BWL. Think you know this story? Think again. Year Four starts on 9/1/20. NO romantic pairings prior to Fourth Year. Basically good Dumbledore and Weasleys. Limited bashing (mainly of James).",
-      username: "User 6",
-      distance: 1,
-      rating: 4.7,
-    },
-    {
-      profilePic: "https://images.ctfassets.net/usf1vwtuqyxm/6yl7KHNCnoctW5TGrOyNE1/d81e73479f15d2dfeb37dcf56c47b6b0/HP-F6-half-blood-prince-draco-malfoy-looking-concerned-web-landscape?fm=jpg&q=70&w=2560",
-      bookTitle: "Harry Potter and the Prince of Slytherin by The Sinister Man",
-      date: "December 1, 2019",
-      bookCover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1609896187i/31201472.jpg",
-      bookDescription: "Harry Potter was Sorted into Slytherin after a crappy childhood. His brother Jim is believed to be the BWL. Think you know this story? Think again. Year Four starts on 9/1/20. ",
-      username: "User 7",
-      distance: 3,
-      rating: 5,
-    },
-    {
-      profilePic: "https://images.ctfassets.net/usf1vwtuqyxm/6yl7KHNCnoctW5TGrOyNE1/d81e73479f15d2dfeb37dcf56c47b6b0/HP-F6-half-blood-prince-draco-malfoy-looking-concerned-web-landscape?fm=jpg&q=70&w=2560",
-      bookTitle: "Harry Potter and the Prince of Slytherin by The Sinister Man",
-      date: "December 1, 2019",
-      bookCover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1609896187i/31201472.jpg",
-      bookDescription: "Harry Potter was Sorted into Slytherin after a crappy childhood. His brother Jim is believed to be the BWL. Think you know this story? Think again. Year Four starts on 9/1/20. NO romantic pairings prior to Fourth Year. Basically good Dumbledore and Weasleys. Limited bashing (mainly of James).",
-      username: "User 8",
-      distance: 2,
-      rating: 2.3,
-    },
-    {
-      profilePic: "https://images.ctfassets.net/usf1vwtuqyxm/6yl7KHNCnoctW5TGrOyNE1/d81e73479f15d2dfeb37dcf56c47b6b0/HP-F6-half-blood-prince-draco-malfoy-looking-concerned-web-landscape?fm=jpg&q=70&w=2560",
-      bookTitle: "Harry Potter and the Prince of Slytherin by The Sinister Man",
-      date: "December 1, 2019",
-      bookCover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1609896187i/31201472.jpg",
-      bookDescription: "Harry Potter was Sorted into Slytherin after a crappy childhood. His brother Jim is believed to be the BWL. Think you know this story? Think again. Year Four starts on 9/1/20. NO romantic pairings prior to Fourth Year. Basically good Dumbledore and Weasleys. Limited bashing (mainly of James).",
-      username: "User 9",
-      distance: 4,
-      rating: 3.5,
-    },
-    {
-      profilePic: "https://images.ctfassets.net/usf1vwtuqyxm/6yl7KHNCnoctW5TGrOyNE1/d81e73479f15d2dfeb37dcf56c47b6b0/HP-F6-half-blood-prince-draco-malfoy-looking-concerned-web-landscape?fm=jpg&q=70&w=2560",
-      bookTitle: "Harry Potter and the Prince of Slytherin by The Sinister Man",
-      date: "December 1, 2019",
-      bookCover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1609896187i/31201472.jpg",
-      bookDescription: "Harry Potter was Sorted into Slytherin after a crappy childhood. His brother Jim is believed to be the BWL. Think you know this story? Think again. Year Four starts on 9/1/20. NO romantic pairings prior to Fourth Year. Basically good Dumbledore and Weasleys. Limited bashing (mainly of James).",
-      username: "User 10",
-      distance: 4,
-      rating: 4,
-    },
-    {
-      profilePic: "https://images.ctfassets.net/usf1vwtuqyxm/6yl7KHNCnoctW5TGrOyNE1/d81e73479f15d2dfeb37dcf56c47b6b0/HP-F6-half-blood-prince-draco-malfoy-looking-concerned-web-landscape?fm=jpg&q=70&w=2560",
-      bookTitle: "Harry Potter and the Prince of Slytherin by The Sinister Man",
-      date: "December 1, 2019",
-      bookCover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1609896187i/31201472.jpg",
-      bookDescription: "Harry Potter was Sorted into Slytherin after a crappy childhood. His brother Jim is believed to be the BWL. Think you know this story? Think again. Year Four starts on 9/1/20. NO romantic pairings prior to Fourth Year. Basically good Dumbledore and Weasleys. Limited bashing (mainly of James).",
-      username: "User 11",
-      distance: 4,
-      rating: 2.9,
-    },
-    {
-      profilePic: "https://images.ctfassets.net/usf1vwtuqyxm/6yl7KHNCnoctW5TGrOyNE1/d81e73479f15d2dfeb37dcf56c47b6b0/HP-F6-half-blood-prince-draco-malfoy-looking-concerned-web-landscape?fm=jpg&q=70&w=2560",
-      bookTitle: "Harry Potter and the Prince of Slytherin by The Sinister Man",
-      date: "December 1, 2019",
-      bookCover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1609896187i/31201472.jpg",
-      bookDescription: "Harry Potter was Sorted into Slytherin after a crappy childhood. His brother Jim is believed to be the BWL. Think you know this story? Think again. Year Four starts on 9/1/20. NO romantic pairings prior to Fourth Year. Basically good Dumbledore and Weasleys. Limited bashing (mainly of James).",
-      username: "User 12",
-      distance: 4,
-      rating: 0.5,
+
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_BE_URI}/home/users`)
+      .then((res) => {
+        const booksArrayData = [];
+
+        res.data.forEach((curr, i) => {
+          axios.get(`https://www.googleapis.com/books/v1/volumes?q=${curr.books[0].isbn}`)
+            .then((bookData) => {
+              booksArrayData.push(bookData.data.items[0].volumeInfo)
+              if (res.data.length === booksArrayData.length) {
+                setBooks(booksArrayData)
+                setUsers(res.data)
+                setRenderItem(true)
+              }
+            })
+            .catch((err) => console.log('GETTING BOOKS ERROR'))
+        })
+      })
+      .catch((err) => console.log('HOME SCREEN ERROR', err))
+  }, []);
+
+
+  const usersData = users.slice(0, 9)
+  const booksData = books.slice(0, 9)
+
+  let recData = []
+
+  if (renderItem) {
+    for (var p = 0; p < usersData.length; p += 3) {
+      usersData[p].books = booksData[p]
+      usersData[p+1].books = booksData[p+1]
+      usersData[p+2].books = booksData[p+2]
+      recData.push([usersData[p], usersData[p+1], usersData[p+2]])
     }
-  ]
-
-  const nearArr = []
-  for (var i = 0; i < items.length; i += 3) {
-    nearArr.push([items[i], items[i+1], items[i+2]])
   }
 
-  const topArr = []
-  for (var j = 0; j < items.length; j += 3) {
-    topArr.push([items[j], items[j+1], items[j+2]])
+
+  const topUsersData = users.slice(9, 18)
+  const topBooksData = books.slice(9, 18)
+
+  const topData = []
+
+  if (renderItem) {
+    for (var i = 0; i < topUsersData.length; i += 3) {
+      topUsersData[i].books = topBooksData[i]
+      topUsersData[i+1].books = topBooksData[i+1]
+      topUsersData[i+2].books = topBooksData[i+2]
+      topData.push([topUsersData[i], topUsersData[i+1], topUsersData[i+2]])
+    }
   }
 
   return (
@@ -152,7 +73,7 @@ const Home = () => {
       alignItems="center"
       style={{ minHeight: '50vh' }}
     >
-      <Typography mt={5} mb={2} variant="h4">Books Near You</Typography>
+      <Typography mt={5} mb={2} variant="h4">Recommeded For You</Typography>
       <Box
         sx={{
           width: 1200,
@@ -193,13 +114,14 @@ const Home = () => {
               }
             }}
           >
-            {nearArr.length >= 1 &&
-              nearArr.map((arr, i) =>
-              <Item
-                key={i}
-                array={arr}
-              />
-            )}
+            {renderItem &&
+              recData.map((arr, i) =>
+                <Item
+                  key={i}
+                  array={arr}
+                />
+              )
+            }
           </Carousel>
         </Grid>
       </Box>
@@ -244,13 +166,14 @@ const Home = () => {
               }
             }}
           >
-            {topArr.length >= 1 &&
-              topArr.map((arr, i) =>
-              <Item
-                key={i}
-                array={arr}
-              />
-            )}
+            {renderItem &&
+              topData.map((arr, i) =>
+                <Item
+                  key={i}
+                  array={arr}
+                />
+              )
+            }
           </Carousel>
         </Grid>
       </Box>
@@ -260,13 +183,13 @@ const Home = () => {
 
 export default Home;
             /* {items.map((item, i) =>
-              <Item
-                key={i}
-                profilePic={item.profilePic}
-                bookTitle={item.bookTitle}
-                date={item.date}
-                bookCover={item.bookCover}
-                bookDescription={item.bookDescription}
-                username={item.username}
-              />
+                  <Item
+                    key={i}
+                    profilePic={item.profilePic}
+                    bookTitle={item.bookTitle}
+                    date={item.date}
+                    bookCover={item.bookCover}
+                    bookDescription={item.bookDescription}
+                    username={item.username}
+                  />
             )} */
