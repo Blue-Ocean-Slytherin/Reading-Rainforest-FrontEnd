@@ -1,5 +1,6 @@
 import { useState, useContext, useRef } from "react"
 import { UserContext } from '../../components/App';
+import SendIcon from '@mui/icons-material/Send';
 import {
   Grid,
   TextField,
@@ -59,12 +60,14 @@ const MessageInput = () => {
     e.code === "Enter" && handleSend();
   }
 
+  const userMessage = data.selectedUser.displayName || ''
+
   return (
     <>
       <Grid item xs={11}>
         <TextField
           id="outlined-basic-email"
-          label="Type Something"
+          label={`Message ${userMessage}`}
           fullWidth
           required
           onChange={e => {
@@ -75,7 +78,7 @@ const MessageInput = () => {
           />
       </Grid>
       <Grid xs={1} align="right">
-          <Fab color="primary" aria-label="add" onClick={handleSend}>🕊️</Fab>
+          <Fab color="primary" aria-label="add" onClick={handleSend}><SendIcon /></Fab>
       </Grid>
     </>
   )
