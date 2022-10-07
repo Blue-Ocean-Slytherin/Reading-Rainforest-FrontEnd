@@ -140,7 +140,7 @@ const CompletedCard = (props) => {
 
   console.log('completed card message', traderInfo)
 
-  return traderInfo && userBook && traderBook && rating ? (
+  return traderInfo && userBook && traderBook ? (
     <div>
       <Box sx={{borderRadius: '25px', width: '1100px', height: '315px', m:6, backgroundColor:"#BBDEF0"}}>
         <Stack direction="row" spacing={5} justifyContent="center">
