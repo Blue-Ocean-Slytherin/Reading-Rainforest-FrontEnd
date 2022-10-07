@@ -91,7 +91,7 @@ export default function ConfirmTradeModal({ otherUser, book }) {
       'uidFrom': user.uid,
       "isbnFrom": params.row.industryIdentifiers[0].identifier,
       'uidTo': otherUser.uid,
-      'isbnTo': book.industryIdentifiers[0].identifier
+      'isbnTo': book?.industryIdentifiers[0].identifier
     };
     setSelection(newSelect);
   };
@@ -130,7 +130,6 @@ export default function ConfirmTradeModal({ otherUser, book }) {
     listOfBooks[i]['id'] = i;
   }
 
-
   return (
     <div>
       <Button variant="contained" color="mintGreen" onClick={handleOpen} endIcon={<SwapHorizIcon />} >
@@ -154,7 +153,12 @@ export default function ConfirmTradeModal({ otherUser, book }) {
             <Divider orientation="vertical" variant="middle" flexItem />
             <Box className='UserBookLabel' sx={UserBookLabel}>
               <Typography id="UserBookNameLabel" variant="h5" component="h2" sx={UserBookNameLabel}>Book</Typography>
-              <Typography id="UserBookValueLabel" variant="h5" component="h2" sx={UserBookValueLabel}>{book.title}</Typography>
+              <Typography id="UserBookValueLabel" variant="h5" component="h2" sx={UserBookValueLabel}>
+                {book?.title.length > 30?
+                book?.title.split(' ').slice(0,3).join(' ') + '...':
+                book?.title
+                }
+              </Typography>
             </Box>
             <Avatar alt="book-pic" src={book.imageLinks.smallThumbnail} sx={profilePic} />
           </Box>

@@ -72,7 +72,9 @@ const Layout = ({ setUser }) => {
   };
 
   let handleSignOut = async (e) => {
-    await firebase_auth.signOut().then(()=>{setUser({})});
+    await firebase_auth.signOut().then(() => {
+      setUser({});
+    });
     // document.getElementById('signInDiv').hidden = false;
   };
 
