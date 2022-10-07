@@ -6,37 +6,27 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 // import { items } from './HomeTempData.jsx'
 import axios from 'axios';
-const API_URL = 'http://localhost:3002'
 
 
 const Home = () => {
-  const [booksNear, setBooksNear] = useState([]);
-  const [usersNear, setUsersNear] = useState([]);
-  const [topRated, setTopRated] = useState([]);
-
-
   const [users, setUsers] = useState([]);
   const [books, setBooks] = useState([]);
+  const [renderItem, setRenderItem] = useState(false);
 
 
   useEffect(() => {
-    axios.get(`${API_URL}/user/users`)
+    axios.get(`${process.env.REACT_APP_BE_URI}/home/users`)
       .then((res) => {
-        setUsers(res.data)
-        console.log(res.data.length)
-
         const booksArrayData = [];
 
         res.data.forEach((curr, i) => {
-          axios.get(`https://www.googleapis.com/books/v1/volumes?q=${curr.books[0]}`)
+          axios.get(`https://www.googleapis.com/books/v1/volumes?q=${curr.books[0].isbn}`)
             .then((bookData) => {
-              // console.log("++", bookData.data.items[0].volumeInfo)
               booksArrayData.push(bookData.data.items[0].volumeInfo)
-              // setBooks(booksArrayData)
-            })
-            .then(() => {
               if (res.data.length === booksArrayData.length) {
                 setBooks(booksArrayData)
+                setUsers(res.data)
+                setRenderItem(true)
               }
             })
             .catch((err) => console.log('GETTING BOOKS ERROR'))
@@ -49,34 +39,31 @@ const Home = () => {
   const usersData = users.slice(0, 9)
   const booksData = books.slice(0, 9)
 
-  const recData = []
+  let recData = []
 
-  if (booksData.length !== 0) {
+  if (renderItem) {
     for (var p = 0; p < usersData.length; p += 3) {
       usersData[p].books = booksData[p]
       usersData[p+1].books = booksData[p+1]
       usersData[p+2].books = booksData[p+2]
       recData.push([usersData[p], usersData[p+1], usersData[p+2]])
     }
-    // console.log('CURRENT', booksData[p])
-    console.log('ALL DATA', recData)
   }
 
-  console.log('USER DATA', usersData)
-  console.log('BOOKS DATA', booksData)
 
+  const topUsersData = users.slice(9, 18)
+  const topBooksData = books.slice(9, 18)
 
+  const topData = []
 
-
-  // const nearArr = []
-  // for (var i = 0; i < items.length; i += 3) {
-  //   nearArr.push([items[i], items[i+1], items[i+2]])
-  // }
-
-  // const topArr = []
-  // for (var j = 0; j < items.length; j += 3) {
-  //   topArr.push([items[j+2], items[j+1], items[j]])
-  // }
+  if (renderItem) {
+    for (var i = 0; i < topUsersData.length; i += 3) {
+      topUsersData[i].books = topBooksData[i]
+      topUsersData[i+1].books = topBooksData[i+1]
+      topUsersData[i+2].books = topBooksData[i+2]
+      topData.push([topUsersData[i], topUsersData[i+1], topUsersData[i+2]])
+    }
+  }
 
   return (
     <Grid
@@ -127,13 +114,14 @@ const Home = () => {
               }
             }}
           >
-            {recData.length >= 1 &&
+            {renderItem &&
               recData.map((arr, i) =>
-              <Item
-                key={i}
-                array={arr}
-              />
-            )}
+                <Item
+                  key={i}
+                  array={arr}
+                />
+              )
+            }
           </Carousel>
         </Grid>
       </Box>
@@ -178,16 +166,14 @@ const Home = () => {
               }
             }}
           >
-            {recData.length >= 1 &&
-              recData.map((arr, i) => {
-                return (
-                  <Item
-                    key={i}
-                    array={arr}
-                  />
-                )
-              }
-            )}
+            {renderItem &&
+              topData.map((arr, i) =>
+                <Item
+                  key={i}
+                  array={arr}
+                />
+              )
+            }
           </Carousel>
         </Grid>
       </Box>
@@ -197,13 +183,13 @@ const Home = () => {
 
 export default Home;
             /* {items.map((item, i) =>
-              <Item
-                key={i}
-                profilePic={item.profilePic}
-                bookTitle={item.bookTitle}
-                date={item.date}
-                bookCover={item.bookCover}
-                bookDescription={item.bookDescription}
-                username={item.username}
-              />
+                  <Item
+                    key={i}
+                    profilePic={item.profilePic}
+                    bookTitle={item.bookTitle}
+                    date={item.date}
+                    bookCover={item.bookCover}
+                    bookDescription={item.bookDescription}
+                    username={item.username}
+                  />
             )} */

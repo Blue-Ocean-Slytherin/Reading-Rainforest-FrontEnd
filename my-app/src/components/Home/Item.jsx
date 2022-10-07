@@ -9,7 +9,6 @@ import ConfirmTradeModal from '../modals/ConfirmTradeModal.jsx';
 
 const StyledRating = styled(Rating)({
   '& .MuiRating-iconFilled': {
-    // color: '#ffcf9c',
     color: '#058c42',
   }
 });
@@ -21,9 +20,11 @@ function Item( { array } ){
       <Grid container spacing={0}>
       <Box sx={{ display: { xs: 'inline', md: 'flex'}, width: 1200,
       height: 450,  justifyContent: 'center' }}>
+        {/* {console.log('ARRAY LOUISA IS CUTE', array)} */}
         {array.map((curr, i) =>
           <Grid item m={1.6} key={i}>
-          <Card key={i} sx={{ maxWidth: 345 }} >
+            {/* {console.log("ITEM CARD CURRENT", curr)} */}
+          <Card key={i} sx={{ maxWidth: 345, height: 447 }} >
             <CardHeader
               avatar={
                 <Avatar
@@ -31,25 +32,19 @@ function Item( { array } ){
                   src={curr.profilePhoto}
                 ></Avatar>
               }
-              title={curr.books.title.length <= 35 ? curr.books.title : `${curr.books.title.split('').slice(0, 35).join('')}...`}
-              subheader={curr.date} /// Could be date added to App or maybe a published date
+              title={curr.books.title}
+              sx={{ height: 50, overflow: 'scroll' }}
             />
             <CardMedia
               component="img"
-              height="194"
+              height="190"
               src={curr.books.imageLinks.thumbnail}
               alt="Paella dish"
             />
-            <CardContent>
-              {curr.books.description.length <= 185 ?
-                <Typography variant="body2" color="text.secondary">
-                  {curr.books.description}
-                </Typography>
-                :
-                <Typography variant="body2" color="text.secondary">
-                  {curr.books.description.split('').slice(0, 185).join('')}...
-                </Typography>
-              }
+            <CardContent sx={{ height: 70, overflow: 'scroll' }} >
+              <Typography variant="body2" color="text.secondary" >
+                {curr.books.description}
+              </Typography>
             </CardContent>
             <CardActions>
               <Box sx={{ flexGrow: 1 }} />
@@ -57,7 +52,8 @@ function Item( { array } ){
                 <Typography>{curr.name}</Typography>
                 <StyledRating
                   name="half-rating-read"
-                  value={(Math.random() * (5 - .5) + .5)}
+                  value={curr.averageRating}
+                  // value={(Math.random() * (5 - .5) + .5)}
                   precision={0.5}
                   icon={<ParkIcon fontSize="inherit"/>}
                   emptyIcon={<ParkOutlinedIcon fontSize="inherit"/>}
@@ -65,13 +61,7 @@ function Item( { array } ){
                 />
               </Box>
               <Box sx={{ flexGrow: 6 }} />
-              {/* <SwapButton /> */}
-              <ConfirmTradeModal
-                userName={`Keanu`}
-                userPic={`https://i.guim.co.uk/img/media/20b1ed84a85590f6ef2ef8ec4e083ededcbcb75a/445_367_3662_4578/master/3662.jpg?width=465&quality=85&dpr=1&s=none`}
-                bookName={`Diary of a Wimpy Kid`}
-                bookPic={`https://i5.walmartimages.com/asr/9efeae83-b2d6-4b16-8928-7fd44246e7dd.7fc25a4ca7f2ef37c9a307d8e5dc2291.jpeg?odnHeight=612&odnWidth=612&odnBg=FFFFFF`}
-              />
+                <ConfirmTradeModal otherUser={curr} book={curr.books}/>
               <Box sx={{ flexGrow: 1 }} />
             </CardActions>
           </Card>
