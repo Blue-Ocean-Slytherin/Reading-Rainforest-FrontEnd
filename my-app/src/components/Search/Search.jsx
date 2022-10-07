@@ -6,6 +6,7 @@ import Container from "@mui/material/Container";
 import BookCard from "./Card";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import DescriptionAlerts from "./Alert";
 
 const Search = () => {
   const [booksData, setBooksData] = React.useState({});
@@ -24,7 +25,6 @@ const Search = () => {
           } else {
             setBooksData(response.data);
           }
-          console.log("Books data:", booksData);
         })
         .catch((error) => console.log(error));
     }
@@ -41,7 +41,6 @@ const Search = () => {
         >
           {booksData.userData ? (
             booksData.userData.map((data, index) => {
-              console.log("books data:", booksData.userData);
               return (
                 <Grid item xs={2} sm={4} md={4} key={index}>
                   <BookCard user={data} book={booksData.bookData} />
@@ -49,7 +48,7 @@ const Search = () => {
               );
             })
           ) : (
-            <></>
+            <DescriptionAlerts />
           )}
         </Grid>
       </Container>

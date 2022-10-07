@@ -37,7 +37,7 @@ export default function BookCard({ user, book }) {
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          {book.volumeInfo.description}
+          {book.volumeInfo.description.substring(0, 450)}
         </Typography>
       </CardContent>
       <CardActions>
