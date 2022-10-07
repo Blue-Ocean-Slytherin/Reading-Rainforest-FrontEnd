@@ -25,7 +25,7 @@ export default function BookCard({ user, book }) {
         }
         title={book?.volumeInfo.title}
         sx={{ height: 80 }}
-        subheader={book?.volumeInfo.authors[0] || "September 14, 2016"} // Could be date added to App or maybe a published date
+        subheader={book?.volumeInfo?.authors ? book.volumeInfo.authors[0] : ""} // Could be date added to App or maybe a published date
       />
       <CardMedia
         component="img"

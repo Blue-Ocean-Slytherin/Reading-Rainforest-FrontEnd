@@ -32,6 +32,7 @@ export default function SearchBar({ Books }) {
 
   const handleClick = () => {
     if (search.length > 0) {
+      console.log(`https://www.googleapis.com/books/v1/volumes?q=${search}`);
       axios
         .get(`https://www.googleapis.com/books/v1/volumes?q=${search}`)
         .then((response) => {
