@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -7,6 +7,17 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { UserContext } from '../../../components/App';
+import { ChatContext } from "../../App.jsx";
+import { useNavigate } from "react-router-dom";
+import { firestore } from '../../../firebase';
+import {
+  setDoc,
+  doc,
+  updateDoc,
+  getDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 
 const greenStyle = {
   backgroundColor: '#9CFC97',
@@ -31,6 +42,9 @@ const CompletedCard = (props) => {
   const [userBook, setUserBook] = useState(null);
   const [traderBook, setTraderBook] = useState(null);
   const [traderInfo, setTrader] = useState(null);
+  const { dispatch } = useContext(ChatContext);
+  const { user: currentUser } = useContext(UserContext)
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get(`https://www.googleapis.com/books/v1/volumes?q=${props.trade.isbnTrader}`)
@@ -40,6 +54,50 @@ const CompletedCard = (props) => {
     axios.get(`${process.env.REACT_APP_BE_URI}/user/${props.trade.tradedToUser}/`)
       .then((results) => setTrader(results.data))
   }, [props.trade])
+
+  const handleSelect = async () => {
+
+    const combinedID =
+      currentUser.uid > traderInfo.uid
+      ? currentUser.uid + traderInfo.uid
+      : traderInfo.uid + currentUser.uid;
+
+      try {
+        const res = await getDoc(doc(firestore, "chats", combinedID));
+
+        if (!res.exists()) {
+
+          await setDoc(doc(firestore, "chats", combinedID), { messages: []});
+
+          await updateDoc(doc(firestore, "userChats", currentUser.uid), {
+            [combinedID  + ".userInfo"]: {
+              uid: traderInfo.uid,
+              displayName: traderInfo.name,
+              photoURL: traderInfo.profilePhoto,
+            },
+            [combinedID + ".date"]: serverTimestamp(),
+          });
+
+          await updateDoc(doc(firestore, "userChats", traderInfo.uid), {
+            [combinedID  + ".userInfo"]: {
+              uid: currentUser.uid,
+              displayName: currentUser.name,
+              photoURL: currentUser.profilePhoto,
+            },
+            [combinedID + ".date"]: serverTimestamp(),
+          })
+        }} catch (err) { console.log(err)}
+
+    const user = {
+      photoURL: traderInfo.profilePhoto,
+      uid: traderInfo.uid,
+      displayName: traderInfo.name,
+    }
+    dispatch({type:'CHANGE_USER', payload: user});
+    navigate("/messages");
+  }
+
+  console.log('completed card message', traderInfo)
 
   return traderInfo && userBook && traderBook ? (
     <div>
@@ -109,7 +167,7 @@ const CompletedCard = (props) => {
           </div>
         </Stack>
         <Stack direction="row" spacing={20} justifyContent="center">
-          <Button style={greenStyle} variant="contained">Message</Button>
+          <Button style={greenStyle} variant="contained" onClick={()=>handleSelect()}>Message</Button>
           <Button style={redStyle} variant="contained">Leave a Rating</Button>
         </Stack>
       </Box>
