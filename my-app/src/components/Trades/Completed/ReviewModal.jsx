@@ -22,6 +22,7 @@ const ReviewModal = (props) => {
       .then(results => console.log(results))
       .catch ((err) => console.log(err))
     setReview('');
+    setTimeout(props.update(), 200);
     props.handleClose();
   }
 

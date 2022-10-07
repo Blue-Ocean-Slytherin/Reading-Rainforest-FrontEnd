@@ -8,6 +8,10 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import Rating from '@mui/material/Rating';
+import ParkIcon from '@mui/icons-material/Park';
+import ParkOutlinedIcon from '@mui/icons-material/ParkOutlined';
+import { styled } from '@mui/material/styles';
 import { UserContext } from '../../../components/App';
 import { ChatContext } from "../../App.jsx";
 import { useNavigate } from "react-router-dom";
@@ -53,11 +57,18 @@ const coverStyle ={
   height: '220px',
 }
 
+const StyledRating = styled(Rating)({
+  '& .MuiRating-iconFilled': {
+    color: '#058c42',
+  }
+});
+
 const CompletedCard = (props) => {
   const [open, setOpen] = useState(false);
   const [userBook, setUserBook] = useState(null);
   const [traderBook, setTraderBook] = useState(null);
   const [traderInfo, setTrader] = useState(null);
+  const [rating, setRating] = useState(null);
   const { dispatch } = useContext(ChatContext);
   const { user: currentUser } = useContext(UserContext)
   const navigate = useNavigate();
@@ -78,6 +89,12 @@ const CompletedCard = (props) => {
     axios.get(`${process.env.REACT_APP_BE_URI}/user/${props.trade.tradedToUser}/`)
       .then((results) => setTrader(results.data))
   }, [props.trade])
+
+  useEffect(() => {
+    if(traderInfo) {
+      setRating(traderInfo.ratingTotal / traderInfo.ratingsCount);
+    }
+  }, [traderInfo])
 
   const handleSelect = async () => {
 
@@ -123,7 +140,7 @@ const CompletedCard = (props) => {
 
   console.log('completed card message', traderInfo)
 
-  return traderInfo && userBook && traderBook ? (
+  return traderInfo && userBook && traderBook && rating ? (
     <div>
       <Box sx={{borderRadius: '25px', width: '1100px', height: '315px', m:6, backgroundColor:"#BBDEF0"}}>
         <Stack direction="row" spacing={5} justifyContent="center">
@@ -140,9 +157,7 @@ const CompletedCard = (props) => {
                 <Typography sx={{ fontSize: 14, mb: 1 }} color="text.secondary">
                   {traderInfo.email}
                 </Typography>
-                <Typography sx={{ mb: 1}} color="text.secondary">
-                  RATINGS
-                </Typography>
+                <StyledRating defaultValue={rating} precision={0.25} icon={<ParkIcon/>} emptyIcon={<ParkOutlinedIcon/>} readOnly />
               </CardContent>
             </Card>
           </div>
@@ -202,7 +217,7 @@ const CompletedCard = (props) => {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <ReviewModal handleClose={handleClose} traderInfo={traderInfo}/>
+            <ReviewModal handleClose={handleClose} update={props.update} traderInfo={traderInfo}/>
           </Box>
         </Modal>
       </div>
