@@ -26,8 +26,12 @@ const greenStyle = {
   backgroundColor: '#9CFC97',
 }
 
-const redStyle = {
+const tanStyle = {
   backgroundColor: '#FFCF9C',
+}
+
+const redStyle = {
+  backgroundColor: 'red',
 }
 
 const imgStyle = {
@@ -50,6 +54,13 @@ const ConfirmedCard = (props) => {
   const [userBook, setUserBook] = useState(null);
   const [traderBook, setTraderBook] = useState(null);
   const [traderInfo, setTrader] = useState(null);
+
+  const changeCompleted = function () {
+    axios.put(`${process.env.REACT_APP_BE_URI}/trade/status`, {tradeId: props.trade.transactionID, status:'completed', uid: props.user.uid})
+      .then(results => console.log(results))
+      .catch ((err) => console.log(err))
+    setTimeout(props.update(), 1000);
+  }
 
   useEffect(() => {
     axios.get(`https://www.googleapis.com/books/v1/volumes?q=${props.trade.isbnTrader}`)
@@ -146,7 +157,8 @@ const ConfirmedCard = (props) => {
         </Stack>
         <Stack direction="row" spacing={20} justifyContent="center">
           <Button style={greenStyle} variant="contained">Message</Button>
-          <Button style={redStyle} variant="contained" onClick={handleOpen}>Map</Button>
+          <Button style={tanStyle} variant="contained" onClick={handleOpen}>Map</Button>
+          <Button style={redStyle} variant="contained" onClick={changeCompleted}>Mark as Complete</Button>
         </Stack>
       </Box>
       <Modal

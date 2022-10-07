@@ -11,11 +11,11 @@ import axios from 'axios';
 
 
 const Trades = (props) => {
-  const [userTrades, setTrades] = useState([]);
-  const [receivedTrades, setReceived] = useState([]);
-  const [sentTrades, setSent] = useState([]);
-  const [confirmedTrades, setConfirmed] = useState([]);
-  const [completedTrades, setCompleted] = useState([]);
+  const [userTrades, setTrades] = useState(null);
+  const [receivedTrades, setReceived] = useState(null);
+  const [sentTrades, setSent] = useState(null);
+  const [confirmedTrades, setConfirmed] = useState(null);
+  const [completedTrades, setCompleted] = useState(null);
   const [currTrade, setCurr] = useState('received');
   const [updateState, setUpdate] = useState(0);
 
@@ -29,25 +29,28 @@ const Trades = (props) => {
   }, [updateState])
 
   useEffect(() => {
-    const tempReceived = [];
-    const tempSent = [];
-    const tempConfirmed = [];
-    const tempCompleted = [];
-    for (let i = 0; i < userTrades.length; ++i) {
-      if (userTrades[i].status === 'received') {
-        tempReceived.push(userTrades[i]);
-      } else if (userTrades[i].status === 'sent') {
-        tempSent.push(userTrades[i]);
-      } else if (userTrades[i].status === 'confirmed') {
-        tempConfirmed.push(userTrades[i]);
-      } else if (userTrades[i].status === 'completed') {
-        tempCompleted.push(userTrades[i]);
+    if (userTrades) {
+      const tempReceived = [];
+      const tempSent = [];
+      const tempConfirmed = [];
+      const tempCompleted = [];
+      for (let i = 0; i < userTrades.length; ++i) {
+        if (userTrades[i].status === 'received') {
+          tempReceived.push(userTrades[i]);
+        } else if (userTrades[i].status === 'sent') {
+          tempSent.push(userTrades[i]);
+        } else if (userTrades[i].status === 'confirmed') {
+          tempConfirmed.push(userTrades[i]);
+        } else if (userTrades[i].status === 'completed') {
+          tempCompleted.push(userTrades[i]);
+        }
       }
+      console.log('hello', tempReceived);
+      setReceived(tempReceived);
+      setSent(tempSent);
+      setConfirmed(tempConfirmed);
+      setCompleted(tempCompleted);
     }
-    setReceived(tempReceived);
-    setSent(tempSent);
-    setConfirmed(tempConfirmed);
-    setCompleted(tempCompleted);
   }, [userTrades])
 
   const update = function () {
@@ -71,7 +74,7 @@ const Trades = (props) => {
     setCurr('completed');
   }
 
-  return (
+  return receivedTrades && sentTrades && confirmedTrades && completedTrades ? (
     <div>
       <h1>Trade List</h1>
       <Box sx={{width:'400px', height:'100%', backgroundColor:'#BBDEF0'}}>
@@ -103,7 +106,7 @@ const Trades = (props) => {
         </div>
       )}
     </div>
-  )
+  ) : <></>
 };
 
 export default Trades;
