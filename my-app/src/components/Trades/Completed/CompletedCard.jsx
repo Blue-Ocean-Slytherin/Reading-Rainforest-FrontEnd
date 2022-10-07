@@ -1,7 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
 import axios from 'axios';
-import ReviewModal from './ReviewModal';
-
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -9,6 +7,17 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { UserContext } from '../../../components/App';
+import { ChatContext } from "../../App.jsx";
+import { useNavigate } from "react-router-dom";
+import { firestore } from '../../../firebase';
+import {
+  setDoc,
+  doc,
+  updateDoc,
+  getDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 
 const greenStyle = {
   backgroundColor: '#9CFC97',
@@ -30,21 +39,12 @@ const coverStyle ={
 }
 
 const CompletedCard = (props) => {
-  const [open, setOpen] = useState(false);
   const [userBook, setUserBook] = useState(null);
   const [traderBook, setTraderBook] = useState(null);
   const [traderInfo, setTrader] = useState(null);
   const { dispatch } = useContext(ChatContext);
   const { user: currentUser } = useContext(UserContext)
   const navigate = useNavigate();
-
-  const handleOpen = function () {
-    setOpen(true);
-  }
-
-  const handleClose = function () {
-    setOpen(false);
-  }
 
   useEffect(() => {
     axios.get(`https://www.googleapis.com/books/v1/volumes?q=${props.trade.isbnTrader}`)
@@ -167,20 +167,10 @@ const CompletedCard = (props) => {
           </div>
         </Stack>
         <Stack direction="row" spacing={20} justifyContent="center">
-          <Button style={greenStyle} variant="contained">Message</Button>
+          <Button style={greenStyle} variant="contained" onClick={()=>handleSelect()}>Message</Button>
           <Button style={redStyle} variant="contained">Leave a Rating</Button>
         </Stack>
       </Box>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <ReviewModal handleClose={handleClose} traderInfo={traderInfo}/>
-        </Box>
-      </Modal>
     </div>
   ) : <></>
 }
