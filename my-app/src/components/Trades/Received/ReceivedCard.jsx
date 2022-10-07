@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import { collection, addDoc } from "firebase/firestore";
 import { firestore } from '../../../firebase';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
@@ -39,13 +38,13 @@ const ReceivedCard = (props) => {
 
     const docRef1 = await addDoc(collection(firestore, "notifications"), {
       to: props.user.phoneNumber,
-      body: `Text to Send to Customer, Your BookName Trade Has been accepted`
+      body: `Text to Send to ${props.user.name}, Your ${userBook.volumeInfo.title} Trade has Been Accepted`
     });
     console.log("Document written with ID: ", docRef1.id);
 
     const docRef2 = await addDoc(collection(firestore, "notifications"), {
       to: traderInfo.phoneNumber,
-      body: "Text to Send to Customer, Maybe your BookName Trade Has been accepted"
+      body: `Text to Send to ${traderInfo.name}, Your ${traderBook.volumeInfo.title} Trade has Been Accepted`
     });
 
     console.log("Document written with ID: ", docRef2.id);
