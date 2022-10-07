@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 import Map from './Map';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -29,12 +30,44 @@ const redStyle = {
   backgroundColor: '#FFCF9C',
 }
 
+const imgStyle = {
+  padding: '1px',
+  width: '100px',
+  height: '100px',
+}
+
+const coverStyle ={
+  width: '180px',
+  height: '220px',
+}
+
 const ConfirmedCard = (props) => {
   const [open, setOpen] = useState(false);
-  const [userLat, setUserLat] = useState(40.714224);
-  const [userLng, setUserLng] = useState(-73.961452);
+  const [userLat, setUserLat] = useState(null);
+  const [userLng, setUserLng] = useState(null);
   const [tradeLat, setTradeLat] = useState(null);
   const [tradeLng, setTradeLng] = useState(null);
+  const [userBook, setUserBook] = useState(null);
+  const [traderBook, setTraderBook] = useState(null);
+  const [traderInfo, setTrader] = useState(null);
+
+  useEffect(() => {
+    axios.get(`https://www.googleapis.com/books/v1/volumes?q=${props.trade.isbnTrader}`)
+      .then((results) => setTraderBook(results.data.items[0]))
+    axios.get(`https://www.googleapis.com/books/v1/volumes?q=${props.trade.isbnUser}`)
+      .then((results) => setUserBook(results.data.items[0]))
+    axios.get(`${process.env.REACT_APP_BE_URI}/user/${props.trade.tradedToUser}/`)
+      .then((results) => setTrader(results.data))
+  }, [props.trade])
+
+  useEffect(() => {
+    if(traderInfo) {
+      setUserLat(props.user.lat);
+      setUserLng(props.user.long);
+      setTradeLat(traderInfo.lat);
+      setTradeLng(traderInfo.long);
+    }
+  }, [traderInfo])
 
   const handleOpen = function () {
     setOpen(true);
@@ -44,102 +77,70 @@ const ConfirmedCard = (props) => {
     setOpen(false);
   }
 
-  return (
+  return traderInfo && tradeLng && userBook && traderBook ? (
     <div>
-      <Box sx={{width: '1100px', height: '275px', m:6, backgroundColor:"#BBDEF0"}}>
+      <Box sx={{width: '1100px', height: '315px', m:6, backgroundColor:"#BBDEF0"}}>
         <Stack direction="row" spacing={5} justifyContent="center">
           <div>
-            <Card sx={{ minWidth: 215, maxHeight: 200, m:1.5}}>
+            <Card sx={{ minWidth: 215, maxWidth: 215, maxHeight: 245, m:1.5}}>
               <CardContent>
                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                   Trader's Info
                 </Typography>
                 <Typography variant="h5" component="div">
-                  benevolent
+                  {traderInfo.name}
                 </Typography>
-                <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                  adjective
+                <img style={imgStyle} src={traderInfo.profilePhoto} alt =""/>
+                <Typography sx={{ mb: 1 }} color="text.secondary">
+                  {traderInfo.email}
                 </Typography>
-                <Typography variant="body2">
-                  well meaning and kindly.
-                  <br />
-                  {'"a benevolent smile"'}
+                <Typography sx={{ mb: 1}} color="text.secondary">
+                  RATINGS
                 </Typography>
               </CardContent>
-              <CardActions>
-                <Button size="small">Learn More</Button>
-              </CardActions>
             </Card>
           </div>
           <div>
-            <Card sx={{ minWidth: 215, maxHeight: 200, m:1.5}}>
-              <CardContent>
-                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                  Book Cover
-                </Typography>
-                <Typography variant="h5" component="div">
-                  benevolent
-                </Typography>
-                <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                  adjective
-                </Typography>
-                <Typography variant="body2">
-                  well meaning and kindly.
-                  <br />
-                  {'"a benevolent smile"'}
-                </Typography>
+            <Card sx={{maxWidth: 215, maxHeight: 245, m: 1.5}}>
+              <CardContent style={{margin: 0}}>
+                <img style={coverStyle} src={traderBook.volumeInfo.imageLinks.thumbnail} alt=""/>
               </CardContent>
-              <CardActions>
-                <Button size="small">Learn More</Button>
-              </CardActions>
             </Card>
           </div>
           <div>
-            {/* <h4>Their Offer</h4> */}
-            <Card sx={{ minWidth: 215, maxHeight: 200, m:1.5}}>
+            <Card sx={{ overflow: 'auto', minHeight: 245, maxWidth: 215, maxHeight: 245, m:1.5}}>
               <CardContent>
                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                  Book Info
+                  Book to Receive
                 </Typography>
-                <Typography variant="h5" component="div">
-                  benevolent
+                <Typography sx={{ fontSize: 18 }} variant="h5" component="div">
+                  {traderBook.volumeInfo.title}
                 </Typography>
-                <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                  adjective
+                <Typography sx={{ fontSize: 12, mb: 1 }} color="text.secondary">
+                  By {traderBook.volumeInfo.authors[0]}
                 </Typography>
-                <Typography variant="body2">
-                  well meaning and kindly.
-                  <br />
-                  {'"a benevolent smile"'}
+                <Typography variant="body2" component="div">
+                    {traderBook.volumeInfo.description}
                 </Typography>
               </CardContent>
-              <CardActions>
-                <Button size="small">Learn More</Button>
-              </CardActions>
             </Card>
           </div>
           <div>
-            {/* <h4>What They Want</h4> */}
-            <Card sx={{ minWidth: 215, maxHeight: 200, my:1.5}}>
+          <Card sx={{ overflow: 'auto', minHeight: 245, maxWidth: 215, maxHeight: 245, m:1.5}}>
               <CardContent>
                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                  Book Info
+                  Book to Trade
                 </Typography>
-                <Typography variant="h5" component="div">
-                  benevolent
+                <Typography sx={{ fontSize: 18 }} variant="h5" component="div">
+                  {userBook.volumeInfo.title}
                 </Typography>
-                <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                  adjective
+                <Typography sx={{ fontSize: 12, mb: 1 }} color="text.secondary">
+                  By {userBook.volumeInfo.authors[0]}
                 </Typography>
-                <Typography variant="body2">
-                  well meaning and kindly.
-                  <br />
-                  {'"a benevolent smile"'}
+                <Typography variant="body2" component="div">
+                    {userBook.volumeInfo.description}
                 </Typography>
               </CardContent>
-              <CardActions>
-                <Button size="small">Learn More</Button>
-              </CardActions>
             </Card>
           </div>
         </Stack>
@@ -158,13 +159,8 @@ const ConfirmedCard = (props) => {
           <Map userLat={userLat} userLng={userLng} tradeLat={tradeLat} tradeLng={tradeLng}/>
         </Box>
       </Modal>
-      {/* {open && (
-        <div>
-          <Map/>
-        </div>
-      )} */}
     </div>
-  )
+  ) : <></>
 }
 
 export default ConfirmedCard;

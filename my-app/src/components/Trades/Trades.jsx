@@ -10,26 +10,23 @@ import axios from 'axios';
 // import {styled} from '@mui/material/styles';
 
 
-const Trades = () => {
+const Trades = (props) => {
   const [userTrades, setTrades] = useState([]);
   const [receivedTrades, setReceived] = useState([]);
   const [sentTrades, setSent] = useState([]);
   const [confirmedTrades, setConfirmed] = useState([]);
   const [completedTrades, setCompleted] = useState([]);
   const [currTrade, setCurr] = useState('received');
-
-  // const TradeButton = styled(Button)(({theme}) => ({
-  //   margin: 20,
-  // }));
+  const [updateState, setUpdate] = useState(0);
 
   useEffect(() => {
-    axios.get('http://localhost:3002/trade/trades', {params: {uid: '478f7781-666b-46d8-9f79-f5b41cd7e9f0'}})
+    axios.get(`${process.env.REACT_APP_BE_URI}/trade/trades`, {params: {uid: props.user.uid}})
       .then((response) => {
         console.log(response.data);
         setTrades(response.data)
       })
       .catch((err) => console.log('Error with getting trades'))
-  }, [null])
+  }, [updateState])
 
   useEffect(() => {
     const tempReceived = [];
@@ -52,6 +49,11 @@ const Trades = () => {
     setConfirmed(tempConfirmed);
     setCompleted(tempCompleted);
   }, [userTrades])
+
+  const update = function () {
+    const temp = updateState + 1;
+    setUpdate(temp);
+  }
 
   const onReceived = function() {
     setCurr('received');
@@ -82,22 +84,22 @@ const Trades = () => {
       </Box>
       {currTrade === 'received' && (
         <div className="cardPosition">
-          <Received receivedTrades={receivedTrades}/>
+          <Received receivedTrades={receivedTrades} update={update} user={props.user}/>
         </div>
       )}
       {currTrade === 'sent' && (
         <div className="cardPosition">
-          <Sent sentTrades={sentTrades}/>
+          <Sent sentTrades={sentTrades} update={update} user={props.user}/>
         </div>
       )}
       {currTrade === 'confirmed' && (
         <div className="cardPosition">
-          <Confirmed confirmedTrades={confirmedTrades}/>
+          <Confirmed confirmedTrades={confirmedTrades} update={update} user={props.user}/>
         </div>
       )}
       {currTrade === 'completed' && (
         <div className="cardPosition">
-          <Completed completedTrades={completedTrades}/>
+          <Completed completedTrades={completedTrades} update={update} user={props.user}/>
         </div>
       )}
     </div>

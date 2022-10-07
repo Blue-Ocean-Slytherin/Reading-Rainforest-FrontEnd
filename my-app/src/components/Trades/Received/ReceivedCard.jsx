@@ -32,12 +32,32 @@ const ReceivedCard = (props) => {
   const [traderBook, setTraderBook] = useState(null);
   const [traderInfo, setTrader] = useState(null);
 
+  const changeConfirmed = function () {
+    axios.put(`${process.env.REACT_APP_BE_URI}/trade/status`, {tradeId: props.trade.transactionID, status:'confirmed', uid: props.user.uid})
+      .then(results => console.log(results))
+      .catch ((err) => console.log(err))
+    axios.put(`${process.env.REACT_APP_BE_URI}/trade/status`, {tradeId: props.trade.transactionID, status:'confirmed', uid: traderInfo.uid})
+      .then(results => console.log(results))
+      .catch ((err) => console.log(err))
+    setTimeout(props.update(), 200);
+  }
+
+  const deleteTrade = function () {
+    axios.put(`${process.env.REACT_APP_BE_URI}/trade/delete`, {tradeId: props.trade.transactionID, uid: props.user.uid})
+      .then(results => console.log(results))
+      .catch ((err) => console.log(err))
+    axios.put(`${process.env.REACT_APP_BE_URI}/trade/delete`, {tradeId: props.trade.transactionID, uid: traderInfo.uid})
+      .then(results => console.log(results))
+      .catch ((err) => console.log(err))
+    setTimeout(props.update(), 200);
+  }
+
   useEffect(() => {
     axios.get(`https://www.googleapis.com/books/v1/volumes?q=${props.trade.isbnTrader}`)
     .then((results) => setTraderBook(results.data.items[0]))
     axios.get(`https://www.googleapis.com/books/v1/volumes?q=${props.trade.isbnUser}`)
     .then((results) => setUserBook(results.data.items[0]))
-    axios.get(`http://localhost:3002/user/info/${props.trade.tradedToUser}/`)
+    axios.get(`${process.env.REACT_APP_BE_URI}/user/${props.trade.tradedToUser}/`)
     .then((results) => setTrader(results.data))
   }, [props.trade])
 
@@ -109,9 +129,9 @@ const ReceivedCard = (props) => {
           </div>
         </Stack>
         <Stack direction="row" spacing={20} justifyContent="center">
-          <Button style={greenStyle} variant="contained">Accept</Button>
+          <Button style={greenStyle} variant="contained" onClick={changeConfirmed}>Accept</Button>
           <Button style={greenStyle} variant="contained">Message</Button>
-          <Button style={redStyle} variant="contained">Decline</Button>
+          <Button style={redStyle} variant="contained" onClick={deleteTrade}>Decline</Button>
         </Stack>
       </Box>
     </div>

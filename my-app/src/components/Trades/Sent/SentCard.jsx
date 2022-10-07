@@ -32,12 +32,22 @@ const SentCard = (props) => {
   const [traderBook, setTraderBook] = useState(null);
   const [traderInfo, setTrader] = useState(null);
 
+  const deleteTrade = function () {
+    axios.put(`${process.env.REACT_APP_BE_URI}/trade/delete`, {tradeId: props.trade.transactionID, uid: props.user.uid})
+      .then(results => console.log(results))
+      .catch ((err) => console.log(err))
+    axios.put(`${process.env.REACT_APP_BE_URI}/trade/delete`, {tradeId: props.trade.transactionID, uid: traderInfo.uid})
+      .then(results => console.log(results))
+      .catch ((err) => console.log(err))
+    setTimeout(props.update(), 200);
+  }
+
   useEffect(() => {
     axios.get(`https://www.googleapis.com/books/v1/volumes?q=${props.trade.isbnTrader}`)
       .then((results) => setTraderBook(results.data.items[0]))
     axios.get(`https://www.googleapis.com/books/v1/volumes?q=${props.trade.isbnUser}`)
       .then((results) => setUserBook(results.data.items[0]))
-    axios.get(`http://localhost:3002/user/info/${props.trade.tradedToUser}/`)
+    axios.get(`${process.env.REACT_APP_BE_URI}/user/${props.trade.tradedToUser}/`)
       .then((results) => setTrader(results.data))
   }, [props.trade])
 
@@ -110,7 +120,7 @@ const SentCard = (props) => {
         </Stack>
         <Stack direction="row" spacing={20} justifyContent="center">
           <Button style={greenStyle} variant="contained">Message</Button>
-          <Button style={redStyle} variant="contained">Delete</Button>
+          <Button style={redStyle} variant="contained" onClick={deleteTrade}>Delete</Button>
         </Stack>
       </Box>
     </div>

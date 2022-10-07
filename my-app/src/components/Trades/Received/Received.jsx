@@ -5,7 +5,7 @@ const Received = (props) => {
   return (
     <div>
       {props.receivedTrades.map((trade, key) =>
-        <ReceivedCard trade={trade} key={trade._id}/>
+        <ReceivedCard trade={trade} key={trade._id} update={props.update} user={props.user}/>
       )}
     </div>
   )
