@@ -43,7 +43,7 @@ const Search = () => {
             booksData.userData.map((data, index) => {
               return (
                 <Grid item xs={2} sm={4} md={4} key={index}>
-                  <BookCard user={data} book={booksData.bookData} />
+                  <BookCard user={data} book={booksData.bookData[index]} />
                 </Grid>
               );
             })
