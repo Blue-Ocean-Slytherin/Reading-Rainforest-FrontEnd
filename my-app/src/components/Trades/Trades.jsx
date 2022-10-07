@@ -8,7 +8,18 @@ import Confirmed from './Confirmed/Confirmed';
 import Completed from './Completed/Completed';
 import axios from 'axios';
 
+const topStyle = {
+  marginTop: '30px',
+}
 
+const bottomStyle = {
+  marginBottom: '30px',
+}
+
+const buttonStyle = {
+  backgroundColor: '#058C42',
+  width: '400px',
+}
 
 const Trades = (props) => {
   const [userTrades, setTrades] = useState(null);
@@ -77,12 +88,20 @@ const Trades = (props) => {
   return receivedTrades && sentTrades && confirmedTrades && completedTrades ? (
     <div>
       <h1>Trade List</h1>
-      <Box sx={{width:'400px', height:'100%', backgroundColor:'#BBDEF0'}}>
-        <Stack spacing={4} justifyContent="center">
-          <Button variant="contained" onClick={onReceived}>Received</Button>
-          <Button variant="contained" onClick={onSent}>Sent</Button>
-          <Button variant="contained" onClick={onConfirmed}>Confirmed</Button>
-          <Button variant="contained" onClick={onCompleted}>Complete</Button>
+      <Box sx={{borderRadius: '25px', width:'400px', height:'100%', backgroundColor:'#BBDEF0'}}>
+        <Stack spacing={4} justifyContent="center" alignItems="center">
+          <div style={topStyle}>
+            <Button style={buttonStyle} variant="contained" onClick={onReceived}>Received</Button>
+          </div>
+          <div>
+            <Button style={buttonStyle} variant="contained" onClick={onSent}>Sent</Button>
+          </div>
+          <div>
+            <Button style={buttonStyle} variant="contained" onClick={onConfirmed}>Confirmed</Button>
+          </div>
+          <div style={bottomStyle}>
+            <Button style={buttonStyle} variant="contained" onClick={onCompleted}>Complete</Button>
+          </div>
         </Stack>
       </Box>
       {currTrade === 'received' && (

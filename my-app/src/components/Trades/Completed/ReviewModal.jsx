@@ -31,7 +31,7 @@ const ReviewModal = (props) => {
         <Typography variant="h3">
           Leave a Rating
         </Typography>
-        <TextField style={inputStyle} value={review} type="number" min="1" max="5" placeholder="Enter a Number Between 1 & 5" onChange={onReview} required/>
+        <TextField style={inputStyle} value={review} type="number" InputProps={{inputProps:{max: '5', min: '1'}}} placeholder="Enter a Number Between 1 & 5" onChange={onReview} required/>
         <Button variant="contained" onClick={onSubmit}>Submit Review</Button>
       </Stack>
     </div>
