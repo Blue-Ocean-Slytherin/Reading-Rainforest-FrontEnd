@@ -6,6 +6,7 @@ import Container from "@mui/material/Container";
 import BookCard from "./Card";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import DescriptionAlerts from "./Alert";
 
 const Search = () => {
   const [booksData, setBooksData] = React.useState({});
@@ -47,7 +48,7 @@ const Search = () => {
               );
             })
           ) : (
-            <></>
+            <DescriptionAlerts />
           )}
         </Grid>
       </Container>
