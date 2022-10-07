@@ -3,6 +3,8 @@ import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
+// import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import BookCard from "./Card";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
@@ -33,24 +35,39 @@ const Search = () => {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container maxWidth="lg">
-        <Grid
-          container
-          spacing={{ xs: 2, md: 3 }}
-          columns={{ xs: 4, sm: 8, md: 12 }}
-        >
-          {booksData.userData ? (
-            booksData.userData.map((data, index) => {
-              return (
-                <Grid item xs={2} sm={4} md={4} key={index}>
-                  <BookCard user={data} book={booksData.bookData[index]} />
-                </Grid>
-              );
-            })
-          ) : (
+      <Container
+        maxWidth="lg"
+      >
+        {booksData.userData ? (
+          <Box
+            sx={{ backgroundColor: '#BBDEF0', borderRadius: '20px' }}
+            mt={5}
+            mb={5}
+            p={2}
+          >
+            <Grid
+              container
+              spacing={{ xs: 2, md: 3 }}
+              columns={{ xs: 4, sm: 8, md: 12 }}
+            >
+              {booksData.userData.map((data, index) => {
+                return (
+                  <Grid item xs={2} sm={4} md={4} key={index}>
+                    <BookCard user={data} book={booksData.bookData[index]} />
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </Box>
+        ) : (
+          <Grid
+            container
+            spacing={{ xs: 2, md: 3 }}
+            columns={{ xs: 4, sm: 8, md: 12 }}
+          >
             <DescriptionAlerts />
-          )}
-        </Grid>
+          </Grid>
+        )}
       </Container>
     </React.Fragment>
   );

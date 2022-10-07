@@ -102,7 +102,7 @@ function App() {
                 <Route index element={<Home />} />
                 <Route path="search" element={<Search />} />
                 <Route path="messages" element={<Messages />} />
-                <Route path="trades" element={<Trades />} />
+                <Route path="trades" element={<Trades user={user}/>} />
                 <Route path="profile" element={<Profile />} />
                 <Route path="*" element={<NoPage />} />
               </Route>

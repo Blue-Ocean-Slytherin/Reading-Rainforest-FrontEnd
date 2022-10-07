@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import ConfirmedCard from './ConfirmedCard';
 
-const Confirmed = () => {
+const Confirmed = (props) => {
   return (
     <div>
-      <ConfirmedCard/>
+      {props.confirmedTrades.map((trade, key) =>
+        <ConfirmedCard trade={trade} key={trade._id} update={props.update} user={props.user}/>
+      )}
     </div>
   )
 }
