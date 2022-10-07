@@ -107,7 +107,6 @@ const Layout = ({ setUser }) => {
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
             />
-
             <Button color="inherit" sx={{ flexGrow: 1 }}>
               <nav>
                 <Link
