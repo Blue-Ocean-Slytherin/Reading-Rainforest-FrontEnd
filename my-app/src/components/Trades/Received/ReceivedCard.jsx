@@ -49,7 +49,7 @@ const ReceivedCard = (props) => {
     axios.put(`${process.env.REACT_APP_BE_URI}/trade/delete`, {tradeId: props.trade.transactionID, uid: traderInfo.uid})
       .then(results => console.log(results))
       .catch ((err) => console.log(err))
-    setTimeout(props.update(), 1000);
+    setTimeout(props.update(), 200);
   }
 
   useEffect(() => {

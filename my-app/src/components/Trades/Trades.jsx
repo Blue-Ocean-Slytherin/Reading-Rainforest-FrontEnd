@@ -7,7 +7,7 @@ import Sent from './Sent/Sent';
 import Confirmed from './Confirmed/Confirmed';
 import Completed from './Completed/Completed';
 import axios from 'axios';
-// import {styled} from '@mui/material/styles';
+
 
 
 const Trades = (props) => {
