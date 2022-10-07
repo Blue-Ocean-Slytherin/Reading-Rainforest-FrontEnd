@@ -26,10 +26,10 @@ function Map(props) {
   })
 
   useEffect(() => {
-    axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${props.userLat},${props.userLng}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`)
+    axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${props.tradeLat},${props.tradeLng}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`)
       .then ((results) => setAddress(results.data.results[0].formatted_address))
       .catch((err) => console.log('Error getting address'))
-  }, [props.userLat, props.userLng])
+  }, [props.tradeLat, props.tradeLng])
 
   return (
     <div>
