@@ -100,7 +100,7 @@ const Trades = (props) => {
             <Button style={buttonStyle} variant="contained" onClick={onConfirmed}>Confirmed</Button>
           </div>
           <div style={bottomStyle}>
-            <Button style={buttonStyle} variant="contained" onClick={onCompleted}>Complete</Button>
+            <Button style={buttonStyle} variant="contained" onClick={onCompleted}>Completed</Button>
           </div>
         </Stack>
       </Box>

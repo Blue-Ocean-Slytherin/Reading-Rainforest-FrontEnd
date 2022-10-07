@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -6,6 +6,21 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import Rating from '@mui/material/Rating';
+import ParkIcon from '@mui/icons-material/Park';
+import ParkOutlinedIcon from '@mui/icons-material/ParkOutlined';
+import { styled } from '@mui/material/styles';
+import { UserContext } from '../../../components/App';
+import { ChatContext } from "../../App.jsx";
+import { useNavigate } from "react-router-dom";
+import { firestore } from '../../../firebase';
+import {
+  setDoc,
+  doc,
+  updateDoc,
+  getDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 
 const greenStyle = {
   backgroundColor: '#9CFC97',
@@ -26,10 +41,21 @@ const coverStyle ={
   height: '220px',
 }
 
+const StyledRating = styled(Rating)({
+  '& .MuiRating-iconFilled': {
+    color: '#058c42',
+  }
+});
+
 const SentCard = (props) => {
   const [userBook, setUserBook] = useState(null);
   const [traderBook, setTraderBook] = useState(null);
   const [traderInfo, setTrader] = useState(null);
+  const [rating, setRating] = useState(null);
+  const { dispatch } = useContext(ChatContext);
+  const { user: currentUser } = useContext(UserContext);
+  const navigate = useNavigate();
+
 
   const deleteTrade = function () {
     axios.put(`${process.env.REACT_APP_BE_URI}/trade/delete`, {tradeId: props.trade.transactionID, uid: props.user.uid})
@@ -50,7 +76,55 @@ const SentCard = (props) => {
       .then((results) => setTrader(results.data))
   }, [props.trade])
 
-  return traderInfo && userBook && traderBook ? (
+  useEffect(() => {
+    if(traderInfo) {
+      setRating(traderInfo.ratingTotal / traderInfo.ratingsCount);
+    }
+  }, [traderInfo])
+
+  const handleSelect = async () => {
+
+    const combinedID =
+      currentUser.uid > traderInfo.uid
+      ? currentUser.uid + traderInfo.uid
+      : traderInfo.uid + currentUser.uid;
+
+      try {
+        const res = await getDoc(doc(firestore, "chats", combinedID));
+
+        if (!res.exists()) {
+
+          await setDoc(doc(firestore, "chats", combinedID), { messages: []});
+
+          await updateDoc(doc(firestore, "userChats", currentUser.uid), {
+            [combinedID  + ".userInfo"]: {
+              uid: traderInfo.uid,
+              displayName: traderInfo.name,
+              photoURL: traderInfo.profilePhoto,
+            },
+            [combinedID + ".date"]: serverTimestamp(),
+          });
+
+          await updateDoc(doc(firestore, "userChats", traderInfo.uid), {
+            [combinedID  + ".userInfo"]: {
+              uid: currentUser.uid,
+              displayName: currentUser.name,
+              photoURL: currentUser.profilePhoto,
+            },
+            [combinedID + ".date"]: serverTimestamp(),
+          })
+        }} catch (err) { console.log(err)}
+
+    const user = {
+      photoURL: traderInfo.profilePhoto,
+      uid: traderInfo.uid,
+      displayName: traderInfo.name,
+    }
+    dispatch({type:'CHANGE_USER', payload: user});
+    navigate("/messages");
+  }
+
+  return traderInfo && userBook && traderBook && rating ? (
     <div>
       <Box sx={{borderRadius: '25px', width: '1100px', height: '315px', m:6, backgroundColor:"#BBDEF0"}}>
         <Stack direction="row" spacing={5} justifyContent="center">
@@ -67,9 +141,7 @@ const SentCard = (props) => {
                 <Typography sx={{ fontSize:14, mb: 1 }} color="text.secondary">
                   {traderInfo.email}
                 </Typography>
-                <Typography sx={{ mb: 1}} color="text.secondary">
-                  RATINGS
-                </Typography>
+                <StyledRating defaultValue={rating} precision={0.25} icon={<ParkIcon/>} emptyIcon={<ParkOutlinedIcon/>} readOnly />
               </CardContent>
             </Card>
           </div>
@@ -118,7 +190,7 @@ const SentCard = (props) => {
           </div>
         </Stack>
         <Stack direction="row" spacing={20} justifyContent="center">
-          <Button style={greenStyle} variant="contained">Message</Button>
+          <Button style={greenStyle} variant="contained" onClick={()=>handleSelect()}>Message</Button>
           <Button style={redStyle} variant="contained" onClick={deleteTrade}>Delete</Button>
         </Stack>
       </Box>
