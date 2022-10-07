@@ -115,7 +115,7 @@ const ProfileSearch = () => {
           <Avatar alt={`${user.displayName}`} src={`${user.photoURL}`} />
         </ListItemIcon>
         <ListItemText primary={`${user.displayName}`}>{user.displayName}</ListItemText>
-        <ListItemText secondary="online" align="right"></ListItemText>
+        {/* <ListItemText secondary="online" align="right"></ListItemText> */}
       </ListItem>
     }
   </>)
