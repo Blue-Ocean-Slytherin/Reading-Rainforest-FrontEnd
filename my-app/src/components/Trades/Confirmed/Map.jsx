@@ -12,8 +12,13 @@ function Map(props) {
   const [address, setAddress] = useState('');
 
   const center = {
-    lat: props.userLat,
-    lng: props.userLng
+    lat: parseFloat(props.userLat),
+    lng: parseFloat(props.userLng)
+  }
+
+  const trader = {
+    lat: parseFloat(props.tradeLat),
+    lng: parseFloat(props.tradeLng)
   }
 
   const {isLoaded} = useJsApiLoader ({
@@ -40,6 +45,7 @@ function Map(props) {
         }}
       >
         <Marker position={center}/>
+        <Marker position={trader}/>
       </GoogleMap>
     ) : null}
       <div id="address">

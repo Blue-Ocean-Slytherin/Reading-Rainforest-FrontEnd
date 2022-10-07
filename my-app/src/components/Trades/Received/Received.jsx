@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import ReceivedCard from './ReceivedCard';
 
-const Received = () => {
+const Received = (props) => {
   return (
     <div>
-      <ReceivedCard/>
+      {props.receivedTrades.map((trade, key) =>
+        <ReceivedCard trade={trade} key={trade._id} update={props.update} user={props.user}/>
+      )}
     </div>
   )
 }
