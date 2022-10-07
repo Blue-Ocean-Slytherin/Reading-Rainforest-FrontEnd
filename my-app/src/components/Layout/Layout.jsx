@@ -15,6 +15,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
+import AddBookToProfileModal from '../modals/listingToProfile2.jsx';
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -128,6 +129,9 @@ const Layout = ({ setUser }) => {
               container
               spacing={5}
             >
+              <Grid item>
+                <AddBookToProfileModal />
+              </Grid>
               <Grid item>
                 <Button color="inherit">
                   <Badge badgeContent={0} color="error">
