@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext } from "react";
+import React, { useState, useEffect, createContext, useReducer } from "react";
 import axios from 'axios';
 import { Routes, Route } from "react-router-dom";
 import Layout from "./Layout/Layout";
@@ -17,17 +17,24 @@ export const UserContext = createContext({
   user: {},
 });
 
+export const ChatContext = createContext();
+
 function App() {
   const [ user, setUser ] = useState({});
   const [ listOfBooks, setListOfBooks ] = useState([]);
+
+  const INITIAL_STATE = {
+    chatID: "null",
+    selectedUser: {},
+  };
 
   useEffect(()=>{
     const getUserBookInfo = async () => {
       if (user?.books) {
         let listOfISBNs = user.books;
         let listOfPromises = [];
-        listOfISBNs.forEach((ISBN)=>{
-          listOfPromises.push(axios.get(`https://www.googleapis.com/books/v1/volumes?q=${ISBN}`));
+        listOfISBNs.forEach((book)=>{
+          listOfPromises.push(axios.get(`https://www.googleapis.com/books/v1/volumes?q=${book.isbn}`));
         });
         let results = await Promise.all(listOfPromises);
         let bookListData = [];
@@ -64,6 +71,23 @@ function App() {
     },
   });
 
+  const chatReducer = (state, action) => {
+    switch (action.type) {
+      case "CHANGE_USER":
+        return {
+          selectedUser: action.payload,
+          chatID:
+            user.uid > action.payload.uid
+              ? user.uid + action.payload.uid
+              : action.payload.uid + user.uid,
+        };
+
+      default:
+        return state;
+    }
+  };
+
+  const [state, dispatch] = useReducer(chatReducer, INITIAL_STATE);
 
   return (
     <div>
@@ -72,65 +96,26 @@ function App() {
         <LogIn setUser={setUser} />
       ) : (
         <UserContext.Provider value={values}>
-          <Routes>
-            <Route path="/" element={<Layout setUser={setUser} />}>
-              <Route index element={<Home />} />
-              <Route path="search" element={<Search />} />
-              <Route path="messages" element={<Messages />} />
-              <Route path="trades" element={<Trades user={user}/>} />
-              <Route path="profile" element={<Profile />} />
-              <Route path="*" element={<NoPage />} />
-            </Route>
-          </Routes>
+          <ChatContext.Provider value={{ data:state, dispatch }}>
+            <Routes>
+              <Route path="/" element={<Layout setUser={setUser} />}>
+                <Route index element={<Home />} />
+                <Route path="search" element={<Search />} />
+                <Route path="messages" element={<Messages />} />
+                <Route path="trades" element={<Trades />} />
+                <Route path="profile" element={<Profile />} />
+                <Route path="*" element={<NoPage />} />
+              </Route>
+            </Routes>
+          </ChatContext.Provider>
         </UserContext.Provider>
       )}
     </ThemeProvider>
     </div>
   );
 
-  // :
-  // return (
-  //   <Routes>
-  //     <Route path="/" element={<Layout />}>
-  //       <Route index element={<Home />} />
-  //       <Route path="search" element={<Search />} />
-  //       <Route path="messages" element={<Messages />} />
-  //       <Route path="trades" element={<Trades />} />
-  //       <Route path="profile" element={<Profile />} />
-  //       <Route path="*" element={<NoPage />} />
-  //     </Route>
-  //   </Routes>
-  // );
 }
 
 export default App;
 
-// return (
-//   <div className="App">
-//     <div>Home Page</div>
-//     <div>Search</div>
-//     <div>Profile</div>
-//     <div>Trades</div>
-//     <div>Messages</div>
-//   </div>
-// );
-// eslint-disable-next-line
-{
-  /* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */
-}
 
-// import logo from './logo.svg';
-// import './App.css';
