@@ -20,10 +20,8 @@ function Item( { array } ){
       <Grid container spacing={0}>
       <Box sx={{ display: { xs: 'inline', md: 'flex'}, width: 1200,
       height: 450,  justifyContent: 'center' }}>
-        {/* {console.log('ARRAY LOUISA IS CUTE', array)} */}
         {array.map((curr, i) =>
           <Grid item m={1.6} key={i}>
-            {/* {console.log("ITEM CARD CURRENT", curr)} */}
           <Card key={i} sx={{ maxWidth: 345, height: 447 }} >
             <CardHeader
               avatar={
