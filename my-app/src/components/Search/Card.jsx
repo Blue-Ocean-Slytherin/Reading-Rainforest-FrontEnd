@@ -18,31 +18,33 @@ export default function BookCard({ user, book }) {
           <Avatar
             alt="profile-picture"
             src={
-              book.profilePhoto ||
+
+              book?.volumeInfo.imageLinks.smallThumbnail ||
               "https://st4.depositphotos.com/1012074/20946/v/450/depositphotos_209469984-stock-illustration-flat-isolated-vector-illustration-icon.jpg"
             }
           ></Avatar>
         }
-        title={book.volumeInfo.title}
-        subheader={book.volumeInfo.authors[0] || "September 14, 2016"} // Could be date added to App or maybe a published date
+        title={book?.volumeInfo.title}
+        subheader={book?.volumeInfo.authors[0] || "September 14, 2016"} // Could be date added to App or maybe a published date
       />
       <CardMedia
         component="img"
         height="194"
         src={
-          book.volumeInfo.imageLinks.thumbnail ||
+          book?.volumeInfo.imageLinks.thumbnail ||
           "https://www.nps.gov/common/uploads/cropped_image/primary/9EB2D49C-F3A5-5C25-C01902867F788B2E.jpg?width=1600&quality=90&mode=crop"
         }
-        alt={book.volumeInfo.title || "book picture"}
+        alt={book?.volumeInfo.title || "book picture"}
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          {book.volumeInfo.description.substring(0, 450)}
+          {book?.volumeInfo.description.substring(0, 460)+"..."}
         </Typography>
       </CardContent>
       <CardActions>
-        <ConfirmTradeModal otherUser={user} book={book.volumeInfo} />
+        <ConfirmTradeModal otherUser={user} book={book?.volumeInfo} />
         <Container>{user.name}</Container>
+        <Avatar alt="profile-pic" src={user.profilePhoto} />
       </CardActions>
     </Card>
   );
