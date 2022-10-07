@@ -67,7 +67,6 @@ const ChatRoom = () => {
     dispatch({type:'CHANGE_USER', payload: selectedUser})
   }
 
-
   return (<>
     <div>
 
@@ -101,8 +100,7 @@ const ChatRoom = () => {
                       <ListItemText
                 primary={`${chat[1].userInfo.displayName}`}
                 secondaryTypographyProps={{ component: 'div' }}
-                secondary={`${chat[1].lastMessage.text}`}
-            />
+                secondary={chat[1].lastMessage?.text === undefined ? '' : `${chat[1].lastMessage?.text}`}/>
                   </ListItem>
               </List>
                 ))}
