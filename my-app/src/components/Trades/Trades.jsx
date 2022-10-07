@@ -9,11 +9,11 @@ import Completed from './Completed/Completed';
 import axios from 'axios';
 
 const topStyle = {
-  'margin-top': '30px',
+  marginTop: '30px',
 }
 
 const bottomStyle = {
-  'margin-bottom': '30px',
+  marginBottom: '30px',
 }
 
 const buttonStyle = {
@@ -88,7 +88,7 @@ const Trades = (props) => {
   return receivedTrades && sentTrades && confirmedTrades && completedTrades ? (
     <div>
       <h1>Trade List</h1>
-      <Box sx={{width:'400px', height:'100%', backgroundColor:'#BBDEF0'}}>
+      <Box sx={{borderRadius: '25px', width:'400px', height:'100%', backgroundColor:'#BBDEF0'}}>
         <Stack spacing={4} justifyContent="center" alignItems="center">
           <div style={topStyle}>
             <Button style={buttonStyle} variant="contained" onClick={onReceived}>Received</Button>

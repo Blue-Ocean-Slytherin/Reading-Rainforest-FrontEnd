@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import axios from 'axios';
+import ReviewModal from './ReviewModal';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -7,6 +8,7 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 import { UserContext } from '../../../components/App';
 import { ChatContext } from "../../App.jsx";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +20,20 @@ import {
   getDoc,
   serverTimestamp,
 } from "firebase/firestore";
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 500,
+  height: 250,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  borderRadius: '25px',
+  boxShadow: 24,
+ };
+
 
 const greenStyle = {
   backgroundColor: '#9CFC97',
@@ -39,12 +55,21 @@ const coverStyle ={
 }
 
 const CompletedCard = (props) => {
+  const [open, setOpen] = useState(false);
   const [userBook, setUserBook] = useState(null);
   const [traderBook, setTraderBook] = useState(null);
   const [traderInfo, setTrader] = useState(null);
   const { dispatch } = useContext(ChatContext);
   const { user: currentUser } = useContext(UserContext)
   const navigate = useNavigate();
+
+  const handleOpen = function () {
+    setOpen(true);
+  }
+
+  const handleClose = function () {
+    setOpen(false);
+  }
 
   useEffect(() => {
     axios.get(`https://www.googleapis.com/books/v1/volumes?q=${props.trade.isbnTrader}`)
@@ -101,7 +126,7 @@ const CompletedCard = (props) => {
 
   return traderInfo && userBook && traderBook ? (
     <div>
-      <Box sx={{width: '1100px', height: '315px', m:6, backgroundColor:"#BBDEF0"}}>
+      <Box sx={{borderRadius: '25px', width: '1100px', height: '315px', m:6, backgroundColor:"#BBDEF0"}}>
         <Stack direction="row" spacing={5} justifyContent="center">
           <div>
             <Card sx={{ minWidth: 215, maxWidth: 215, maxHeight: 245, m:1.5}}>
@@ -113,7 +138,7 @@ const CompletedCard = (props) => {
                   {traderInfo.name}
                 </Typography>
                 <img style={imgStyle} src={traderInfo.profilePhoto} alt =""/>
-                <Typography sx={{ mb: 1 }} color="text.secondary">
+                <Typography sx={{ fontSize: 14, mb: 1 }} color="text.secondary">
                   {traderInfo.email}
                 </Typography>
                 <Typography sx={{ mb: 1}} color="text.secondary">
@@ -168,11 +193,22 @@ const CompletedCard = (props) => {
         </Stack>
         <Stack direction="row" spacing={20} justifyContent="center">
           <Button style={greenStyle} variant="contained" onClick={()=>handleSelect()}>Message</Button>
-          <Button style={redStyle} variant="contained">Leave a Rating</Button>
-        </Stack>
-      </Box>
-    </div>
-  ) : <></>
+          <Button style={redStyle} variant="contained" onClick={handleOpen}>Leave a Rating</Button>
+       </Stack>
+        </Box>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <ReviewModal handleClose={handleClose} traderInfo={traderInfo}/>
+          </Box>
+        </Modal>
+      </div>
+ ) : <></>
 }
+
 
 export default CompletedCard;

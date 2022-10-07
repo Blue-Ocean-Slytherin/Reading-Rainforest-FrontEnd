@@ -53,7 +53,7 @@ const SentCard = (props) => {
 
   return traderInfo && userBook && traderBook ? (
     <div>
-      <Box sx={{width: '1100px', height: '315px', m:6, backgroundColor:"#BBDEF0"}}>
+      <Box sx={{borderRadius: '25px', width: '1100px', height: '315px', m:6, backgroundColor:"#BBDEF0"}}>
         <Stack direction="row" spacing={5} justifyContent="center">
           <div>
             <Card sx={{ minWidth: 215, maxWidth: 215, maxHeight: 245, m:1.5}}>
@@ -65,7 +65,7 @@ const SentCard = (props) => {
                   {traderInfo.name}
                 </Typography>
                 <img style={imgStyle} src={traderInfo.profilePhoto} alt =""/>
-                <Typography sx={{ mb: 1 }} color="text.secondary">
+                <Typography sx={{ fontSize:14, mb: 1 }} color="text.secondary">
                   {traderInfo.email}
                 </Typography>
                 <Typography sx={{ mb: 1}} color="text.secondary">
