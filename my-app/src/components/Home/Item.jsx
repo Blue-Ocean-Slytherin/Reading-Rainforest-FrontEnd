@@ -19,7 +19,7 @@ function Item( { array } ){
     <div>
       <Grid container spacing={0}>
       <Box sx={{ display: { xs: 'inline', md: 'flex'}, width: 1200,
-      height: 450,  justifyContent: 'center' }}>
+        height: 450,  justifyContent: 'center' }}>
         {array.map((curr, i) =>
           <Grid item m={1.6} key={i}>
           <Card key={i} sx={{ maxWidth: 345, height: 447 }} >
@@ -31,7 +31,7 @@ function Item( { array } ){
                 ></Avatar>
               }
               title={curr.books.title}
-              sx={{ height: 50, overflow: 'scroll' }}
+              sx={{ height: 50, overflow: 'hidden' }}
             />
             <CardMedia
               component="img"
@@ -39,7 +39,10 @@ function Item( { array } ){
               src={curr.books.imageLinks.thumbnail}
               alt="Paella dish"
             />
-            <CardContent sx={{ height: 70, overflow: 'scroll' }} >
+            <CardContent sx={{
+              height: 70,
+              overflow: 'hidden scroll'
+            }}>
               <Typography variant="body2" color="text.secondary" >
                 {curr.books.description}
               </Typography>

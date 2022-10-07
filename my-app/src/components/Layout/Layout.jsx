@@ -130,7 +130,7 @@ const Layout = ({ setUser }) => {
             >
               <Grid item>
                 <Button color="inherit">
-                  <Badge badgeContent={29} color="error">
+                  <Badge badgeContent={0} color="error">
                     <nav>
                       <Link
                         style={{ color: "white", textDecoration: "none" }}
@@ -145,7 +145,7 @@ const Layout = ({ setUser }) => {
 
               <Grid item>
                 <Button color="inherit">
-                  <Badge badgeContent={12} color="error">
+                  <Badge badgeContent={0} color="error">
                     <nav>
                       <Link
                         style={{ color: "white", textDecoration: "none" }}
