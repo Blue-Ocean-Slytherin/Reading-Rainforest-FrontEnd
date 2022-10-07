@@ -15,16 +15,18 @@ import {
 } from "firebase/firestore";
 import { auth, firestore, firebase } from '../../firebase';
 import { v4 as uuid } from "uuid";
+import { ChatContext } from '../../components/App';
 
-const MessageInput = ({value}) => {
+const MessageInput = () => {
   const [text, setText] = useState('')
   const textInput = useRef(null)
   const { user: currentUser } = useContext(UserContext)
+  const { data, dispatch } = useContext(ChatContext);
 
   const handleSend = async () => {
 
     if (text.length > 0) {
-      await updateDoc(doc(firestore, "chats", value.data.chatID), {
+      await updateDoc(doc(firestore, "chats", data.chatID), {
         messages: arrayUnion({
           id: uuid(),
           text,
@@ -34,17 +36,17 @@ const MessageInput = ({value}) => {
       });
 
       await updateDoc(doc(firestore, "userChats", currentUser.uid), {
-        [value.data.chatID + ".lastMessage"]: {
+        [data.chatID + ".lastMessage"]: {
           text,
         },
-        [value.data.chatID + ".date"]: serverTimestamp(),
+        [data.chatID + ".date"]: serverTimestamp(),
       });
 
-      await updateDoc(doc(firestore, "userChats", value.data.user.uid), {
-        [value.data.chatID + ".lastMessage"]: {
+      await updateDoc(doc(firestore, "userChats", data.selectedUser.uid), {
+        [data.chatID + ".lastMessage"]: {
           text,
         },
-        [value.data.chatID + ".date"]: serverTimestamp(),
+        [data.chatID + ".date"]: serverTimestamp(),
       });
   }
 

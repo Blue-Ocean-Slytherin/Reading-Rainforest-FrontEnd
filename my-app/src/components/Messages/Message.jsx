@@ -1,49 +1,31 @@
-import React, { useEffect, useRef, useState, useContext, useReducer } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 
-import ChatMessage from './ChatMessage';
 import { UserContext } from '../../components/App';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { auth, firestore, firebase } from '../../firebase'
+import { ChatContext } from '../../components/App';
+
 import {
-  collection,
-  query,
-  where,
-  getDocs,
-  setDoc,
-  doc,
-  updateDoc,
-  serverTimestamp,
-  getDoc,
-  onSnapshot,
-} from "firebase/firestore";
-import {
-  Card,
-  CardContent,
-  CardMedia,
   Grid,
-  Paper,
-  Box,
-  Divider,
-  TextField,
-  Typography,
-  List,
   ListItem,
   ListItemIcon,
   ListItemText,
   Avatar,
-  Fab,
-  getChipUtilityClass,
 }
 from '@mui/material';
 
-const Message = ({message, value}) => {
+const Message = ({message}) => {
 
   const { user: currentUser } = useContext(UserContext)
+  const { data } = useContext(ChatContext);
+
+  const ref = useRef()
+
+  useEffect(() => {
+    ref.current?.scrollIntoView({behavior: "smooth"})
+  }, [message])
 
   if (currentUser.uid === message.sendID) {
     return (<>
-      <ListItem key={message.id}>
+      <ListItem key={message.id} ref={ref}>
         <Grid container>
           <Grid item xs={12}>
             <ListItemText align="right" primary={`${message.text}`}></ListItemText>
@@ -56,11 +38,11 @@ const Message = ({message, value}) => {
     </>)
   } else {
     return (<>
-      <ListItem key={message.id}>
+      <ListItem key={message.id} ref={ref}>
         <Grid container>
           <Grid item xs={12}>
             <ListItemIcon align="left">
-              <Avatar alt="left" src={`${value.data.user.photoURL}`} />
+              <Avatar alt="left" src={`${data.selectedUser.photoURL}`} />
             </ListItemIcon>
             <ListItemText align="left" primary={`${message.text}`}></ListItemText>
           </Grid>
