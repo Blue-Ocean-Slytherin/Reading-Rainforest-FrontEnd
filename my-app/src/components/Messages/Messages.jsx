@@ -18,7 +18,7 @@ const Messages = () => {
   return (
     <div className="chat">
       <header>
-        <h1>💬 Messages</h1>
+        <h1>💬 Chat</h1>
       </header>
 
       <section>

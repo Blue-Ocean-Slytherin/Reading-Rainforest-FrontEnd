@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
+import { collection, addDoc } from "firebase/firestore";
+import { firestore } from '../../../firebase';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
@@ -32,6 +34,23 @@ const ReceivedCard = (props) => {
   const [traderBook, setTraderBook] = useState(null);
   const [traderInfo, setTrader] = useState(null);
 
+  const handlePhoneText = async () => {
+    // Add a new document with a generated id.
+
+    const docRef1 = await addDoc(collection(firestore, "notifications"), {
+      to: props.user.phoneNumber,
+      body: `Text to Send to Customer, Your BookName Trade Has been accepted`
+    });
+    console.log("Document written with ID: ", docRef1.id);
+
+    const docRef2 = await addDoc(collection(firestore, "notifications"), {
+      to: traderInfo.phoneNumber,
+      body: "Text to Send to Customer, Maybe your BookName Trade Has been accepted"
+    });
+
+    console.log("Document written with ID: ", docRef2.id);
+    }
+
   const changeConfirmed = function () {
     axios.put(`${process.env.REACT_APP_BE_URI}/trade/status`, {tradeId: props.trade.transactionID, status:'confirmed', uid: props.user.uid})
       .then(results => console.log(results))
@@ -40,6 +59,7 @@ const ReceivedCard = (props) => {
       .then(results => console.log(results))
       .catch ((err) => console.log(err))
     setTimeout(props.update(), 1000);
+    handlePhoneText();
   }
 
   const deleteTrade = function () {

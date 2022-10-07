@@ -40,6 +40,10 @@ const messageArea = {
   height: '70vh',
   overflowY: 'auto',
 };
+const lastMessage = {
+  fontWeight: "lighter",
+  fontFamily: "courier",
+};
 
 const ChatRoom = () => {
 
@@ -47,28 +51,6 @@ const ChatRoom = () => {
   const { user: currentUser } = useContext(UserContext)
   const { data, dispatch } = useContext(ChatContext);
 
-  // const INITIAL_STATE = {
-  //   chatID: "null",
-  //   user: {},
-  // };
-
-  // const chatReducer = (state, action) => {
-  //   switch (action.type) {
-  //     case "CHANGE_USER":
-  //       return {
-  //         user: action.payload,
-  //         chatID:
-  //           currentUser.uid > action.payload.uid
-  //             ? currentUser.uid + action.payload.uid
-  //             : action.payload.uid + currentUser.uid,
-  //       };
-
-  //     default:
-  //       return state;
-  //   }
-  // };
-
-  // const [state, dispatch] = useReducer(chatReducer, INITIAL_STATE);
 
   useEffect(()=> {
 
@@ -90,19 +72,22 @@ const ChatRoom = () => {
     <div>
 
       <Grid container>
-        <Grid item xs={12} >
-          <Typography variant="h5">Chat</Typography>
-        </Grid>
       </Grid>
       <Grid container component={Paper} className='chatSection'>
             <Grid item xs={3} sx={borderRight500}>
                 <List>
-                    <ListItem button key={`${currentUser.email}`} onClick={()=>handleSelect(currentUser)}>
-                        <ListItemIcon>
-                        <Avatar alt={`${currentUser.email}`} src={`${currentUser.profilePhoto}`} />
-                        </ListItemIcon>
-                        <ListItemText primary={`${currentUser.name}`}></ListItemText>
-                    </ListItem>
+                  <ListItem
+                    button
+                    key={`${currentUser.name}`}
+                    onClick={()=>handleSelect(currentUser)}>
+                      <ListItemIcon>
+                      <Avatar
+                        alt={`${currentUser.name}`}
+                        src={`${currentUser.profilePhoto}`} />
+                      </ListItemIcon>
+                      <ListItemText primary={`${currentUser.name}`}>
+                      </ListItemText>
+                  </ListItem>
                 </List>
                 <Divider />
                   <ProfileSearch />
@@ -111,10 +96,13 @@ const ChatRoom = () => {
                   <List key={chat[0]} onClick={()=>handleSelect(chat[1].userInfo)}>
                   <ListItem button key={`${chat[1].userInfo.displayName}`}>
                       <ListItemIcon>
-                          <Avatar alt={`${chat[1].userInfo.displayName}`} src={`${chat[1].userInfo.photoURL}`} />
+                        <Avatar alt={`${chat[1].userInfo.displayName}`} src={`${chat[1].userInfo.photoURL}`} />
                       </ListItemIcon>
-                      <ListItemText primary={`${chat[1].userInfo.displayName}`}>{`${chat[1].userInfo.displayName}`}</ListItemText>
-                      {/* <ListItemText primary={`${chat[1].lastMessage.text}`}>{`${chat[1].userInfo.displayName}`}</ListItemText> */}
+                      <ListItemText
+                primary={`${chat[1].userInfo.displayName}`}
+                secondaryTypographyProps={{ component: 'div' }}
+                secondary={`${chat[1].lastMessage.text}`}
+            />
                   </ListItem>
               </List>
                 ))}
