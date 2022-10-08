@@ -56,6 +56,15 @@
 <!-- Chat & Messages -->
 
 ## Chat & Messages
+![GIF expired](http://g.recordit.co/WioltM9okS.gif)
+
+Messages allows users to search and message other users. This component has the following features:
+  * Displays the last message of the users
+  * Has time stamp of all messages 
+  * Allow users to message each other from the trade module
+  * Sorts users based on time last message was sent
+  * Automatically scrolls down to last message or sent message
+  
 
 <!-- Trade Confirmation -->
 
