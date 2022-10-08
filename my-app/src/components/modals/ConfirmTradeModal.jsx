@@ -123,12 +123,7 @@ export default function ConfirmTradeModal({ otherUser, book }) {
       axios.post(`${process.env.REACT_APP_BE_URI}/trade/add`, tradeTemp)
         .then(() => console.log('Trade Added!'))
         .catch((err) => console.log('Failed to Add Trade'))
-      // alert(`Trade Request 'Sent' 😬, Info:
-      //       isbnFrom ${selection.isbnFrom}
-      //       isbnTo ${selection.isbnTo}
-      //       uidFrom ${selection.uidFrom}
-      //       uidTo ${selection.uidTo}
-      //       `);
+      handleClose();
     } else {
       alert('Trade Request Failed, no book selected');
     }
