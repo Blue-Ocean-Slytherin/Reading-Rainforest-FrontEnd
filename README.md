@@ -35,7 +35,7 @@
 ## Getting Started
 
 ### Installation
-   
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- Login & Create Account -->
@@ -55,6 +55,13 @@
 
 <!-- Trades -->
 ## Trades
+![GIF expired](http://g.recordit.co/VlbOOsbdMW.gif)
+
+Trades display cards of each trade and provides trader and book information. This component includes:
+  * Accept, Decline/Delete, and Message buttons for respective trades
+  * Updates trades for both users and traders
+  * Map display for confirmed trades
+  * Rating system for users to rate trades
 
 <!-- Profiles -->
 ## Profiles
@@ -64,17 +71,17 @@
 
 Contributors (in order of component rendered on screen):
 <br />
-Sean Young: 
+Sean Young:
 <br />
-Johnny Ho: 
+Johnny Ho:
 <br />
 David Garcia: Search Page | Add Listing to Profile
 <br />
-Andy Ho:
+Andy Ho: Trades
 <br />
 Paul Ko:
 <br />
-Aaron Yabut: 
+Aaron Yabut:
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
