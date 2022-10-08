@@ -42,7 +42,8 @@
 <!-- Login & Create Account -->
 
 ## Login & Create Account
-<img src='https://ibb.co/WznRVmf'></img>
+<img src='https://i.ibb.co/bv1GbcX/Screen-Shot-2022-10-08-at-3-36-05-PM.png'></img>
+<img src='https://i.ibb.co/jH7xFS8/Screen-Shot-2022-10-08-at-3-36-20-PM.png'></img>
 
 <!-- Home Page & Nav Bar -->
 
