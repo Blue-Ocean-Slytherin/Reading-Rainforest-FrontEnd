@@ -42,6 +42,7 @@
 <!-- Login & Create Account -->
 
 ## Login & Create Account
+<img src='https://ibb.co/WznRVmf'></img>
 
 <!-- Home Page & Nav Bar -->
 
