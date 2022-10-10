@@ -52,7 +52,7 @@
 <!-- Search & Add to Profile -->
 
 ## Search & Add to Profile
-
+<img src="https://giphy.com/embed/wBGK9HuZPj8pWUrUEB"></img>
 <!-- Chat & Messages -->
 
 ## Chat & Messages
