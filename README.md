@@ -48,7 +48,7 @@
 <!-- Home Page & Nav Bar -->
 
 ## Home Page & Nav Bar
-![GIF expired](http://g.recordit.co/F3NKXo88iF.gif)
+![F3NKXo88iF](https://user-images.githubusercontent.com/85593147/195161074-67c2a670-1921-49d8-b39b-9b177d456358.gif)
 
 Nav bar allows users to be redirected to different pages. This component directs to the:
   * Homepage
@@ -115,7 +115,7 @@ Andy Ho: Trades
 <br />
 Paul Ko:
 <br />
-Aaron Yabut:
+Aaron Yabut: Home Page | Nav Bar
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
