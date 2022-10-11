@@ -48,6 +48,20 @@
 <!-- Home Page & Nav Bar -->
 
 ## Home Page & Nav Bar
+![GIF expired](http://g.recordit.co/F3NKXo88iF.gif)
+
+Nav bar allows users to be redirected to different pages. This component directs to the:
+  * Homepage
+  * Search
+  * Add to listing
+  * Messages
+  * Trades
+  * Profile button that allows you to go to the profile page or sign out.
+
+Home page is the main web page of our application. This component features:
+  * Two carousels that display the user's book information
+  * The two carousels display top rated users and a recommended section
+  * Each card display the user's book name, book cover, book summary, username, user rating, and a trade modal
 
 <!-- Search & Add to Profile -->
 
