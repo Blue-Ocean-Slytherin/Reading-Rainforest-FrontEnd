@@ -115,7 +115,7 @@ Andy Ho: Trades
 <br />
 Paul Ko:
 <br />
-Aaron Yabut: Home Page | Nav Bar
+[Aaron Yabut](https://github.com/Aaronyabut): Home Page | Nav Bar
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
