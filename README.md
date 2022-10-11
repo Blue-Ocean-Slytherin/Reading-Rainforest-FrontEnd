@@ -115,7 +115,11 @@ Andy Ho: Trades
 <br />
 Paul Ko:
 <br />
-[Aaron Yabut](https://github.com/Aaronyabut): Home Page | Nav Bar
+Aaron Yabut: Home Page | Nav Bar
+<br />
+[![Linkedin: LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white&link=https://www.linkedin.com/in/aaron-yabut/)](https://www.linkedin.com/in/aaron-yabut/)
+[![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white&link=https://github.com/Aaronyabut)](https://github.com/Aaronyabut) 
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
