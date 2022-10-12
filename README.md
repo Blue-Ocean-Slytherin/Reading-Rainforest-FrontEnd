@@ -49,7 +49,7 @@
 
 ## Home Page & Nav Bar
 ![F3NKXo88iF](https://user-images.githubusercontent.com/85593147/195161074-67c2a670-1921-49d8-b39b-9b177d456358.gif)
-
+Built by <a href=https://github.com/Aaronyabut>Aaron Yabut</a> </br></br>
 Nav bar allows users to be redirected to different pages. This component directs to the:
   * Homepage
   * Search
