@@ -107,7 +107,7 @@ Contributors (in order of component rendered on screen):
 <br />
 Sean Young: Login/Registration Page | ConfirmTrade Modal
 <br />
-Johnny Ho:
+Johnny Ho: Chat/Messages
 <br />
 David Garcia: Search Page | Add Listing to Profile
 <br />
